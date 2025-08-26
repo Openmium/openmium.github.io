@@ -3,289 +3,140 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mi Landing — Ebook & Reviews</title>
-  <meta name="description" content="Landing del ebook, descarga del capítulo y sección de reseñas con buscador y calendario." />
+  <title>Mi Landing — Ebook</title>
+  <meta name="description" content="Landing del ebook — descarga de capítulo y enlaces a Sobre mí y Reseñas." />
   <style>
-    :root{--accent:#0b74de;--muted:#555;--card:#ffffff}
+    :root{
+      --accent:#0b74de;
+      --muted:#556;
+      --card:#fff;
+      --bg:#f6f9ff;
+    }
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;background:#f3f6fb;color:#111}
-    nav{display:flex;gap:16px;justify-content:center;padding:18px;background:#fff;border-bottom:1px solid #eee;position:sticky;top:0;z-index:50}
-    nav a{color:#333;text-decoration:none;font-weight:600}
-    .container{max-width:1100px;margin:24px auto;padding:20px}
-    header{display:flex;gap:24px;align-items:center;background:linear-gradient(90deg,#f0f4ff 0%,#fff 100%);padding:22px;border-radius:12px;box-shadow:0 6px 30px rgba(2,6,23,0.06)}
-    .cover{width:220px;height:320px;border-radius:8px;overflow:hidden;background:#eee;flex-shrink:0}
+    body{font-family:Inter,system-ui,Arial;background:var(--bg);color:#111;line-height:1.5}
+    .nav{background:#fff;border-bottom:1px solid #eee;position:sticky;top:0;z-index:80}
+    .nav .wrap{max-width:1100px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;justify-content:space-between}
+    .nav a{margin-left:14px;text-decoration:none;color:#333;font-weight:600}
+    .container{max-width:1100px;margin:24px auto;padding:18px}
+    .hero{display:flex;gap:22px;align-items:center;background:linear-gradient(90deg,#fbfeff,#ffffff);padding:22px;border-radius:12px;box-shadow:0 6px 30px rgba(2,6,23,0.06)}
+    .cover{width:210px;height:300px;border-radius:8px;overflow:hidden;background:#eee;flex-shrink:0}
     .cover img{width:100%;height:100%;object-fit:cover}
-    .hero h1{font-size:28px;margin-bottom:6px}
+    .hero h1{font-size:26px;margin-bottom:6px}
     .hero p{color:var(--muted);margin-bottom:12px}
-    .buttons{display:flex;gap:12px}
-    .btn{padding:10px 16px;border-radius:8px;border:none;cursor:pointer}
-    .btn-primary{background:var(--accent);color:#fff;text-decoration:none}
+    .btn{padding:10px 14px;border-radius:8px;border:none;cursor:pointer}
+    .btn-primary{background:var(--accent);color:#fff}
     .btn-ghost{background:transparent;border:1px solid #ddd}
     section{margin-top:18px;padding:22px;border-radius:10px}
-    .section--bg-1{background:linear-gradient(135deg,#fffaf0 0%,#fff 100%)}
-    .section--bg-2{background:linear-gradient(135deg,#f6fbff 0%,#f0f7ff 100%)}
-    .section--bg-3{background:linear-gradient(135deg,#fff7fb 0%,#fff0f2 100%)}
-    h2{font-size:20px;margin-bottom:12px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
     .card{background:var(--card);padding:14px;border-radius:10px;border:1px solid #eef2f7;box-shadow:0 3px 10px rgba(2,6,23,0.04)}
-    .grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-    footer{text-align:center;color:var(--muted);font-size:13px;margin-top:24px}
-    /* Reviews area */
-    .reviews-controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
-    .select, .search, .date-input{padding:8px;border-radius:8px;border:1px solid #ddd;background:#fff}
-    .reviews-list{display:grid;gap:10px;margin-top:12px}
-    .review-item{padding:12px;border-radius:8px;border:1px solid #e7eef9;background:#fff}
-    .meta{font-size:13px;color:var(--muted);margin-bottom:6px}
-    /* Calendar small */
-    .calendar{width:320px;background:#fff;padding:10px;border-radius:8px;border:1px solid #eee}
-    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-    .cal-day{padding:8px;border-radius:6px;text-align:center;font-size:13px}
-    .cal-day.has{background:#0b74de;color:#fff;font-weight:700}
-    .cal-day.today{outline:2px solid #0b74de}
-    /* responsive */
-    @media(max-width:760px){header{flex-direction:column;align-items:flex-start}.calendar{width:100%}}
+    footer{text-align:center;color:var(--muted);font-size:13px;margin-top:26px}
+    /* modal */
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;padding:18px;z-index:120}
+    .modal.open{display:flex}
+    .modal-card{background:#fff;border-radius:12px;padding:18px;max-width:720px;width:100;max-height:90vh;overflow:auto;position:relative}
+    .modal-close{position:absolute;right:12px;top:12px;border:none;background:#f2f4f7;border-radius:6px;padding:6px;cursor:pointer}
+    label{display:block;margin-top:10px;font-weight:600}
+    input[type=email]{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin-top:6px}
+    .consent{display:flex;gap:10px;align-items:flex-start;margin-top:10px}
+    .note{font-size:13px;color:var(--muted);margin-top:8px}
+    @media(max-width:780px){.hero{flex-direction:column;align-items:flex-start}.cover{width:160px;height:220px}}
   </style>
 </head>
 <body>
-  <nav>
-    <a href="about.html">Sobre mí</a>
-    <a href="#libro">Libro</a>
-    <a href="#" onclick="document.getElementById('reviews').scrollIntoView({behavior:'smooth'});return false">Reseñas</a>
-  </nav>
+  <header class="nav">
+    <div class="wrap">
+      <div><strong>Mi Sitio</strong></div>
+      <nav>
+        <a href="about.html">Sobre mí</a>
+        <a href="reviews.html">Reseñas</a>
+        <a href="#libro">Libro</a>
+      </nav>
+    </div>
+  </header>
 
-  <div class="container">
-    <header id="libro">
-      <div class="cover card"><img src="cover.svg" alt="Portada"></div>
-      <div class="hero">
-        <h1>Mi Ebook — Subtítulo</h1>
-        <p>Relatos intensos en voz femenina. Lee un extracto gratis y consigue el libro en Amazon.</p>
-        <div class="buttons">
-          <a class="btn btn-primary" id="buyBtn" href="AMAZON_LINK_AQUI" target="_blank">Comprar en Amazon</a>
-          <button class="btn btn-ghost" id="freeBtn">Leer capítulo gratis</button>
+  <main class="container">
+    <section class="hero" id="libro">
+      <div class="cover card"><img src="cover.svg" alt="Portada del libro"></div>
+      <div>
+        <h1>Mi Ebook — Subtítulo potente</h1>
+        <p>Relatos intensos y directos. Extra gratuito, reseñas y proyectos relacionados.</p>
+        <div style="display:flex;gap:12px;margin-top:8px">
+          <a class="btn btn-primary" href="AMAZON_LINK_AQUI" target="_blank" rel="noopener">Comprar en Amazon</a>
+          <button id="openModal" class="btn btn-ghost">Leer capítulo gratis</button>
         </div>
+        <p class="note" style="margin-top:10px">Puedes ver ejemplos y el repositorio en <a href="GITHUB_LINK_AQUI" target="_blank">GitHub</a> · <a href="PINTEREST_LINK_AQUI" target="_blank">Pinterest</a></p>
       </div>
-    </header>
+    </section>
 
-    <section class="section--bg-1">
+    <section class="card" style="margin-top:18px">
       <h2>Lo que encontrarás</h2>
-      <div class="grid-3">
-        <div class="card"><strong>Práctico</strong><p class="meta">Capítulos directos y ejemplos claros.</p></div>
-        <div class="card"><strong>Extras</strong><p class="meta">Material descargable y recursos en GitHub.</p></div>
-        <div class="card"><strong>Para quién</strong><p class="meta">Ideal para lectoras/es de ficción intensa.</p></div>
+      <div class="grid" style="margin-top:12px">
+        <div class="card"><strong>Voz intensa</strong><p class="note">Prosa directa y sensación inmediata.</p></div>
+        <div class="card"><strong>Material extra</strong><p class="note">Apuntes y ejemplos prácticos en GitHub.</p></div>
+        <div class="card"><strong>Formato</strong><p class="note">Kindle y PDF de muestra.</p></div>
       </div>
     </section>
 
-    <section class="section--bg-2" id="reviews">
-      <h2>Reseñas — mi catálogo</h2>
-      <p class="meta">Aquí puedes filtrar reseñas por categoría, subcategoría, buscar por texto o consultar un calendario con días que tienen reseñas publicadas.</p>
-
-      <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
-        <div style="flex:1;min-width:320px">
-          <div class="reviews-controls">
-            <select id="catSelect" class="select">
-              <option value="all">Todas las categorías</option>
-            </select>
-
-            <select id="subSelect" class="select">
-              <option value="all">Todas las subcategorías</option>
-            </select>
-
-            <input id="searchInput" class="search" placeholder="Buscar título o texto..." />
-
-            <input id="dateInput" class="date-input" type="date" />
-          </div>
-
-          <div id="reviewsList" class="reviews-list"></div>
-        </div>
-
-        <div style="width:320px">
-          <div class="calendar card" id="miniCalendar">
-            <strong>Calendario</strong>
-            <div id="monthLabel" style="text-align:center;margin:8px 0"></div>
-            <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-              <button id="prevMonth" class="btn">‹</button>
-              <button id="nextMonth" class="btn">›</button>
-            </div>
-            <div class="cal-grid" id="calGrid"></div>
-            <p class="meta" style="margin-top:8px">Haz clic en un día para filtrar reseñas (o usa la fecha arriba).</p>
-          </div>
-        </div>
+    <section class="card" style="margin-top:18px">
+      <h2>Reseñas destacadas</h2>
+      <div class="grid" style="margin-top:12px">
+        <div class="card"><strong>Relatos crudos</strong><p class="note">Una reseña sobre el estilo narrativo.</p></div>
+        <div class="card"><strong>Guía de escritura</strong><p class="note">Un recurso práctico que recomiendo.</p></div>
       </div>
-    </section>
-
-    <section class="section--bg-3">
-      <h2>Sinopsis</h2>
-      <p class="meta">Recopilación de relatos y capítulos diseñados para impactar y dejar marca.</p>
     </section>
 
     <footer>
-      <p class="meta">© 2025 Mi Sitio · Enlaces: GitHub · Pinterest · LinkedIn</p>
+      <p class="note">© 2025 [Tu Nombre] · Reemplaza placeholders (AMAZON_LINK_AQUI, GITHUB_LINK_AQUI, etc.) por tus enlaces reales.</p>
     </footer>
-  </div>
+  </main>
 
-  <!-- Modal con formulario Formspree y política dentro -->
+  <!-- Modal: formulario + política resumida -->
   <div id="modal" class="modal" role="dialog" aria-hidden="true">
-    <div class="modal-card">
-      <button type="button" class="modal-close" id="closeModal">×</button>
-      <h3>Descarga el capítulo gratis</h3>
-      <p class="meta">Introduce tu email y acepta el consentimiento.</p>
+    <div class="modal-card" role="document">
+      <button class="modal-close" id="modalClose" aria-label="Cerrar">✕</button>
+      <h3>Descarga el capítulo 1 (extracto)</h3>
+      <p class="note">Introduce tu email para recibir el extracto. Revisa tu bandeja (puede llegar a spam).</p>
 
-      <form id="leadForm" action="https://formspree.io/f/movnqwgr" method="POST" class="card" style="margin-top:10px">
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" required style="margin-top:6px" />
-        <div style="margin-top:10px;display:flex;gap:8px;align-items:flex-start">
-          <input id="consent" name="consent" type="checkbox" required style="width:auto;margin-top:6px" />
+      <form id="leadForm" action="https://formspree.io/f/movnqwgr" method="POST" style="margin-top:10px">
+        <label for="emailInput">Email</label>
+        <input id="emailInput" name="email" type="email" required placeholder="tu@correo.com">
+
+        <div class="consent">
+          <input id="consent" name="consent" type="checkbox" required style="margin-top:6px">
           <div>
-            <label for="consent"><strong>Acepto recibir correos relacionados con el ebook</strong></label>
-            <p class="meta" style="margin-top:4px">He leído la política de privacidad incluida abajo y puedo darme de baja en cualquier momento.</p>
+            <label for="consent"><strong>Acepto recibir correos relacionados con este ebook</strong></label>
+            <p class="note">Puedes darte de baja en cualquier momento. Tus datos no se compartirán sin tu permiso.</p>
           </div>
         </div>
-        <input type="hidden" name="_subject" value="Nuevo suscriptor - Landing Ebook">
-        <input type="hidden" name="_language" value="es">
-        <div style="margin-top:12px">
-          <button type="submit" class="btn btn-primary">Recibir capítulo</button>
-        </div>
+
+        <input type="hidden" name="_subject" value="Nuevo suscriptor - Ebook">
+        <div style="margin-top:12px;"><button type="submit" class="btn btn-primary">Recibir capítulo</button></div>
       </form>
 
       <hr style="margin:14px 0">
 
-      <div style="max-height:250px;overflow:auto;padding-right:8px">
-        <h4>Política de privacidad (Resumen)</h4>
-        <p class="meta">Recopilamos tu email únicamente para enviarte el extracto del libro y comunicaciones relacionadas. No compartimos tus datos sin consentimiento. Puedes darte de baja en cualquier momento.</p>
-        <p class="meta">Base legal: consentimiento. Conservaremos tu email hasta que solicites eliminación. Contacto: contacto@tusitio.com.</p>
+      <div>
+        <h4>Política de privacidad (resumen)</h4>
+        <p class="note">Recopilamos el email solo para enviar el extracto y comunicaciones relacionadas. Base legal: consentimiento. Para ejercer derechos (acceso, rectificación, supresión) contacta en contacto@tusitio.com.</p>
       </div>
     </div>
   </div>
 
   <script>
-    // --- Modal controls ---
+    // Modal behavior (open/close outside and Escape)
     const modal = document.getElementById('modal');
-    const freeBtn = document.getElementById('freeBtn');
-    const closeModal = document.getElementById('closeModal');
-    freeBtn.addEventListener('click', ()=>{ modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); });
-    closeModal.addEventListener('click', ()=>{ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); });
-    modal.addEventListener('click', (e)=>{ if(e.target===modal){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }});
-    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && modal.classList.contains('open')){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }});
-
-    // --- Sample catalog of reviews ---
-    const catalog = [
-      {id:1,date:'2025-01-10',category:'salud',subcategory:'salud-mental',title:'Meditación y resiliencia',text:'Un libro que explora...',tags:['salud','mental']},
-      {id:2,date:'2025-02-05',category:'informatica',subcategory:'desarrollo',title:'Curso de React',text:'Guía práctica para...',tags:['informatica','web']},
-      {id:3,date:'2025-03-12',category:'libros',subcategory:'narrativa',title:'Relatos crudos',text:'Colección de relatos...',tags:['libros','narrativa']},
-      {id:4,date:'2025-03-20',category:'salud',subcategory:'nutricion',title:'Alimentación consciente',text:'Un repaso a...',tags:['salud','nutricion']},
-      {id:5,date:'2025-04-02',category:'libros',subcategory:'ensayo',title:'Ensayo sobre ciudad',text:'Reflexiones sobre...',tags:['libros','ensayo']}
-    ];
-
-    // Populate category/subcategory selects
-    const catSelect = document.getElementById('catSelect');
-    const subSelect = document.getElementById('subSelect');
-    const searchInput = document.getElementById('searchInput');
-    const dateInput = document.getElementById('dateInput');
-    const reviewsList = document.getElementById('reviewsList');
-
-    function buildCategoryOptions(){
-      const cats = {};
-      catalog.forEach(r=>{ cats[r.category]=cats[r.category]||new Set(); cats[r.category].add(r.subcategory); });
-      // clear and add
-      catSelect.innerHTML = '<option value="all">Todas las categorías</option>';
-      subSelect.innerHTML = '<option value="all">Todas las subcategorías</option>';
-      Object.keys(cats).forEach(cat=>{
-        const opt = document.createElement('option'); opt.value=cat; opt.textContent = cat.charAt(0).toUpperCase()+cat.slice(1);
-        catSelect.appendChild(opt);
-      });
-      // remember mapping
-      window._catMap = cats;
-    }
-
-    function updateSubOptions(){
-      const sel = catSelect.value;
-      subSelect.innerHTML = '<option value="all">Todas las subcategorías</option>';
-      if(sel==='all') return;
-      const set = window._catMap[sel] || new Set();
-      Array.from(set).forEach(sub=>{
-        const opt = document.createElement('option'); opt.value=sub; opt.textContent=sub.replace(/-/g,' ');
-        subSelect.appendChild(opt);
-      });
-    }
-
-    function renderReviews(list){
-      reviewsList.innerHTML='';
-      if(list.length===0){ reviewsList.innerHTML='<div class="card">No hay reseñas que cumplan ese filtro.</div>'; return; }
-      list.forEach(r=>{
-        const div = document.createElement('div'); div.className='review-item card';
-        div.innerHTML = `<div class="meta">${r.date} · ${r.category} / ${r.subcategory}</div><strong>${r.title}</strong><p style="margin-top:6px">${r.text}</p>`;
-        reviewsList.appendChild(div);
-      });
-    }
-
-    function applyFilters(){
-      const cat = catSelect.value;
-      const sub = subSelect.value;
-      const q = searchInput.value.trim().toLowerCase();
-      const date = dateInput.value; // YYYY-MM-DD or empty
-      let filtered = catalog.slice();
-      if(cat!=='all') filtered = filtered.filter(r=>r.category===cat);
-      if(sub!=='all') filtered = filtered.filter(r=>r.subcategory===sub);
-      if(q) filtered = filtered.filter(r=> (r.title+r.text+(r.tags||[]).join(' ')).toLowerCase().includes(q));
-      if(date) filtered = filtered.filter(r=> r.date===date);
-      renderReviews(filtered);
-      highlightCalendarDates(filtered); // highlight days that remain
-    }
-
-    catSelect.addEventListener('change', ()=>{ updateSubOptions(); applyFilters(); });
-    subSelect.addEventListener('change', applyFilters);
-    searchInput.addEventListener('input', applyFilters);
-    dateInput.addEventListener('change', applyFilters);
-
-    // --- Simple calendar rendering ---
-    const calGrid = document.getElementById('calGrid');
-    const monthLabel = document.getElementById('monthLabel');
-    const prevMonth = document.getElementById('prevMonth');
-    const nextMonth = document.getElementById('nextMonth');
-    let calDate = new Date(); // current month
-    function startOfMonth(d){ return new Date(d.getFullYear(),d.getMonth(),1); }
-    function endOfMonth(d){ return new Date(d.getFullYear(),d.getMonth()+1,0); }
-
-    function renderCalendar(dateObj){
-      calGrid.innerHTML='';
-      const start = startOfMonth(dateObj);
-      const end = endOfMonth(dateObj);
-      monthLabel.textContent = start.toLocaleString('default',{month:'long',year:'numeric'});
-      // blank days before
-      const startWeekday = start.getDay(); // 0..6 (Sun..Sat)
-      const blanks = (startWeekday+6)%7; // shift to Mon start (0=Mon)
-      for(let i=0;i<blanks;i++){ const d=document.createElement('div'); d.className='cal-day'; calGrid.appendChild(d); }
-      for(let day=1; day<=end.getDate(); day++){
-        const d = document.createElement('div'); d.className='cal-day'; d.textContent=day;
-        const iso = new Date(dateObj.getFullYear(), dateObj.getMonth(), day).toISOString().slice(0,10);
-        d.dataset.iso = iso;
-        // mark days that have any review
-        const has = catalog.some(r=> r.date===iso );
-        if(has) d.classList.add('has');
-        // mark today
-        const todayIso = new Date().toISOString().slice(0,10);
-        if(iso===todayIso) d.classList.add('today');
-        d.addEventListener('click', ()=>{ dateInput.value = iso; applyFilters(); });
-        calGrid.appendChild(d);
-      }
-    }
-
-    function highlightCalendarDates(list){
-      // mark calendar days that exist on the calendar and are in list
-      const days = calGrid.querySelectorAll('.cal-day');
-      days.forEach(el=> el.classList.toggle('has', false));
-      const dates = new Set(list.map(r=>r.date));
-      days.forEach(el=>{ if(el.dataset.iso && dates.has(el.dataset.iso)) el.classList.add('has'); });
-    }
-
-    prevMonth.addEventListener('click', ()=>{ calDate = new Date(calDate.getFullYear(), calDate.getMonth()-1, 1); renderCalendar(calDate); });
-    nextMonth.addEventListener('click', ()=>{ calDate = new Date(calDate.getFullYear(), calDate.getMonth()+1, 1); renderCalendar(calDate); });
-
-    // Init
-    buildCategoryOptions();
-    updateSubOptions();
-    renderReviews(catalog);
-    renderCalendar(calDate);
-
+    const openModalBtn = document.getElementById('openModal');
+    const modalCloseBtn = document.getElementById('modalClose');
+    openModalBtn.addEventListener('click', ()=>{ modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); });
+    modalCloseBtn.addEventListener('click', ()=>{ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); });
+    modal.addEventListener('click', (e)=>{ if(e.target === modal){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); } });
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && modal.classList.contains('open')){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); } });
+    // Optional: intercept submission to show message inline (Formspree will also deliver)
+    document.getElementById('leadForm').addEventListener('submit', async (ev)=> {
+      // Let Formspree handle the post — we can optionally show a quick message
+      // No blocking behavior here; the user will see Formspree response via network.
+      // Could enhance with fetch() integration if desired.
+    });
   </script>
 </body>
 </html>
