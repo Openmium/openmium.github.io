@@ -6,53 +6,54 @@
   <title>Mi Landing Page</title>
   <meta name="description" content="Landing oficial del ebook: extracto gratis, reseñas y enlace de compra en Amazon.">
   <style>
-    :root{--accent:#0b74de;--muted:#666}
-    *{box-sizing:border-box}
-    /* Fondo más vivo: gradiente suave + patrón sutil */
-    body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; margin:0; color:#111; line-height:1.6;
-      background-color:#fffefc;
-      background-image:
-        radial-gradient(circle at 10% 10%, rgba(11,116,222,0.04) 0 2px, transparent 2px),
-        radial-gradient(circle at 80% 90%, rgba(11,116,222,0.03) 0 2px, transparent 2px),
-        linear-gradient(135deg, #fffaf0 0%, #f0f6ff 50%, #fff7f3 100%);
-      background-size:12px 12px, 14px 14px, auto;
+    :root{--accent:#0b74de;--muted:#555;--bg:#f9fafc}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; color:#111; line-height:1.6;
+      background:linear-gradient(120deg,#fdfbfb 0%,#ebedee 100%);
     }
-    .container{max-width:980px;margin:36px auto;padding:24px;background:rgba(255,255,255,0.85);border-radius:14px;box-shadow:0 8px 30px rgba(8,20,60,0.08)}
-    header{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
-    .cover{width:220px;height:320px;background:linear-gradient(180deg,#f6f6f6,#eaeaea);display:flex;align-items:center;justify-content:center;border-radius:8px;overflow:hidden;border:1px solid rgba(0,0,0,0.06)}
+    header,section,footer{padding:40px 20px}
+    .container{max-width:1080px;margin:0 auto}
+    header{display:flex;gap:24px;align-items:center;flex-wrap:wrap;background:linear-gradient(90deg,#f0f4ff 0%,#fff 100%);border-radius:12px;box-shadow:0 4px 14px rgba(0,0,0,0.05)}
+    .cover{width:240px;height:340px;background:#eee;border-radius:8px;overflow:hidden;flex-shrink:0}
     .cover img{width:100%;height:100%;object-fit:cover}
-    .hero h1{font-size:32px;margin:0 0 8px}
-    .hero p.lead{margin:0 0 12px;color:var(--muted)}
-    .buttons{display:flex;gap:12px;margin-top:12px}
-    .btn{padding:10px 16px;border-radius:8px;border:none;cursor:pointer}
+    .hero h1{font-size:34px;margin-bottom:8px}
+    .hero p.lead{font-size:18px;color:var(--muted)}
+    .buttons{display:flex;gap:12px;margin-top:16px}
+    .btn{padding:10px 18px;border-radius:8px;border:none;cursor:pointer;transition:transform .2s}
+    .btn:hover{transform:translateY(-2px)}
     .btn-primary{background:var(--accent);color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
     .btn-ghost{background:transparent;border:1px solid #ddd}
-    .bullets{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:18px}
-    .card{padding:12px;border-radius:8px;background:linear-gradient(180deg,#ffffff,#fbfbff);border:1px solid #f0f0f6}
-    section{margin-top:28px}
-    h2{font-size:20px;margin:0 0 8px}
-    .testimonials{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-    footer{margin:28px 0 16px;color:var(--muted);font-size:14px}
-    .small{font-size:13px;color:var(--muted)}
+    section{margin-top:40px}
+    h2{font-size:24px;margin-bottom:12px;color:#222}
+    .bullets,.testimonials,.posts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+    .card{padding:16px;border-radius:10px;background:#fff;border:1px solid #f0f0f6;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+    footer{text-align:center;color:var(--muted);font-size:14px;margin:40px 0}
+    .small{font-size:14px;color:var(--muted)}
     /* modal */
     .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);padding:18px;visibility:hidden;opacity:0;transition:opacity .18s;z-index:1000}
     .modal.open{visibility:visible;opacity:1}
-    .modal-card{background:#fff;padding:18px;border-radius:10px;max-width:560px;width:100%;box-shadow:0 10px 30px rgba(8,20,60,0.12)}
+    .modal-card{background:#fff;padding:20px;border-radius:12px;max-width:560px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,0.15)}
     label{display:block;margin-bottom:6px;font-weight:600}
     input[type=email], input[type=checkbox]{width:100%;padding:10px;border:1px solid #ddd;border-radius:6px}
     .consent{display:flex;gap:8px;align-items:flex-start}
     .consent input[type=checkbox]{width:auto;margin-top:6px}
     .note{font-size:12px;color:var(--muted);margin-top:6px}
-    @media (max-width:600px){.cover{width:140px;height:200px}.hero h1{font-size:22px}}
+    nav{display:flex;gap:16px;justify-content:center;padding:20px;background:#fff;border-bottom:1px solid #eee;position:sticky;top:0;z-index:500}
+    nav a{text-decoration:none;color:#333;font-weight:600;transition:color .2s}
+    nav a:hover{color:var(--accent)}
   </style>
 </head>
 <body>
+  <nav>
+    <a href="#sobre-mi">Sobre mí</a>
+    <a href="#libro">Libro</a>
+    <a href="#posts">Posts</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+
   <div class="container">
-    <header>
-      <div class="cover" aria-hidden="true">
-        <!-- Sustituye cover.jpg por la portada real -->
-        <img src="cover.jpg" alt="Portada">
-      </div>
+    <header id="libro">
+      <div class="cover"><img src="cover.jpg" alt="Portada del libro"></div>
       <div class="hero">
         <h1>Mi Ebook: Subtítulo atractivo</h1>
         <p class="lead">Una obra intensa y directa. Lee un capítulo gratis, consulta reseñas y compra en Amazon.</p>
@@ -60,12 +61,17 @@
           <a class="btn btn-primary" id="buyBtn" href="AMAZON_LINK_AQUI" target="_blank" rel="noopener">Comprar en Amazon</a>
           <button class="btn btn-ghost" id="freeBtn">Leer capítulo gratis</button>
         </div>
-        <div class="bullets" aria-hidden="true">
-          <div class="card"><strong>Lo que encontrarás</strong><ul><li>Historia cruda</li><li>Reflexión profunda</li></ul></div>
-          <div class="card"><strong>Ideal para</strong><ul><li>Lectoras/es de ficción intensa</li></ul></div>
-        </div>
       </div>
     </header>
+
+    <section>
+      <h2>Lo que encontrarás</h2>
+      <div class="bullets">
+        <div class="card"><strong>Práctico</strong><p class="small">Capítulos directos y ejemplos claros</p></div>
+        <div class="card"><strong>Extras</strong><p class="small">Material descargable y recursos en GitHub</p></div>
+        <div class="card"><strong>Para quién</strong><p class="small">Ideal para lectoras/es de ficción intensa</p></div>
+      </div>
+    </section>
 
     <section>
       <h2>Sinopsis rápida</h2>
@@ -73,26 +79,35 @@
     </section>
 
     <section>
-      <h2>Extracto / Contenido destacado</h2>
-      <p class="small">Aquí tienes un breve extracto del capítulo 1. Para descargar el extracto completo, pulsa "Leer capítulo gratis".</p>
-      <blockquote>
-        <p>Quiero sentir que puedo tomar por una vez el control de aquello que me rodea vagamente, quiero explorar todo eso que algún dejé abandonado porque no me siento capaz de cambiar un destino que parece ya sellado.</p>
-      </blockquote>
+      <h2>Reseñas</h2>
+      <div class="testimonials">
+        <div class="card"><strong>“Muy potente”</strong><p class="small">— Lector/a</p></div>
+        <div class="card"><strong>“No pude dejar de leer”</strong><p class="small">— Lector/a</p></div>
+      </div>
     </section>
 
-    <section>
-      <h2>Preguntas frecuentes</h2>
-      <div class="card"><strong>¿En qué formato está el ebook?</strong><p class="small">Disponible en Kindle.</p></div>
-      <div class="card"><strong>¿Incluye contenido explícito?</strong><p class="small">Sí — incluye violencia gráfica y lenguaje adulto.</p></div>
+    <section id="sobre-mi">
+      <h2>Sobre mí</h2>
+      <p>Soy [Tu Nombre], creador/a. Aquí comparto mis proyectos, ideas y publicaciones. Encuéntrame también en mis redes:</p>
+      <p><a href="GITHUB_LINK_AQUI" target="_blank">GitHub</a> · <a href="PINTEREST_LINK_AQUI" target="_blank">Pinterest</a></p>
     </section>
 
-    <footer>
-      <p class="small">Aviso: algunos enlaces pueden ser afiliados.</p>
-      <p>Sígueme: <a href="https://github.com/Openmium">GitHub</a> · <a href="https://es.pinterest.com/araaraohkawaiikoto/">Pinterest</a></p>
+    <section id="posts">
+      <h2>Últimos posts</h2>
+      <div class="posts">
+        <div class="card"><h3>Cómo escribí este libro</h3><p class="small">Un vistazo al proceso creativo y retos que encontré.</p></div>
+        <div class="card"><h3>Recursos útiles</h3><p class="small">Libros, artículos y herramientas que me inspiraron.</p></div>
+        <div class="card"><h3>Próximos proyectos</h3><p class="small">Lo que estoy preparando para publicar pronto.</p></div>
+      </div>
+    </section>
+
+    <footer id="contacto">
+      <p class="small">© 2025 Mi Sitio · Algunos enlaces pueden ser afiliados. Declara la afiliación según normativa.</p>
+      <p>Sígueme: <a href="GITHUB_LINK_AQUI">GitHub</a> · <a href="PINTEREST_LINK_AQUI">Pinterest</a></p>
     </footer>
   </div>
 
-  <!-- Modal / formulario integrado con Formspree -->
+  <!-- Modal Formspree -->
   <div id="modal" class="modal" role="dialog" aria-hidden="true">
     <div class="modal-card">
       <h3>Descarga el capítulo gratis</h3>
@@ -100,7 +115,6 @@
       <form id="leadForm" action="https://formspree.io/f/movnqwgr" method="POST">
         <label for="email">Email</label>
         <input id="email" name="email" type="email" placeholder="tu@email.com" required>
-
         <div class="consent" style="margin-top:12px;">
           <input id="consent" name="consent" type="checkbox" required>
           <div>
@@ -108,18 +122,14 @@
             <p class="note">He leído la <a href="/privacy" target="_blank">política de privacidad</a>. Puedo darme de baja en cualquier momento.</p>
           </div>
         </div>
-
-        <!-- Hidden fields para Formspree -->
         <input type="hidden" name="_subject" value="Nuevo suscriptor - Landing Ebook">
         <input type="hidden" name="_language" value="es">
-
         <div style="margin-top:12px;display:flex;gap:8px;align-items:center;">
           <button type="submit" class="btn btn-primary">Recibir capítulo</button>
           <button type="button" id="closeModal" class="btn btn-ghost">Cerrar</button>
         </div>
         <p id="msg" class="small" style="margin-top:8px;display:none"></p>
       </form>
-      <p class="small" style="margin-top:8px">Nota: los datos se enviarán a Formspree. Configura notificaciones o integración con Google Sheets/Mailchimp en tu panel de Formspree.</p>
     </div>
   </div>
 
@@ -133,46 +143,28 @@
     freeBtn.addEventListener('click', ()=>{ modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); });
     closeModal.addEventListener('click', ()=>{ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); });
 
-    // Envío vía fetch a Formspree: evita redirección y muestra mensaje.
     leadForm.addEventListener('submit', async (e)=>{
       e.preventDefault();
       const email = document.getElementById('email').value.trim();
       const consent = document.getElementById('consent').checked;
       if(!email) return;
-      if(!consent){
-        msg.style.display='block'; msg.textContent = 'Debes aceptar la política de privacidad para continuar.'; return;
-      }
+      if(!consent){ msg.style.display='block'; msg.textContent = 'Debes aceptar la política de privacidad para continuar.'; return; }
       const action = leadForm.action;
       const formData = new FormData(leadForm);
       try{
-        const res = await fetch(action, {
-          method: 'POST',
-          body: formData,
-          headers: { 'Accept': 'application/json' }
-        });
+        const res = await fetch(action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
         if(res.ok){
           msg.style.display='block';
-          msg.innerHTML = '¡Gracias! Revisa tu correo para el extracto. Si no llega, comprueba la carpeta de spam.';
-          // Muestra enlace de descarga opcional
-          setTimeout(()=>{ msg.innerHTML += '<br><a href="sample-chapter.pdf" target="_blank">Descargar capítulo (alternativo)</a>'; },600);
+          msg.innerHTML = '¡Gracias! Revisa tu correo para el extracto. <br><a href="sample-chapter.pdf" target="_blank">Descargar capítulo (alternativo)</a>';
           leadForm.reset();
         } else {
           const data = await res.json().catch(()=>null);
-          msg.style.display='block';
-          msg.textContent = data?.error || 'Error en el envío. Intenta de nuevo más tarde.';
+          msg.style.display='block'; msg.textContent = data?.error || 'Error en el envío. Intenta de nuevo más tarde.';
         }
       } catch(err){
-        msg.style.display='block';
-        msg.textContent = 'Error de red. Intenta de nuevo.';
+        msg.style.display='block'; msg.textContent = 'Error de red. Intenta de nuevo.';
       }
     });
   </script>
 </body>
 </html>
-
-
-
-
-
-
-      
