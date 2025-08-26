@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Mi Landing — Ebook</title>
-  <meta name="description" content="Landing del ebook — descarga de capítulo y enlaces a Sobre mí y Reseñas." />
+  <meta name="description" content="Landing del ebook — descarga de capítulo y enlaces a Sobre mí, Libros y Reseñas." />
   <style>
     :root{
       --accent:#0b74de;
@@ -33,7 +33,7 @@
     /* modal */
     .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;padding:18px;z-index:120}
     .modal.open{display:flex}
-    .modal-card{background:#fff;border-radius:12px;padding:18px;max-width:720px;width:100;max-height:90vh;overflow:auto;position:relative}
+    .modal-card{background:#fff;border-radius:12px;padding:18px;max-width:720px;width:100%;max-height:90vh;overflow:auto;position:relative}
     .modal-close{position:absolute;right:12px;top:12px;border:none;background:#f2f4f7;border-radius:6px;padding:6px;cursor:pointer}
     label{display:block;margin-top:10px;font-weight:600}
     input[type=email]{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin-top:6px}
@@ -47,9 +47,10 @@
     <div class="wrap">
       <div><strong>Mi Sitio</strong></div>
       <nav>
-        <a href="about.html">Sobre mí</a>
+        <a href="index.html">Inicio</a>
+        <a href="libros.html">Libros</a>
         <a href="reviews.html">Reseñas</a>
-        <a href="#libro">Libro</a>
+        <a href="about.html" style="margin-left:14px">Sobre mí</a>
       </nav>
     </div>
   </header>
@@ -131,12 +132,6 @@
     modalCloseBtn.addEventListener('click', ()=>{ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); });
     modal.addEventListener('click', (e)=>{ if(e.target === modal){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); } });
     document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && modal.classList.contains('open')){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); } });
-    // Optional: intercept submission to show message inline (Formspree will also deliver)
-    document.getElementById('leadForm').addEventListener('submit', async (ev)=> {
-      // Let Formspree handle the post — we can optionally show a quick message
-      // No blocking behavior here; the user will see Formspree response via network.
-      // Could enhance with fetch() integration if desired.
-    });
   </script>
 </body>
 </html>
