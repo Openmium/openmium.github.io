@@ -1,325 +1,164 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Reseñas — Mi Sitio</title>
-  <meta name="description" content="Reseñas de productos, libros y recursos. Buscador y calendario." />
-  <style>
-    :root{
-      --accent:#0b74de;
-      --muted:#556;
-      --bg:#f7fbff;
-      --tech:#d6e4ff;
-      --health:#c9f7f5;
-      --books:#ffe7d6;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Inter,system-ui,Arial;background:var(--bg);color:#111;line-height:1.5}
-    .nav{background:#fff;border-bottom:1px solid #eee;position:sticky;top:0;z-index:90}
-    .nav .wrap{max-width:1100px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;justify-content:space-between}
-    .nav a{margin-left:12px;text-decoration:none;color:#333;font-weight:600}
-    .container{max-width:1100px;margin:24px auto;padding:18px}
-    .controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
-    .controls select,.controls input{padding:8px;border-radius:8px;border:1px solid #ddd}
-    .layout{display:grid;grid-template-columns:1fr 320px;gap:18px}
-    .list .card{background:#fff;padding:12px;border-radius:10px;border:1px solid #eef2f7;margin-bottom:10px}
-    .legend{display:flex;gap:12px;align-items:center;margin-top:8px}
-    .dot{width:14px;height:14px;border-radius:50%;display:inline-block;margin-right:6px}
-    .dot.tech{background:var(--tech);border:1px solid rgba(0,0,0,0.06)}
-    .dot.health{background:var(--health);border:1px solid rgba(0,0,0,0.06)}
-    .dot.books{background:var(--books);border:1px solid rgba(0,0,0,0.06)}
-    .calendar{background:#fff;padding:12px;border-radius:10px;border:1px solid #eee}
-    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:8px}
-    .cal-cell{padding:8px;border-radius:6px;text-align:center;font-size:13px;position:relative;background:#fbfdff}
-    .cal-cell .mini-dots{position:absolute;left:6px;bottom:6px;display:flex;gap:4px}
-    .cal-cell.tech{background:var(--tech)}
-    .cal-cell.health{background:var(--health)}
-    .cal-cell.books{background:var(--books)}
-    .search-result-empty{padding:14px;background:#fff;border-radius:10px;border:1px solid #efeef2}
-    @media(max-width:900px){.layout{grid-template-columns:1fr}.container{padding:12px}}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reseñas — Mi Sitio</title>
+<meta name="description" content="Reseñas de productos, libros y más. Filtrado por categorías y calendario.">
+<style>
+  :root{
+    --bg:#f7f9fc;
+    --accent:#0b74de;
+    --muted:#555;
+    --salud:#fcd5ce;
+    --informatica:#cdeac0;
+    --libros:#c0d6e4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Inter,system-ui,Arial;background:var(--bg);color:#111;line-height:1.5}
+  .nav{background:#fff;border-bottom:1px solid #eee;padding:12px 18px;position:sticky;top:0;z-index:80}
+  .nav a{margin-left:14px;text-decoration:none;color:#333;font-weight:600}
+  .wrap{max-width:1100px;margin:18px auto;padding:18px}
+  h1{color:var(--accent);margin-bottom:14px}
+  .controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+  select,input[type=text]{padding:8px;border-radius:8px;border:1px solid #ddd}
+  button.btn{padding:8px 10px;border-radius:8px;border:none;background:var(--accent);color:#fff;cursor:pointer}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+  .card{padding:12px;border-radius:10px;background:#fff;border:1px solid #eef2f7}
+  .card h3{margin-bottom:6px}
+  .meta{font-size:13px;color:var(--muted)}
+  .calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px}
+  .day{padding:10px;border-radius:6px;text-align:center;background:#fff;border:1px solid #eee}
+  .day.salud{background:var(--salud)}
+  .day.informatica{background:var(--informatica)}
+  .day.libros{background:var(--libros)}
+  footer{text-align:center;color:var(--muted);margin-top:18px;padding:12px;font-size:13px}
+</style>
 </head>
 <body>
-  <header class="nav">
-    <div class="wrap">
-      <div><strong>Mi Sitio</strong></div>
-      <nav>
-        <a href="index.html">Inicio</a>
-        <a href="about.html" style="margin-left:10px">Sobre mí</a>
-      </nav>
-    </div>
-  </header>
+<header class="nav">
+  <div class="wrap" style="display:flex;justify-content:space-between;align-items:center">
+    <div><strong>Mi Sitio</strong></div>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="libros.html" style="margin-left:12px">Libros</a>
+      <a href="about.html" style="margin-left:12px">Sobre mí</a>
+    </nav>
+  </div>
+</header>
 
-  <main class="container">
-    <h1 style="color:var(--accent);margin-bottom:14px">Reseñas</h1>
+<main class="wrap">
+  <h1>Reseñas</h1>
 
-    <div class="controls" role="toolbar" aria-label="Filtros de reseñas">
-      <select id="categorySelect" aria-label="Categoría">
-        <option value="all">Todas las categorías</option>
-      </select>
-
-      <select id="subSelect" aria-label="Subcategoría">
-        <option value="all">Todas las subcategorías</option>
-      </select>
-
-      <input id="searchBox" type="search" placeholder="Buscar por título, producto o texto..." aria-label="Buscar reseñas" style="min-width:240px">
-
-      <input id="dateFilter" type="date" aria-label="Filtrar por fecha">
-    </div>
-
-    <div class="layout">
-      <div class="list" id="list">
-        <!-- reseñas aparecerán aquí -->
-      </div>
-
-      <aside>
-        <div class="calendar" aria-label="Calendario de publicaciones">
-          <strong>Calendario</strong>
-          <div class="legend" style="margin-top:8px">
-            <span><span class="dot tech"></span> Tecnología</span>
-            <span><span class="dot health"></span> Salud</span>
-            <span><span class="dot books"></span> Libros</span>
-          </div>
-
-          <div style="display:flex;gap:8px;align-items:center;margin-top:12px">
-            <button id="prev" class="btn" style="padding:6px 10px;border-radius:6px;border:1px solid #ddd">‹</button>
-            <div id="monthLabel" style="flex:1;text-align:center;font-weight:600"></div>
-            <button id="next" class="btn" style="padding:6px 10px;border-radius:6px;border:1px solid #ddd">›</button>
-          </div>
-
-          <div class="cal-grid" id="calGrid" style="margin-top:12px"></div>
-        </div>
-      </aside>
-    </div>
-  </main>
-
-  <!-- Modal detalle reseña -->
-  <div id="detailModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:18px;z-index:120">
-    <div style="background:#fff;padding:18px;border-radius:12px;max-width:720px;width:100%;position:relative;max-height:90vh;overflow:auto">
-      <button id="closeDetail" style="position:absolute;right:12px;top:12px;border:none;background:#f2f4f7;border-radius:8px;padding:6px;cursor:pointer">✕</button>
-      <div id="detailContent"></div>
-    </div>
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="Buscar por producto...">
+    <select id="categorySelect">
+      <option value="">Todas las categorías</option>
+      <option value="salud">Salud</option>
+      <option value="informatica">Informática</option>
+      <option value="libros">Libros</option>
+    </select>
+    <select id="subcatSelect">
+      <option value="">Todas las subcategorías</option>
+    </select>
   </div>
 
-  <script>
-    // --- Data catalog: categoría -> subcategoría -> items
-    const CATALOG = [
-      { id: 1, date: '2025-03-12', category: 'books', sub: 'narrativa', title: 'Relatos crudos', summary: 'Colección de relatos con voz femenina y fuerte impacto.' },
-      { id: 2, date: '2025-03-20', category: 'health', sub: 'salud-mental', title: 'Meditación y resiliencia', summary: 'Libro sobre técnicas para sostener la salud mental.' },
-      { id: 3, date: '2025-04-02', category: 'tech', sub: 'gadgets', title: 'Auriculares XYZ', summary: 'Análisis del rendimiento y relación calidad/precio.' },
-      { id: 4, date: '2025-04-15', category: 'books', sub: 'ensayo', title: 'Ensayo urbano', summary: 'Reflexiones sobre ciudad y memoria.' },
-      { id: 5, date: '2025-04-20', category: 'health', sub: 'nutricion', title: 'Alimentación consciente', summary: 'Guía práctica sobre hábitos alimentarios.' },
-      { id: 6, date: '2025-04-20', category: 'tech', sub: 'software', title: 'Editor Pro X', summary: 'Revisión de un editor para desarrolladores.' }
-    ];
+  <section id="reviewsList" class="grid">
+    <!-- Reseñas dinámicas -->
+  </section>
 
-    const CATEGORY_MAP = {
-      tech: {label:'Tecnología', color:'tech'},
-      health: {label:'Salud', color:'health'},
-      books: {label:'Libros', color:'books'}
-    };
+  <h2 style="margin-top:18px">Calendario de publicaciones</h2>
+  <div id="calendar" class="calendar">
+    <!-- Dias coloreados -->
+  </div>
 
-    // DOM refs
-    const categorySelect = document.getElementById('categorySelect');
-    const subSelect = document.getElementById('subSelect');
-    const searchBox = document.getElementById('searchBox');
-    const dateFilter = document.getElementById('dateFilter');
-    const listEl = document.getElementById('list');
-    const calGrid = document.getElementById('calGrid');
-    const monthLabel = document.getElementById('monthLabel');
-    const prevBtn = document.getElementById('prev');
-    const nextBtn = document.getElementById('next');
+  <footer>
+    © 2025 [Tu Nombre] — Resumen de reseñas y calendario.
+  </footer>
+</main>
 
-    // init category options
-    function initCategoryOptions(){
-      const cats = {};
-      CATALOG.forEach(r => {
-        cats[r.category] = cats[r.category] || new Set();
-        cats[r.category].add(r.sub);
-      });
-      // populate categorySelect
-      categorySelect.innerHTML = '<option value="all">Todas las categorías</option>';
-      Object.keys(cats).forEach(cat => {
-        const o = document.createElement('option');
-        o.value = cat; o.textContent = CATEGORY_MAP[cat]?.label || cat;
-        categorySelect.appendChild(o);
-      });
-      // store map for subcategories
-      window._cats = cats;
+<script>
+  const reviews = [
+    {name:'Mindfulness Diario',category:'salud',sub:'Salud mental',date:'2025-08-10',desc:'Guía sobre meditación y reducción de estrés.'},
+    {name:'Laptop Ultra X',category:'informatica',sub:'Hardware',date:'2025-08-12',desc:'Opinión sobre la nueva laptop de gama media-alta.'},
+    {name:'Narrativa Contemporánea',category:'libros',sub:'Narrativa',date:'2025-08-15',desc:'Reseña de libro con estilo intenso y directo.'},
+    {name:'Vitaminas y Suplementos',category:'salud',sub:'Nutrición',date:'2025-08-20',desc:'Revisión sobre suplementos y alimentación.'},
+    {name:'Curso JavaScript',category:'informatica',sub:'Software',date:'2025-08-22',desc:'Opinión sobre curso online de JS.'}
+  ];
+
+  const subcats = {
+    salud:['Salud mental','Nutrición','Fitness'],
+    informatica:['Software','Hardware','Web'],
+    libros:['Narrativa','Ensayo','Técnico']
+  };
+
+  const categorySelect = document.getElementById('categorySelect');
+  const subcatSelect = document.getElementById('subcatSelect');
+  const searchInput = document.getElementById('searchInput');
+  const reviewsList = document.getElementById('reviewsList');
+
+  function renderReviews(){
+    const cat = categorySelect.value;
+    const sub = subcatSelect.value;
+    const query = searchInput.value.toLowerCase();
+    reviewsList.innerHTML = '';
+    const filtered = reviews.filter(r=>{
+      const matchCat = !cat || r.category===cat;
+      const matchSub = !sub || r.sub===sub;
+      const matchQuery = r.name.toLowerCase().includes(query);
+      return matchCat && matchSub && matchQuery;
+    });
+    if(filtered.length===0){
+      reviewsList.innerHTML='<div class="card meta">No hay reseñas para los filtros seleccionados.</div>';
+      return;
     }
+    filtered.forEach(r=>{
+      const div = document.createElement('div');
+      div.className='card';
+      div.innerHTML=`<h3>${r.name}</h3><div class="meta">${r.category} › ${r.sub} — ${r.date}</div><p>${r.desc}</p>`;
+      reviewsList.appendChild(div);
+    });
+  }
 
-    function updateSubOptions(){
-      const cat = categorySelect.value;
-      subSelect.innerHTML = '<option value="all">Todas las subcategorías</option>';
-      if(cat === 'all') return;
-      const sset = window._cats[cat] || new Set();
-      Array.from(sset).forEach(sub => {
-        const o = document.createElement('option'); o.value = sub; o.textContent = sub.replace(/-/g,' ');
-        subSelect.appendChild(o);
+  categorySelect.addEventListener('change', ()=>{
+    const cat = categorySelect.value;
+    subcatSelect.innerHTML='<option value="">Todas las subcategorías</option>';
+    if(cat && subcats[cat]){
+      subcats[cat].forEach(s=>{
+        const opt = document.createElement('option'); opt.value=s; opt.textContent=s;
+        subcatSelect.appendChild(opt);
       });
     }
+    renderReviews();
+    renderCalendar();
+  });
+  subcatSelect.addEventListener('change', renderReviews);
+  searchInput.addEventListener('input', renderReviews);
 
-    // render list
-    function renderList(items){
-      listEl.innerHTML = '';
-      if(items.length === 0){
-        listEl.innerHTML = '<div class="search-result-empty">No hay reseñas para ese filtro.</div>';
-        return;
+  // calendario
+  const calendarEl = document.getElementById('calendar');
+  function renderCalendar(){
+    calendarEl.innerHTML='';
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+    const daysInMonth = new Date(year,month+1,0).getDate();
+    for(let d=1; d<=daysInMonth; d++){
+      const dayStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const dayDiv = document.createElement('div'); dayDiv.className='day';
+      const dayReviews = reviews.filter(r=>r.date===dayStr);
+      if(dayReviews.length>0){
+        const cat = dayReviews[0].category;
+        dayDiv.classList.add(cat);
+        dayDiv.title=dayReviews.map(r=>r.name).join(', ');
       }
-      items.forEach(r => {
-        const div = document.createElement('div');
-        div.className = 'card';
-        div.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div style="font-size:14px;color:var(--muted)">${r.date} · ${CATEGORY_MAP[r.category].label} / ${r.sub.replace(/-/g,' ')}</div>
-            <h3 style="margin:6px 0">${r.title}</h3>
-            <p style="color:var(--muted)">${r.summary}</p>
-          </div>
-          <div>
-            <button data-id="${r.id}" class="viewBtn" style="padding:8px 10px;border-radius:8px;border:1px solid #ddd;background:#fff;cursor:pointer">Ver</button>
-          </div>
-        </div>`;
-        listEl.appendChild(div);
-      });
-      // attach view handlers
-      document.querySelectorAll('.viewBtn').forEach(b => b.addEventListener('click', (e) => {
-        const id = Number(e.currentTarget.dataset.id);
-        openDetail(id);
-      }));
+      dayDiv.textContent=d;
+      calendarEl.appendChild(dayDiv);
     }
+  }
 
-    // filters
-    function applyFilters(){
-      const cat = categorySelect.value;
-      const sub = subSelect.value;
-      const q = searchBox.value.trim().toLowerCase();
-      const date = dateFilter.value; // 'YYYY-MM-DD' or ''
-      let filtered = CATALOG.slice();
-      if(cat !== 'all') filtered = filtered.filter(x => x.category === cat);
-      if(sub !== 'all') filtered = filtered.filter(x => x.sub === sub);
-      if(q) filtered = filtered.filter(x => (x.title + ' ' + x.summary).toLowerCase().includes(q));
-      if(date) filtered = filtered.filter(x => x.date === date);
-      renderList(filtered);
-      highlightCalendar(filtered);
-    }
-
-    // calendar rendering (month viewport)
-    let cur = new Date(); cur.setDate(1);
-    function startOfMonth(d){ return new Date(d.getFullYear(), d.getMonth(), 1); }
-    function endOfMonth(d){ return new Date(d.getFullYear(), d.getMonth()+1, 0); }
-
-    function renderCalendar(target){
-      calGrid.innerHTML = '';
-      const start = startOfMonth(target);
-      const end = endOfMonth(target);
-      monthLabel.textContent = start.toLocaleString('default',{month:'long', year:'numeric'});
-      // offset blanks (Mon as first)
-      const firstWeekday = (start.getDay() + 6) % 7;
-      for(let i=0;i<firstWeekday;i++){ const blank = document.createElement('div'); blank.className='cal-cell'; blank.style.background='transparent'; calGrid.appendChild(blank); }
-
-      for(let day=1; day<=end.getDate(); day++){
-        const dateISO = new Date(target.getFullYear(), target.getMonth(), day).toISOString().slice(0,10);
-        const cell = document.createElement('div'); cell.className='cal-cell'; cell.textContent = day; cell.dataset.iso = dateISO;
-        // find categories for that day
-        const items = CATALOG.filter(x => x.date === dateISO);
-        if(items.length){
-          // add mini dots indicating which categories present (unique)
-          const uniq = [...new Set(items.map(i=>i.category))];
-          const mini = document.createElement('div'); mini.className='mini-dots';
-          uniq.forEach(c => {
-            const d = document.createElement('span'); d.className = 'dot-mini ' + (CATEGORY_MAP[c].color || '');
-            d.style.display = 'inline-block';
-            d.style.width = '10px';
-            d.style.height = '10px';
-            d.style.borderRadius = '50%';
-            d.style.marginRight = '4px';
-            if(c === 'tech') d.style.background = 'var(--tech)';
-            if(c === 'health') d.style.background = 'var(--health)';
-            if(c === 'books') d.style.background = 'var(--books)';
-            mini.appendChild(d);
-          });
-          cell.appendChild(mini);
-        }
-        // click to filter by date
-        cell.addEventListener('click', ()=> {
-          dateFilter.value = dateISO;
-          applyFilters();
-        });
-        calGrid.appendChild(cell);
-      }
-      // apply legend colors via CSS classes (for better visibility)
-      // after grid created, color cells containing items based on main category priority
-      Array.from(calGrid.children).forEach(ch => {
-        if(!ch.dataset.iso) return;
-        const date = ch.dataset.iso;
-        const items = CATALOG.filter(x => x.date === date);
-        if(items.length){
-          // decide color priority: tech > health > books (arbitrary)
-          if(items.some(i=>i.category==='tech')) ch.classList.add('tech');
-          else if(items.some(i=>i.category==='health')) ch.classList.add('health');
-          else if(items.some(i=>i.category==='books')) ch.classList.add('books');
-        }
-      });
-    }
-
-    prevBtn.addEventListener('click', ()=>{ cur = new Date(cur.getFullYear(), cur.getMonth()-1, 1); renderCalendar(cur); });
-    nextBtn.addEventListener('click', ()=>{ cur = new Date(cur.getFullYear(), cur.getMonth()+1, 1); renderCalendar(cur); });
-
-    // highlight calendar (used after filters change)
-    function highlightCalendar(list){
-      // clear all mini-dots, then add for filtered list
-      renderCalendar(cur); // re-render base
-      // then mark days that are in 'list' (we add a border)
-      const dates = new Set(list.map(i=>i.date));
-      Array.from(calGrid.children).forEach(ch => {
-        if(ch.dataset.iso && dates.has(ch.dataset.iso)){
-          ch.style.outline = '2px solid var(--accent)';
-        }
-      });
-    }
-
-    // detail modal
-    const detailModal = document.getElementById('detailModal');
-    const detailContent = document.getElementById('detailContent');
-    function openDetail(id){
-      const item = CATALOG.find(x => x.id === id);
-      if(!item) return;
-      detailContent.innerHTML = `<div style="font-size:13px;color:var(--muted)">${item.date} · ${CATEGORY_MAP[item.category].label} / ${item.sub.replace(/-/g,' ')}</div>
-        <h2 style="margin:8px 0">${item.title}</h2>
-        <p style="color:var(--muted)">${item.summary}</p>
-        <p style="margin-top:8px"><strong>Contenido:</strong> Aquí puedes pegar la reseña completa o un extracto. También puedes añadir enlaces a tienda, afiliado o ficha técnica.</p>`;
-      detailModal.style.display = 'flex';
-    }
-    document.getElementById('closeDetail').addEventListener('click', ()=>{ detailModal.style.display = 'none'; });
-
-    // event wiring
-    categorySelect.addEventListener('change', ()=>{ updateSubOptions(); applyFilters(); });
-    subSelect.addEventListener('change', applyFilters);
-    searchBox.addEventListener('input', applyFilters);
-    dateFilter.addEventListener('change', applyFilters);
-
-    function updateSubOptions(){
-      const cat = categorySelect.value;
-      subSelect.innerHTML = '<option value="all">Todas las subcategorías</option>';
-      if(cat === 'all') return;
-      const subs = [...new Set(CATALOG.filter(x=>x.category===cat).map(x=>x.sub))];
-      subs.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s.replace(/-/g,' '); subSelect.appendChild(o); });
-    }
-
-    // Init
-    init();
-
-    function init(){
-      // populate categories
-      const cats = [...new Set(CATALOG.map(x=>x.category))];
-      cats.forEach(c => {
-        const o = document.createElement('option'); o.value = c; o.textContent = CATEGORY_MAP[c].label || c;
-        categorySelect.appendChild(o);
-      });
-      // initial render
-      renderList(CATALOG);
-      renderCalendar(cur);
-    }
-  </script>
+  renderReviews();
+  renderCalendar();
+</script>
 </body>
 </html>
