@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Libros — Mi Sitio</title>
+  <meta name="description" content="Página de Libros — muestra todos tus títulos y permite añadir nuevos (localmente)." />
+  <style>
+    :root{--accent:#0b74de;--muted:#556;--bg:#f7fbff}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Inter,system-ui,Arial;background:var(--bg);color:#111}
+    .nav{background:#fff;border-bottom:1px solid #eee;padding:12px 18px;position:sticky;top:0;z-index:80}
+    .nav a{margin-left:14px;text-decoration:none;color:#333;font-weight:600}
+    .wrap{max-width:1100px;margin:18px auto;padding:18px}
+    .controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+    .controls input,.controls select{padding:8px;border-radius:8px;border:1px solid #ddd}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+    .card{background:#fff;padding:12px;border-radius:10px;border:1px solid #eef2f7}
+    .card h3{margin-bottom:6px;color:#0b3f86}
+    .meta{font-size:13px;color:var(--muted)}
+    .form-add{background:#fff;padding:12px;border-radius:10px;border:1px solid #eef2f7;margin-bottom:16px}
+    .btn{padding:8px 10px;border-radius:8px;border:none;cursor:pointer}
+    .btn-primary{background:var(--accent);color:#fff}
+    @media(max-width:760px){.controls{flex-direction:column;align-items:stretch}}
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap" style="display:flex;justify-content:space-between;align-items:center">
+      <div><strong>Mi Sitio</strong></div>
+      <nav>
+        <a href="index.html">Inicio</a>
+        <a href="reviews.html" style="margin-left:12px">Reseñas</a>
+        <a href="about.html" style="margin-left:12px">Sobre mí</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1 style="color:var(--accent);margin-bottom:12px">Libros</h1>
+
+    <div class="form-add" aria-labelledby="addbook">
+      <h3 id="addbook">Añadir libro (local)</h3>
+      <p class="meta">Añade libros aquí para que se muestren en la página. Esto guarda en tu navegador (localStorage) para pruebas; puedes agregar desde el CMS más adelante.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <input id="bookTitle" placeholder="Título" style="flex:2;padding:8px;border-radius:8px;border:1px solid #ddd">
+        <input id="bookSubtitle" placeholder="Subtítulo (opcional)" style="flex:2;padding:8px;border-radius:8px;border:1px solid #ddd">
+        <input id="bookCover" placeholder="URL imagen (opcional)" style="flex:1;padding:8px;border-radius:8px;border:1px solid #ddd">
+        <button id="addBookBtn" class="btn btn-primary">Añadir</button>
+      </div>
+    </div>
+
+    <section aria-labelledby="list">
+      <h2 id="list">Mis títulos</h2>
+      <div id="booksGrid" class="grid" style="margin-top:12px">
+        <!-- libros renderizados aquí -->
+      </div>
+      <p class="meta" style="margin-top:12px">Puedes añadir tantos libros como quieras; se guardarán localmente en este navegador. Para publicación real, sube los metadatos al repo o usa un pequeño CMS.</p>
+    </section>
+
+    <footer style="margin-top:18px;color:var(--muted)">© 2025 [Tu Nombre]</footer>
+  </main>
+
+  <script>
+    // Lista inicial de libros (puedes editar aquí)
+    const DEFAULT_BOOKS = [
+      { id: 1, title: 'Perfecto — Reescritura', subtitle: 'Capítulo 4 reescrito', cover: 'cover.svg', amazon: 'AMAZON_LINK_AQUI' }
+    ];
+
+    // LocalStorage key
+    const STORAGE_KEY = 'mi_libros_list_v1';
+
+    function loadBooks(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return DEFAULT_BOOKS.slice();
+        return JSON.parse(raw);
+      }catch(e){
+        return DEFAULT_BOOKS.slice();
+      }
+    }
+
+    function saveBooks(list){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+
+    function renderBooks(){
+      const grid = document.getElementById('booksGrid');
+      const list = loadBooks();
+      grid.innerHTML = '';
+      if(list.length === 0){
+        grid.innerHTML = '<div class="card meta">No hay libros añadidos. Usa el formulario para añadir uno.</div>';
+        return;
+      }
+      list.forEach(b=>{
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `
+          <div style="display:flex;gap:12px;align-items:center">
+            <div style="width:80px;height:110px;background:#f2f4f7;border-radius:6px;overflow:hidden;flex-shrink:0">
+              <img src="${b.cover||'cover.svg'}" alt="${escapeHtml(b.title)}" style="width:100%;height:100%;object-fit:cover"/>
+            </div>
+            <div style="flex:1">
+              <h3>${escapeHtml(b.title)}</h3>
+              <div class="meta">${escapeHtml(b.subtitle||'')}</div>
+              <div style="margin-top:8px;display:flex;gap:8px">
+                <a class="btn" href="${b.amazon||'#'}" target="_blank" style="border:1px solid #ddd;background:#fff;padding:8px;border-radius:8px;text-decoration:none">Comprar</a>
+                <button class="btn" data-id="${b.id}" onclick="removeBook(${b.id})" style="background:#fff;border:1px solid #f5c6c6;color:#a00">Eliminar</button>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    function addBook(title, subtitle, cover){
+      const list = loadBooks();
+      const id = Date.now();
+      list.unshift({id, title, subtitle, cover, amazon: 'AMAZON_LINK_AQUI'});
+      saveBooks(list);
+      renderBooks();
+    }
+
+    function removeBook(id){
+      if(!confirm('Eliminar este libro de la lista local?')) return;
+      let list = loadBooks();
+      list = list.filter(x=> x.id !== id);
+      saveBooks(list);
+      renderBooks();
+    }
+
+    // Simple HTML-escape for safety (small)
+    function escapeHtml(str){
+      if(!str) return '';
+      return str.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+    }
+
+    // Wire UI
+    document.getElementById('addBookBtn').addEventListener('click', ()=>{
+      const t = document.getElementById('bookTitle').value.trim();
+      const s = document.getElementById('bookSubtitle').value.trim();
+      const c = document.getElementById('bookCover').value.trim();
+      if(!t){ alert('El título es obligatorio'); return; }
+      addBook(t,s,c);
+      document.getElementById('bookTitle').value=''; document.getElementById('bookSubtitle').value=''; document.getElementById('bookCover').value='';
+    });
+
+    // first render
+    renderBooks();
+  </script>
+</body>
+</html>
