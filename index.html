@@ -4,9 +4,139 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Mi Landing Page</title>
+  <meta name="description" content="Landing oficial del ebook: extracto gratis, reseñas y enlace de compra en Amazon.">
+  <style>
+    :root{--accent:#0b74de;--muted:#666}
+    *{box-sizing:border-box}
+    body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; margin:0; color:#111; line-height:1.5; background:#fff}
+    .container{max-width:980px;margin:36px auto;padding:0 18px}
+    header{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+    .cover{width:220px;height:320px;background:#eee;display:flex;align-items:center;justify-content:center;border-radius:8px;overflow:hidden}
+    .cover img{width:100%;height:100%;object-fit:cover}
+    .hero h1{font-size:28px;margin:0 0 8px}
+    .hero p.lead{margin:0 0 12px;color:var(--muted)}
+    .buttons{display:flex;gap:12px;margin-top:12px}
+    .btn{padding:10px 16px;border-radius:8px;border:none;cursor:pointer}
+    .btn-primary{background:var(--accent);color:#fff;text-decoration:none}
+    .btn-ghost{background:transparent;border:1px solid #ddd}
+    .bullets{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:18px}
+    .card{padding:12px;border-radius:8px;background:#fafafa;border:1px solid #f0f0f0}
+    section{margin-top:28px}
+    h2{font-size:20px;margin:0 0 8px}
+    .testimonials{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+    footer{margin:28px 0 60px;color:var(--muted);font-size:14px}
+    .small{font-size:13px;color:var(--muted)}
+    /* modal */
+    .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);padding:18px;visibility:hidden;opacity:0;transition:opacity .18s;z-index:1000}
+    .modal.open{visibility:visible;opacity:1}
+    .modal-card{background:#fff;padding:18px;border-radius:10px;max-width:520px;width:100%}
+    label{display:block;margin-bottom:6px;font-weight:600}
+    input[type=email]{width:100%;padding:8px;border:1px solid #ddd;border-radius:6px}
+    @media (max-width:600px){.cover{width:140px;height:200px}.hero h1{font-size:20px}}
+  </style>
 </head>
 <body>
-  <h1>¡Hola! Esta es mi landing page</h1>
-  <p>Si estás viendo este texto, GitHub Pages funciona correctamente 🚀.</p>
+  <div class="container">
+    <header>
+      <div class="cover" aria-hidden="true">
+        <!-- Sustituye cover.jpg por la portada real -->
+        <img src="cover.jpg" alt="Portada del libro (sustituir)">
+      </div>
+      <div class="hero">
+        <h1>Mi Ebook: Subtítulo atractivo</h1>
+        <p class="lead">Una obra intensa y directa. Lee un capítulo gratis, consulta reseñas y compra en Amazon.</p>
+        <div class="buttons">
+          <a class="btn btn-primary" id="buyBtn" href="AMAZON_LINK_AQUI" target="_blank" rel="noopener">Comprar en Amazon</a>
+          <button class="btn btn-ghost" id="freeBtn">Leer capítulo gratis</button>
+        </div>
+        <div class="bullets" aria-hidden="true">
+          <div class="card"><strong>Lo que encontrarás</strong><ul><li>Capítulos directos y prácticos</li><li>Material extra descargable</li></ul></div>
+          <div class="card"><strong>Incluye</strong><ul><li>Extractos gratuitos</li><li>Ejemplos y recursos en GitHub</li></ul></div>
+          <div class="card"><strong>Ideal para</strong><ul><li>Lectoras/es de ficción intensa</li></ul></div>
+        </div>
+      </div>
+    </header>
+
+    <section>
+      <h2>Sinopsis rápida</h2>
+      <p>Recopilación de relatos y capítulos diseñados para impactar y dejar marca. Escritos en voz femenina, directos y sin concesiones, pensados para lecturas cortas y potentes.</p>
+    </section>
+
+    <section>
+      <h2>Extracto / Contenido destacado</h2>
+      <p class="small">Aquí tienes un breve extracto del capítulo 1. Para descargar el extracto completo, pulsa "Leer capítulo gratis".</p>
+      <blockquote>
+        <p>"Empieza por lo pequeño: monta una versión funcional y mejora sobre la marcha."</p>
+      </blockquote>
+    </section>
+
+    <section>
+      <h2>Reseñas</h2>
+      <div class="testimonials">
+        <div class="card"><strong>"Muy potente"</strong><p class="small">— Lector/a</p></div>
+        <div class="card"><strong>"No pude dejar de leer"</strong><p class="small">— Lector/a</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Acerca del autor/a</h2>
+      <p class="small">Tu nombre — creador/a. Puedes enlazar a tu GitHub y Pinterest más abajo.</p>
+      <p><a href="GITHUB_LINK_AQUI" target="_blank" rel="noopener">Ver proyectos en GitHub</a> · <a href="PINTEREST_LINK_AQUI" target="_blank" rel="noopener">Mis fotos en Pinterest</a></p>
+    </section>
+
+    <section>
+      <h2>Preguntas frecuentes</h2>
+      <div class="card"><strong>¿En qué formato está el ebook?</strong><p class="small">Disponible en Kindle. Si necesitas otro formato, descarga el extracto y contáctame.</p></div>
+      <div class="card"><strong>¿Incluye contenido explícito?</strong><p class="small">Sí — incluye violencia gráfica y lenguaje adulto. He seguido pautas para evitar descripciones ilegales o instructivas.</p></div>
+    </section>
+
+    <footer>
+      <p class="small">Aviso: algunos enlaces pueden ser afiliados. Declara la afiliación según la normativa aplicable.</p>
+      <p>Sígueme: <a href="GITHUB_LINK_AQUI">GitHub</a> · <a href="PINTEREST_LINK_AQUI">Pinterest</a></p>
+    </footer>
+  </div>
+
+  <!-- Modal / formulario simple que guarda email en localStorage y muestra enlace de descarga -->
+  <div id="modal" class="modal" role="dialog" aria-hidden="true">
+    <div class="modal-card">
+      <h3>Descarga el capítulo gratis</h3>
+      <p class="small">Introduce tu email y te enviaré el capítulo en PDF (simulado en esta plantilla).</p>
+      <form id="leadForm">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="tu@email.com" required>
+        <div style="margin-top:12px;display:flex;gap:8px;">
+          <button type="submit" class="btn btn-primary">Recibir capítulo</button>
+          <button type="button" id="closeModal" class="btn btn-ghost">Cerrar</button>
+        </div>
+        <p id="msg" class="small" style="margin-top:8px;display:none"></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('modal');
+    const freeBtn = document.getElementById('freeBtn');
+    const closeModal = document.getElementById('closeModal');
+    const leadForm = document.getElementById('leadForm');
+    const msg = document.getElementById('msg');
+
+    freeBtn.addEventListener('click', ()=>{ modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); });
+    closeModal.addEventListener('click', ()=>{ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); });
+
+    leadForm.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      if(!email) return;
+      // Guardado local para demostración. Sustituir por integración real.
+      const subs = JSON.parse(localStorage.getItem('subs')||'[]');
+      subs.push({email, date:new Date().toISOString()});
+      localStorage.setItem('subs', JSON.stringify(subs));
+      msg.style.display='block';
+      msg.textContent = '¡Gracias! En este ejemplo verás un enlace de descarga simulado.';
+      setTimeout(()=>{
+        msg.innerHTML = 'Descarga aquí: <a href="sample-chapter.pdf" target="_blank">Capítulo 1 (PDF)</a>';
+      },800);
+    });
+  </script>
 </body>
 </html>
