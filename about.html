@@ -52,12 +52,11 @@
     (function buildNav(){
       const navWrap = document.getElementById('mainNav');
       const pages = [
-        { file: 'index.html', label: 'Inicio' },
         { file: 'libros.html', label: 'Libros' },
         { file: 'reviews.html', label: 'Reseñas' },
         { file: 'about.html', label: 'Sobre mí' }
       ];
-      const current = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+      const current = (location.pathname.split('/').pop() || 'about.html').toLowerCase();
       const left = document.createElement('div'); left.innerHTML = '<strong>Mi Sitio</strong>';
       const right = document.createElement('nav');
       pages.forEach(p => { if (p.file === current) return; const a = document.createElement('a'); a.href = p.file; a.textContent = p.label; a.style.marginLeft = '12px'; right.appendChild(a); });
