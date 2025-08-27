@@ -1,0 +1,24 @@
+{
+  "books": [
+    {
+      "id": 1693000000001,
+      "title": "Perfecto — Reescritura",
+      "subtitle": "Capítulo 4 reescrito",
+      "description": "Relatos en voz femenina, directos y crudos. Prosa contundente y escenas que impactan.",
+      "cover": "assets/covers/perfecto.jpg",
+      "sample": "assets/samples/perfecto-sample.pdf",
+      "amazon": "https://www.amazon.example/book/perfecto",
+      "date": "2025-08-15"
+    },
+    {
+      "id": 1693000000002,
+      "title": "Pequeños apuntes de programación",
+      "subtitle": "Guía práctica",
+      "description": "Apuntes claros con ejemplos listos para copiar. Ideal para empezar en desarrollo web.",
+      "cover": "assets/covers/apuntes.jpg",
+      "sample": "assets/samples/apuntes-sample.pdf",
+      "amazon": "https://www.amazon.example/book/apuntes",
+      "date": "2025-07-10"
+    }
+  ]
+}
