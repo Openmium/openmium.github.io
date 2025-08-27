@@ -1,65 +1,130 @@
 {
+  "categories": [
+    {
+      "id": "informatica",
+      "label": "Informática",
+      "subs": ["Hardware", "Periféricos", "Placas de desarrollo", "Accesorios"]
+    },
+    {
+      "id": "electronica_diy",
+      "label": "Electrónica DIY",
+      "subs": ["Sensores", "Módulos y placas", "Herramientas de soldadura", "Displays"]
+    },
+    {
+      "id": "moviles_tablets",
+      "label": "Accesorios móviles / tablets",
+      "subs": ["Protectores", "Fundas", "Stylus", "Baterías y cargadores"]
+    },
+    {
+      "id": "juguetes_ocio",
+      "label": "Juguetes y ocio",
+      "subs": ["Juguetes de agua", "Consolas", "Juegos de mesa"]
+    },
+    {
+      "id": "papeleria_oficina",
+      "label": "Papelería y oficina",
+      "subs": ["Marcadores", "Borradores", "Organizadores"]
+    },
+    {
+      "id": "hogar_estilo",
+      "label": "Hogar y estilo de vida",
+      "subs": ["Accesorios", "Cuidado personal", "Organización"]
+    },
+    {
+      "id": "audio",
+      "label": "Audio",
+      "subs": ["Altavoces", "Auriculares", "Repuestos"]
+    }
+  ],
   "reviews": [
     {
       "id": 169300001001,
       "title": "Narrativa Contemporánea",
-      "date": "15-08-2025",
+      "date": "2025-08-15",
       "category": "libros",
       "sub": "Narrativa",
       "tags": ["ficción", "voz femenina", "gore"],
       "summary": "Reseña breve: contundente y sin concesiones.",
       "content": "Texto largo de la reseña... (opcional).",
       "rating": 4,
-      "price": "12,90€ (con cupón de -2€ aplicado)",
+      "price": "12,90€ (-2€ cupón aplicado)",
       "link": "https://ejemplo.com/libro-narrativa",
       "images": [
-        "https://ejemplo.com/imagenes/libro1.jpg",
-        "https://ejemplo.com/imagenes/libro1-contraportada.jpg"
+        "assets/reviews/narrativa-1.jpg",
+        "assets/reviews/narrativa-2.jpg",
+        "assets/reviews/narrativa-3.jpg"
       ]
     },
     {
       "id": 169300001002,
       "title": "Laptop Ultra X",
-      "date": "12-08-2025",
+      "date": "2025-08-12",
       "category": "informatica",
       "sub": "Hardware",
-      "tags": ["laptop","reviews","hardware"],
+      "tags": ["laptop", "reviews", "hardware"],
       "summary": "Laptop con buena relación calidad-precio.",
-      "content": "Revisión completa...",
+      "content": "Revisión completa: buenas prestaciones para productividad y gaming ligero.",
       "rating": 3,
       "price": "599,00€ (incluye cupón -50€)",
       "link": "https://ejemplo.com/laptop-ultra-x",
       "images": [
-        "https://ejemplo.com/imagenes/laptop1.jpg",
-        "https://ejemplo.com/imagenes/laptop1-puertos.jpg"
+        "assets/reviews/laptopx-1.jpg",
+        "assets/reviews/laptopx-2.jpg",
+        "assets/reviews/laptopx-3.jpg"
       ]
     },
     {
       "id": 169300001003,
       "title": "Grabador de Blu-Ray USB3.0",
-      "date": "27-08-2025",
+      "date": "2025-08-27",
       "category": "informatica",
       "sub": "Hardware",
-      "tags": ["laptop","burner","hardware", "blu-ray"],
-      "summary": "Lector/grabador de Blu-Ray para computadora insuperable calidad precio",
-      "content": "El producto llegó muy bien embalado, incluye el cable de alimentación, el cable USB 3.0 micro-B y un manual sencillo...",
+      "tags": ["burner", "blu-ray", "unidad óptica"],
+      "summary": "Lector/grabador de Blu-Ray: buena compatibilidad y precio correcto.",
+      "content": "El dispositivo se reconoce al instante; incluye cables y manual. Ruidoso en lectura pero funcional.",
       "rating": 4.5,
       "price": "34,57€",
       "link": "https://ejemplo.com/grabador-blu-ray",
       "images": [
-        "https://ejemplo.com/imagenes/blu-ray1.jpg",
-        "https://ejemplo.com/imagenes/blu-ray1-cables.jpg"
+        "assets/reviews/LectorBlueRay.jpg",
+        "assets/reviews/LectorBlueRay1.jpg",
+        "assets/reviews/LectorBlueRay2.jpg",
+        "assets/reviews/LectorBlueRay3.jpg"
+      ]
+    },
+    {
+      "id": 169300001004,
+      "title": "Pasta térmica 4g",
+      "date": "2025-06-01",
+      "category": "electronica_diy",
+      "sub": "Herramientas de soldadura",
+      "tags": ["pasta térmica", "cpu", "refrigeración"],
+      "summary": "Buena conductividad térmica para proyectos de reparación.",
+      "content": "Pequeños tubos de 2g/4g, aplicable en CPU y GPU; relación calidad/precio correcta.",
+      "rating": 4,
+      "price": "3,40€",
+      "link": "https://ejemplo.com/pasta-termica",
+      "images": [
+        "assets/reviews/pasta-1.jpg",
+        "assets/reviews/pasta-2.jpg"
+      ]
+    },
+    {
+      "id": 169300001005,
+      "title": "Placa de desarrollo ESP32-C3",
+      "date": "2025-07-20",
+      "category": "informatica",
+      "sub": "Placas de desarrollo",
+      "tags": ["esp32", "arduino", "iot"],
+      "summary": "Pequeña, barata y perfecta para prototipos IoT.",
+      "content": "Ideal para proyectos de bajo consumo; muchas librerías disponibles.",
+      "rating": 4.2,
+      "price": "1,59€",
+      "link": "https://ejemplo.com/esp32-c3",
+      "images": [
+        "assets/reviews/esp32-1.jpg",
+        "assets/reviews/esp32-2.jpg"
       ]
     }
-  ],
-  "categories": {
-    "informática": ["Hardware","Periféricos","Placas de desarrollo","Accesorios"],
-    "electrónica DIY": ["Sensores","Módulos y placas","Herramientas de soldadura","Pantallas y displays"],
-    "accesorios móviles/tablets": ["Protectores de pantalla","Fundas y estuches","Stylus y repuestos","Baterías y cargadores"],
-    "juguetes y ocio": ["Juegos de mesa","Consolas retro","Juguetes de agua"],
-    "papelería y oficina": ["Marcadores y recambios","Borradores magnéticos","Marcapáginas","Organizadores"],
-    "hogar y estilo de vida": ["Accesorios de cocina","Cintas y pegatinas","Joyas y bisutería"],
-    "audio": ["Altavoces","Auriculares","Repuestos"],
-    "libros": ["Narrativa","Ensayo","Educativos","Arte y fotografía"]
-  }
+  ]
 }
