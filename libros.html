@@ -11,6 +11,7 @@
   <header class="nav">
     <div class="wrap" id="mainNav"></div>
   </header>
+
   <script>
     (function buildNav(){
       const navWrap = document.getElementById('mainNav');
@@ -22,36 +23,29 @@
       const current = (location.pathname.split('/').pop() || 'libros.html').toLowerCase();
       const left = document.createElement('div'); left.innerHTML = '<strong>Mi Sitio</strong>';
       const right = document.createElement('nav');
-      pages.forEach(p => {
-        if (p.file === current) return;
-        const a = document.createElement('a'); a.href = p.file; a.textContent = p.label; a.style.marginLeft = '12px';
-        right.appendChild(a);
-      });
+      pages.forEach(p => { if (p.file === current) return; const a = document.createElement('a'); a.href = p.file; a.textContent = p.label; a.style.marginLeft = '12px'; right.appendChild(a); });
       navWrap.appendChild(left); navWrap.appendChild(right);
     })();
   </script>
 
   <main class="container">
-    <section class="hero card" id="heroStatic" aria-hidden="false">
+    <section class="hero card" aria-hidden="false">
       <div style="display:flex;gap:18px;align-items:center">
-        <div class="cover" id="heroCover"><img src="assets/covers/placeholder.jpg" alt="Portada destacada"></div>
         <div style="flex:1">
           <h1 id="siteTitle">Mis libros</h1>
-          <p class="note" id="siteIntro">Explora los títulos publicados. Haz click en una portada para ver la ficha completa y descargar un adelanto.</p>
+          <p class="note" id="siteIntro">Explora los títulos publicados. Haz click en una tarjeta para ver la ficha completa y descargar un adelanto.</p>
         </div>
       </div>
     </section>
 
     <section style="margin-top:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-      <input id="searchInput" type="text" placeholder="Buscar por título..." style="padding:8px;border-radius:8px;border:1px solid #e6eef8;flex:1;min-width:220px">
-      <input id="dateInput" type="date" style="padding:8px;border-radius:8px;border:1px solid #e6eef8">
+      <input id="searchInput" type="text" placeholder="Buscar por título..." aria-label="Buscar libros" style="padding:8px;border-radius:8px;border:1px solid #e6eef8;flex:1;min-width:220px">
+      <input id="dateInput" type="date" aria-label="Filtrar por fecha" style="padding:8px;border-radius:8px;border:1px solid #e6eef8">
       <button id="clearFilters" class="btn" style="background:#fff;border:1px solid #e6eef8">Limpiar</button>
     </section>
 
     <section id="booksSection" style="margin-top:16px">
-      <div id="booksGrid" class="books-grid" aria-live="polite">
-        <!-- Cards renderizadas desde data/books.json -->
-      </div>
+      <div id="booksGrid" class="books-grid" aria-live="polite"></div>
     </section>
 
     <footer class="footer" style="margin-top:22px">© 2025 [Tu Nombre]</footer>
@@ -97,7 +91,6 @@
   </div>
 
   <script>
-    // fetch estático de data/books.json y render
     const booksGrid = document.getElementById('booksGrid');
     let BOOKS = [];
 
@@ -114,6 +107,8 @@
       renderBooks(BOOKS);
     }
 
+    function escapeHtml(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
     function renderBooks(list){
       booksGrid.innerHTML = '';
       if(!list || list.length === 0){
@@ -125,21 +120,20 @@
         el.className = 'book-card';
         el.tabIndex = 0;
         el.innerHTML = `
-          <div class="book-thumb"><img src="${b.cover || 'assets/covers/placeholder.jpg'}" alt="${escapeHtml(b.title)}"></div>
+          <div class="book-thumb"><img src="${b.cover || 'assets/covers/placeholder.jpg'}" alt="Portada de ${escapeHtml(b.title)}"></div>
           <div class="book-info">
             <h3 class="book-title">${escapeHtml(b.title)}</h3>
             <p class="book-desc">${escapeHtml((b.description||'').slice(0,280))}</p>
           </div>
         `;
+        // tarjeta entera clickable (accesible)
         el.addEventListener('click', ()=> openBookModal(b));
-        el.addEventListener('keydown', (e)=>{ if(e.key==='Enter') openBookModal(b); });
+        el.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') openBookModal(b); });
         booksGrid.appendChild(el);
       });
     }
 
-    function escapeHtml(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
-
-    // modal ficha
+    // Modal ficha libro
     const bookModal = document.getElementById('bookModal');
     const bookModalContent = document.getElementById('bookModalContent');
     const closeBookModal = document.getElementById('closeBookModal');
@@ -169,7 +163,7 @@
     closeBookModal.addEventListener('click', ()=> { bookModal.classList.remove('open'); bookModal.setAttribute('aria-hidden','true'); });
     bookModal.addEventListener('click', (e)=> { if(e.target === bookModal){ bookModal.classList.remove('open'); bookModal.setAttribute('aria-hidden','true'); } });
 
-    // consent modal & Formspree
+    // Consent modal & Formspree submit
     const consentModal = document.getElementById('consentModal');
     const consentForm = document.getElementById('consentForm');
     const consentMsg = document.getElementById('consentMsg');
@@ -222,7 +216,7 @@
       }
     });
 
-    // filtros
+    // Filtros
     document.getElementById('searchInput').addEventListener('input', applyFilters);
     document.getElementById('dateInput').addEventListener('change', applyFilters);
     document.getElementById('clearFilters').addEventListener('click', ()=> { document.getElementById('searchInput').value=''; document.getElementById('dateInput').value=''; renderBooks(BOOKS); });
