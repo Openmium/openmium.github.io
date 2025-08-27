@@ -62,19 +62,25 @@
     const KEY_REV = 'data/reviews.json';
     let REVIEWS = [];
 
-    async function loadReviews(){
-      try {
-        const res = await fetch(KEY_REV, {cache: "no-store"});
-        if(!res.ok) throw new Error('No se pudo cargar data/reviews.json');
-        const json = await res.json();
-        REVIEWS = json.reviews || [];
-      } catch(err){
-        console.error(err);
-        REVIEWS = [];
-      }
-      populateCategoryFilters();
-      renderList(REVIEWS);
+   async function loadReviews(){
+  try {
+    // ruta relativa correcta
+    const res = await fetch('data/reviews.json', { cache: "no-store" });
+    if(!res.ok) throw new Error('No se pudo cargar data/reviews.json — status ' + res.status);
+    const json = await res.json();
+    REVIEWS = json.reviews || [];
+  } catch(err){
+    console.error('[loadReviews] Error cargando reviews.json:', err);
+    REVIEWS = [];
+    const container = document.getElementById('reviewsList');
+    if(container){
+      container.innerHTML = `<div class="card">Error cargando reseñas: revisa la consola (F12). (${escapeHtml(err.message || '')})</div>`;
     }
+  }
+  populateCategoryFilters();
+  renderList(REVIEWS);
+}
+
 
     function populateCategoryFilters(){
       const cats = Array.from(new Set(REVIEWS.map(r => r.category))).filter(Boolean);
