@@ -9,7 +9,12 @@
       "tags": ["ficción", "voz femenina", "gore"],
       "summary": "Reseña breve: contundente y sin concesiones.",
       "content": "Texto largo de la reseña... (opcional).",
-      "rating": 4
+      "rating": 4,
+      "images": [
+        "assets/reviews/narrativa-1.jpg",
+        "assets/reviews/narrativa-2.jpg",
+        "assets/reviews/narrativa-3.jpg"
+      ]
     },
     {
       "id": 169300001002,
@@ -17,21 +22,32 @@
       "date": "2025-08-12",
       "category": "informatica",
       "sub": "Hardware",
-      "tags": ["laptop","reviews","hardware"],
+      "tags": ["laptop", "reviews", "hardware"],
       "summary": "Laptop con buena relación calidad-precio.",
       "content": "Revisión completa...",
-      "rating": 3
+      "rating": 3,
+      "images": [
+        "assets/reviews/laptopx-1.jpg",
+        "assets/reviews/laptopx-2.jpg",
+        "assets/reviews/laptopx-3.jpg"
+      ]
     },
-     {
+    {
       "id": 169300001003,
       "title": "Grabador de Blu-Ray USB3.0",
       "date": "2025-08-27",
       "category": "informatica",
       "sub": "Hardware",
-      "tags": ["laptop","burner","hardware", "blu-ray"],
+      "tags": ["laptop", "burner", "hardware", "blu-ray"],
       "summary": "Lector/grabador de Blu-Ray para computadora insuperable calidad precio",
       "content": "El producto llegó muy bien embalado, incluye el cable de alimentación, el cable USB 3.0 micro-B y un manual sencillo. El PC lo reconoció al instante y con ImgBurn confirmé que se trata de una grabadora Blu-ray (modelo MATSHITA UJ240AS), compatible con BD-R y BD-RE, además de leer/grabar CDs y DVDs. Aún no lo he probado con discos Blu-ray vírgenes, pero la detección y compatibilidad son correctas. Hace bastante ruido durante la lectura, lo cual es normal considerando que hay piezas móviles en su interior. No creo que el exterior sea de aluminio, aunque parece bastante sólido. La bahía en la que se desplaza el lector tiene un poco más de juego del que me gustaría, pero en general funciona correctamente.",
-      "rating": 4.5
+      "rating": 4.5,
+      "images": [
+        "assets/reviews/blu-ray-1.jpg",
+        "assets/reviews/blu-ray-2.jpg",
+        "assets/reviews/blu-ray-3.jpg",
+        "assets/reviews/blu-ray-4.jpg"
+      ]
     }
   ]
 }
