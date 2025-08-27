@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Libros — Mi Sitio</title>
-  <meta name="description" content="Página de Libros — muestra todos tus títulos y permite añadir nuevos (localmente)." />
+  <meta name="description" content="Landing / Libros — muestra tus títulos, añade nuevos y descarga capítulo gratis." />
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,9 +13,22 @@
   </header>
 
   <main class="container">
-    <h1>Libros</h1>
+    <!-- HERO: muestra el primer libro como destacado; si no hay, plantilla por defecto -->
+    <section id="hero" class="hero">
+      <div class="cover card" id="heroCover"><img src="cover.svg" alt="Portada destacada"></div>
+      <div style="flex:1">
+        <h1 id="heroTitle">Mi Ebook — Subtítulo potente</h1>
+        <p id="heroSubtitle" class="note">Relatos intensos y directos. Extra gratuito, reseñas y proyectos relacionados.</p>
+        <div style="margin-top:12px;display:flex;gap:10px">
+          <a id="heroBuy" class="btn btn-primary" href="AMAZON_LINK_AQUI" target="_blank" rel="noopener">Comprar en Amazon</a>
+          <button id="openModal" class="btn btn-ghost">Leer capítulo gratis</button>
+        </div>
+        <p class="note" style="margin-top:10px">Enlaces: <a href="GITHUB_LINK_AQUI" target="_blank">GitHub</a> · <a href="PINTEREST_LINK_AQUI" target="_blank">Pinterest</a></p>
+      </div>
+    </section>
 
-    <div class="card" style="margin-bottom:12px">
+    <!-- Añadir libro (localStorage) -->
+    <div class="card" style="margin-top:18px">
       <h3>Añadir libro</h3>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
         <input id="bookTitle" placeholder="Título" style="flex:2;padding:8px;border-radius:8px;border:1px solid #e6eef8">
@@ -23,46 +36,117 @@
         <input id="bookCover" placeholder="URL imagen (opcional)" style="flex:1;padding:8px;border-radius:8px;border:1px solid #e6eef8">
         <button id="addBookBtn" class="btn btn-primary">Añadir</button>
       </div>
-      <p class="note" style="margin-top:8px">Los libros se guardan en tu navegador (localStorage). Para publicar en conjunto a tu web, exporta o sube los metadatos al repo.</p>
+      <p class="note" style="margin-top:8px">Los libros se guardan en tu navegador (localStorage). Para publicar oficialmente sube los metadatos al repo.</p>
     </div>
 
-    <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
+    <!-- búsqueda y controles -->
+    <div style="display:flex;gap:12px;align-items:center;margin-top:12px;margin-bottom:12px">
       <input id="searchBook" placeholder="Buscar título..." style="padding:8px;border-radius:8px;border:1px solid #e6eef8;flex:1">
       <button id="clearBooks" class="btn" style="background:#fff;color:var(--text);border:1px solid #e6eef8">Limpiar</button>
     </div>
 
+    <!-- Grid de libros -->
     <div id="booksGrid" class="grid"></div>
 
+    <!-- detalle libro (navegable) -->
     <div id="bookDetail" class="card hidden" style="margin-top:12px"></div>
 
     <footer class="footer">© 2025 [Tu Nombre]</footer>
   </main>
 
+  <!-- Modal: formulario + política resumida (Formspree) -->
+  <div id="modal" class="modal" role="dialog" aria-hidden="true">
+    <div class="modal-card" role="document">
+      <button class="modal-close" id="modalClose" aria-label="Cerrar">✕</button>
+      <h3>Descarga el capítulo 1 (extracto)</h3>
+      <p class="note">Introduce tu email para recibir el extracto.</p>
+
+      <form id="leadForm" action="https://formspree.io/f/movnqwgr" method="POST">
+        <label for="emailInput">Email</label>
+        <input id="emailInput" name="email" type="email" required placeholder="tu@correo.com">
+        <div style="display:flex;gap:8px;align-items:flex-start;margin-top:10px">
+          <input id="consent" name="consent" type="checkbox" required style="margin-top:6px">
+          <div>
+            <label for="consent"><strong>Acepto recibir correos relacionados con este ebook</strong></label>
+            <p class="note">Puedes darte de baja en cualquier momento.</p>
+          </div>
+        </div>
+
+        <input type="hidden" name="_subject" value="Nuevo suscriptor - Ebook">
+        <div style="margin-top:12px">
+          <button type="submit" class="btn btn-primary">Recibir capítulo</button>
+        </div>
+        <div id="formMsg" class="note" aria-live="polite" style="margin-top:10px"></div>
+      </form>
+
+      <hr style="margin:14px 0">
+      <div>
+        <h4>Política de privacidad (resumen)</h4>
+        <p class="note">Recopilamos el email solo para enviar el extracto y comunicaciones relacionadas. Base legal: consentimiento.</p>
+      </div>
+    </div>
+  </div>
+
   <script>
+    /* --- NAV: solo muestra las otras páginas (libros = esta página) --- */
     (function buildNav(){
       const navWrap = document.getElementById('mainNav');
       const pages = [
-        { file: 'index.html', label: 'Inicio' },
         { file: 'libros.html', label: 'Libros' },
         { file: 'reviews.html', label: 'Reseñas' },
         { file: 'about.html', label: 'Sobre mí' }
       ];
-      const current = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+      const current = (location.pathname.split('/').pop() || 'libros.html').toLowerCase();
       const left = document.createElement('div'); left.innerHTML = '<strong>Mi Sitio</strong>';
       const right = document.createElement('nav');
       pages.forEach(p => { if (p.file === current) return; const a = document.createElement('a'); a.href = p.file; a.textContent = p.label; a.style.marginLeft = '12px'; right.appendChild(a); });
       navWrap.appendChild(left); navWrap.appendChild(right);
     })();
 
+    /* --- Modal (Formspree) --- */
+    const modal = document.getElementById('modal');
+    const openModalBtn = document.getElementById('openModal');
+    const modalCloseBtn = document.getElementById('modalClose');
+    openModalBtn && openModalBtn.addEventListener('click', ()=> { modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); });
+    modalCloseBtn && modalCloseBtn.addEventListener('click', ()=> { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); });
+    modal && modal.addEventListener('click', e => { if (e.target === modal) { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); } });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); } });
+
+    const form = document.getElementById('leadForm');
+    const formMsg = document.getElementById('formMsg');
+    form && form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      formMsg.textContent = '';
+      const data = new FormData(form);
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+        if (res.ok) {
+          formMsg.style.color = 'green';
+          formMsg.textContent = '¡Gracias! Revisa tu correo.';
+          form.reset();
+        } else {
+          const body = await res.json().catch(()=>null);
+          formMsg.style.color = 'crimson';
+          formMsg.textContent = body?.error || 'Error al enviar.';
+        }
+      } catch (err) {
+        formMsg.style.color = 'crimson';
+        formMsg.textContent = 'Error de red.';
+      }
+    });
+
+    /* --- Libros: localStorage CRUD + hero actualizado --- */
     const KEY = 'mis_libros_v1';
     const DEFAULT = [ {id:1,title:'Perfecto — Reescritura',subtitle:'Capítulo 4 reescrito',cover:'cover.svg',amazon:'AMAZON_LINK_AQUI'} ];
     function load(){ try{ const raw = localStorage.getItem(KEY); return raw?JSON.parse(raw):DEFAULT.slice(); }catch(e){ return DEFAULT.slice(); } }
     function save(list){ localStorage.setItem(KEY, JSON.stringify(list)); }
 
+    function escapeHtml(s){ if(!s) return ''; return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
     function renderBooks(list){
       const grid = document.getElementById('booksGrid');
       grid.innerHTML = '';
-      if(list.length===0){ grid.innerHTML = '<div class="card">No hay libros.</div>'; return; }
+      if(list.length===0){ grid.innerHTML = '<div class=\"card\">No hay libros.</div>'; renderHero(null); return; }
       list.forEach((b, idx) => {
         const div = document.createElement('div'); div.className = 'card';
         div.innerHTML = `
@@ -84,9 +168,27 @@
       // handlers
       grid.querySelectorAll('.viewBook').forEach(b => b.addEventListener('click', e => showDetail(Number(e.currentTarget.dataset.idx))));
       grid.querySelectorAll('button[data-del]').forEach(b => b.addEventListener('click', e => { if (confirm('Eliminar libro?')) removeBook(Number(e.currentTarget.dataset.del)); }));
+      // update hero with first book
+      renderHero(list[0]);
     }
 
-    function escapeHtml(s){ if(!s) return ''; return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+    function renderHero(book){
+      const heroTitle = document.getElementById('heroTitle');
+      const heroSubtitle = document.getElementById('heroSubtitle');
+      const heroCover = document.getElementById('heroCover').querySelector('img');
+      const heroBuy = document.getElementById('heroBuy');
+      if(!book){
+        heroTitle.textContent = 'Mi Ebook — Subtítulo potente';
+        heroSubtitle.textContent = 'Relatos intensos y directos. Extra gratuito, reseñas y proyectos relacionados.';
+        heroCover.src = 'cover.svg';
+        heroBuy.href = 'AMAZON_LINK_AQUI';
+        return;
+      }
+      heroTitle.textContent = book.title;
+      heroSubtitle.textContent = book.subtitle || '';
+      heroCover.src = book.cover || 'cover.svg';
+      heroBuy.href = book.amazon || 'AMAZON_LINK_AQUI';
+    }
 
     function addBook(){
       const title = document.getElementById('bookTitle').value.trim();
@@ -96,8 +198,7 @@
       const list = load();
       const id = Date.now();
       list.unshift({ id, title, subtitle, cover, amazon: 'AMAZON_LINK_AQUI' });
-      save(list);
-      renderBooks(list);
+      save(list); renderBooks(list);
       document.getElementById('bookTitle').value = ''; document.getElementById('bookSubtitle').value = ''; document.getElementById('bookCover').value = '';
     }
 
