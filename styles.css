@@ -1,5 +1,13 @@
 :root{
-  --text:#111; --muted:#666; --bg:#fff; --card:#fff; --border:#e7eef6; --accent:#0b74de; --radius:10px; --shadow:0 8px 30px rgba(2,6,23,0.06); --max-width:1200px;
+  --text:#111;
+  --muted:#666;
+  --bg:#fff;
+  --card:#fff;
+  --border:#e7eef6;
+  --accent:#0b74de;
+  --radius:10px;
+  --shadow:0 8px 30px rgba(2,6,23,0.06);
+  --max-width:1200px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
@@ -13,10 +21,10 @@ a{color:inherit;text-decoration:none}
 .cover{width:140px;height:210px;border-radius:8px;overflow:hidden;background:#eee;flex-shrink:0}
 .cover img{width:100%;height:100%;object-fit:cover}
 
-/* Input */
-input[type="text"], input[type="date"], select{padding:8px;border-radius:8px;border:1px solid var(--border);background:#fff}
+/* Inputs */
+input[type="text"], input[type="date"], select, input[type="email"]{padding:8px;border-radius:8px;border:1px solid var(--border);background:#fff}
 
-/* Books grid */
+/* Books grid (estilo catálogo) */
 .books-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px;margin-top:10px}
 .book-card{background:#fff;border-radius:8px;overflow:hidden;cursor:pointer;border:1px solid var(--border);transition:transform .18s ease,box-shadow .18s ease;display:flex;flex-direction:column;align-items:stretch;height:100%}
 .book-card:focus{outline:3px solid rgba(11,116,222,0.14)}
@@ -26,6 +34,10 @@ input[type="text"], input[type="date"], select{padding:8px;border-radius:8px;bor
 .book-info{padding:10px 12px;display:flex;flex-direction:column;gap:8px;flex:1}
 .book-title{font-size:15px;margin:0;line-height:1.2;max-height:2.4em;overflow:hidden}
 .book-desc{font-size:13px;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis}
+
+/* Reviews list */
+.list .card, #reviewsList .card{margin-bottom:12px}
+.review-card{cursor:pointer}
 
 /* Modal */
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;padding:18px;z-index:120}
@@ -38,14 +50,8 @@ input[type="text"], input[type="date"], select{padding:8px;border-radius:8px;bor
 .btn-primary{background:var(--accent);color:#fff}
 .btn-ghost{background:transparent;border:1px solid #e6eef8;color:var(--text)}
 
-/* Reviews list */
-.list .card{margin-bottom:12px}
-
-/* Footer */
-.footer{text-align:center;color:var(--muted);margin-top:22px;padding:12px 0;font-size:13px}
-
-/* Responsive */
-@media(max-width:860px){
-  .cover{width:120px;height:180px}
-  .book-thumb{padding-bottom:140%}
-}
+/* Calendar / layout (used in previous pages) */
+.layout{display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start}
+@media(max-width:920px){.layout{grid-template-columns:1fr}.hero{flex-direction:column;align-items:flex-start}.cover{width:160px;height:220px}}
+.footer{text-align:center;color:var(--muted);margin-top:22px;font-size:13px;padding:12px 0}
+.hidden{display:none !important}
