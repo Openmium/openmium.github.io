@@ -1,164 +1,223 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Reseñas — Mi Sitio</title>
-<meta name="description" content="Reseñas de productos, libros y más. Filtrado por categorías y calendario.">
-<style>
-  :root{
-    --bg:#f7f9fc;
-    --accent:#0b74de;
-    --muted:#555;
-    --salud:#fcd5ce;
-    --informatica:#cdeac0;
-    --libros:#c0d6e4;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:Inter,system-ui,Arial;background:var(--bg);color:#111;line-height:1.5}
-  .nav{background:#fff;border-bottom:1px solid #eee;padding:12px 18px;position:sticky;top:0;z-index:80}
-  .nav a{margin-left:14px;text-decoration:none;color:#333;font-weight:600}
-  .wrap{max-width:1100px;margin:18px auto;padding:18px}
-  h1{color:var(--accent);margin-bottom:14px}
-  .controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
-  select,input[type=text]{padding:8px;border-radius:8px;border:1px solid #ddd}
-  button.btn{padding:8px 10px;border-radius:8px;border:none;background:var(--accent);color:#fff;cursor:pointer}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
-  .card{padding:12px;border-radius:10px;background:#fff;border:1px solid #eef2f7}
-  .card h3{margin-bottom:6px}
-  .meta{font-size:13px;color:var(--muted)}
-  .calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px}
-  .day{padding:10px;border-radius:6px;text-align:center;background:#fff;border:1px solid #eee}
-  .day.salud{background:var(--salud)}
-  .day.informatica{background:var(--informatica)}
-  .day.libros{background:var(--libros)}
-  footer{text-align:center;color:var(--muted);margin-top:18px;padding:12px;font-size:13px}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Reseñas — Mi Sitio</title>
+  <meta name="description" content="Reseñas de productos, libros y más. Filtrado por categorías y calendario.">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header class="nav">
-  <div class="wrap" style="display:flex;justify-content:space-between;align-items:center">
-    <div><strong>Mi Sitio</strong></div>
-    <nav>
-      <a href="index.html">Inicio</a>
-      <a href="libros.html" style="margin-left:12px">Libros</a>
-      <a href="about.html" style="margin-left:12px">Sobre mí</a>
-    </nav>
+  <header class="nav">
+    <div class="wrap">
+      <div><strong>Mi Sitio</strong></div>
+      <nav>
+        <a href="index.html">Inicio</a>
+        <a href="libros.html" style="margin-left:12px">Libros</a>
+        <a href="about.html" style="margin-left:12px">Sobre mí</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Reseñas</h1>
+
+    <div class="controls" style="margin-bottom:12px">
+      <input id="searchBox" type="text" placeholder="Buscar por título o producto..." style="padding:8px;border-radius:8px;border:1px solid #e6eef8;width:320px">
+      <select id="categorySelect" style="padding:8px;border-radius:8px;border:1px solid #e6eef8">
+        <option value="all">Todas las categorías</option>
+        <option value="salud">Salud</option>
+        <option value="informatica">Informática</option>
+        <option value="libros">Libros</option>
+      </select>
+
+      <select id="subSelect" style="padding:8px;border-radius:8px;border:1px solid #e6eef8">
+        <option value="all">Todas las subcategorías</option>
+      </select>
+
+      <input id="dateFilter" type="date" style="padding:8px;border-radius:8px;border:1px solid #e6eef8">
+      <button id="clearFilters" class="btn" style="background:#fff;color:var(--text);border:1px solid #e6eef8;margin-left:6px">Limpiar</button>
+    </div>
+
+    <div class="layout">
+      <div class="list" id="list">
+        <!-- reseñas -->
+      </div>
+
+      <aside>
+        <div class="calendar">
+          <strong>Calendario</strong>
+          <div style="display:flex;gap:8px;align-items:center;margin-top:10px">
+            <button id="prevMonth" class="btn" style="background:#fff;color:var(--text);border:1px solid #e6eef8;padding:6px 10px">‹</button>
+            <div id="monthLabel" style="flex:1;text-align:center;font-weight:600"></div>
+            <button id="nextMonth" class="btn" style="background:#fff;color:var(--text);border:1px solid #e6eef8;padding:6px 10px">›</button>
+          </div>
+
+          <div class="cal-grid" id="calGrid" style="margin-top:10px">
+            <!-- dias -->
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="footer">© 2025 [Tu Nombre]</footer>
+  </main>
+
+  <!-- modal detalle -->
+  <div id="detailModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:18px;z-index:120">
+    <div style="background:#fff;padding:18px;border-radius:12px;max-width:720px;width:100%;position:relative;max-height:90vh;overflow:auto">
+      <button id="closeDetail" style="position:absolute;right:12px;top:12px;border:none;background:#f2f4f7;border-radius:8px;padding:6px;cursor:pointer">✕</button>
+      <div id="detailContent"></div>
+    </div>
   </div>
-</header>
 
-<main class="wrap">
-  <h1>Reseñas</h1>
+  <script>
+    // Datos de ejemplo
+    const CATALOG = [
+      { id: 1, date: '2025-08-10', category: 'salud', sub: 'Salud mental', title: 'Mindfulness Diario', summary: 'Guía sobre meditación y reducción de estrés.' },
+      { id: 2, date: '2025-08-12', category: 'informatica', sub: 'Hardware', title: 'Laptop Ultra X', summary: 'Opinión sobre la nueva laptop de gama media-alta.' },
+      { id: 3, date: '2025-08-15', category: 'libros', sub: 'Narrativa', title: 'Narrativa Contemporánea', summary: 'Reseña de libro con estilo intenso y directo.' },
+      { id: 4, date: '2025-08-20', category: 'salud', sub: 'Nutrición', title: 'Vitaminas y Suplementos', summary: 'Revisión sobre suplementos y alimentación.' },
+      { id: 5, date: '2025-08-22', category: 'informatica', sub: 'Software', title: 'Curso JavaScript', summary: 'Opinión sobre curso online de JS.' },
+      { id: 6, date: '2025-08-22', category: 'libros', sub: 'Ensayo', title: 'Ensayo urbano', summary: 'Reflexiones sobre ciudad y memoria.' }
+    ];
 
-  <div class="controls">
-    <input type="text" id="searchInput" placeholder="Buscar por producto...">
-    <select id="categorySelect">
-      <option value="">Todas las categorías</option>
-      <option value="salud">Salud</option>
-      <option value="informatica">Informática</option>
-      <option value="libros">Libros</option>
-    </select>
-    <select id="subcatSelect">
-      <option value="">Todas las subcategorías</option>
-    </select>
-  </div>
+    const SUBCATS = {
+      salud: ['Salud mental','Nutrición','Fitness'],
+      informatica: ['Software','Hardware','Web'],
+      libros: ['Narrativa','Ensayo','Técnico']
+    };
 
-  <section id="reviewsList" class="grid">
-    <!-- Reseñas dinámicas -->
-  </section>
+    // DOM
+    const categorySelect = document.getElementById('categorySelect');
+    const subSelect = document.getElementById('subSelect');
+    const searchBox = document.getElementById('searchBox') || document.getElementById('searchBox'); // fallback
+    const dateFilter = document.getElementById('dateFilter');
+    const clearBtn = document.getElementById('clearFilters');
+    const listEl = document.getElementById('list');
+    const calGrid = document.getElementById('calGrid');
+    const monthLabel = document.getElementById('monthLabel');
+    const prevMonth = document.getElementById('prevMonth');
+    const nextMonth = document.getElementById('nextMonth');
 
-  <h2 style="margin-top:18px">Calendario de publicaciones</h2>
-  <div id="calendar" class="calendar">
-    <!-- Dias coloreados -->
-  </div>
+    // calendar state
+    let calDate = new Date(); calDate.setDate(1);
 
-  <footer>
-    © 2025 [Tu Nombre] — Resumen de reseñas y calendario.
-  </footer>
-</main>
+    // helper
+    function pad(n){ return String(n).padStart(2,'0'); }
 
-<script>
-  const reviews = [
-    {name:'Mindfulness Diario',category:'salud',sub:'Salud mental',date:'2025-08-10',desc:'Guía sobre meditación y reducción de estrés.'},
-    {name:'Laptop Ultra X',category:'informatica',sub:'Hardware',date:'2025-08-12',desc:'Opinión sobre la nueva laptop de gama media-alta.'},
-    {name:'Narrativa Contemporánea',category:'libros',sub:'Narrativa',date:'2025-08-15',desc:'Reseña de libro con estilo intenso y directo.'},
-    {name:'Vitaminas y Suplementos',category:'salud',sub:'Nutrición',date:'2025-08-20',desc:'Revisión sobre suplementos y alimentación.'},
-    {name:'Curso JavaScript',category:'informatica',sub:'Software',date:'2025-08-22',desc:'Opinión sobre curso online de JS.'}
-  ];
-
-  const subcats = {
-    salud:['Salud mental','Nutrición','Fitness'],
-    informatica:['Software','Hardware','Web'],
-    libros:['Narrativa','Ensayo','Técnico']
-  };
-
-  const categorySelect = document.getElementById('categorySelect');
-  const subcatSelect = document.getElementById('subcatSelect');
-  const searchInput = document.getElementById('searchInput');
-  const reviewsList = document.getElementById('reviewsList');
-
-  function renderReviews(){
-    const cat = categorySelect.value;
-    const sub = subcatSelect.value;
-    const query = searchInput.value.toLowerCase();
-    reviewsList.innerHTML = '';
-    const filtered = reviews.filter(r=>{
-      const matchCat = !cat || r.category===cat;
-      const matchSub = !sub || r.sub===sub;
-      const matchQuery = r.name.toLowerCase().includes(query);
-      return matchCat && matchSub && matchQuery;
-    });
-    if(filtered.length===0){
-      reviewsList.innerHTML='<div class="card meta">No hay reseñas para los filtros seleccionados.</div>';
-      return;
-    }
-    filtered.forEach(r=>{
-      const div = document.createElement('div');
-      div.className='card';
-      div.innerHTML=`<h3>${r.name}</h3><div class="meta">${r.category} › ${r.sub} — ${r.date}</div><p>${r.desc}</p>`;
-      reviewsList.appendChild(div);
-    });
-  }
-
-  categorySelect.addEventListener('change', ()=>{
-    const cat = categorySelect.value;
-    subcatSelect.innerHTML='<option value="">Todas las subcategorías</option>';
-    if(cat && subcats[cat]){
-      subcats[cat].forEach(s=>{
-        const opt = document.createElement('option'); opt.value=s; opt.textContent=s;
-        subcatSelect.appendChild(opt);
-      });
-    }
-    renderReviews();
-    renderCalendar();
-  });
-  subcatSelect.addEventListener('change', renderReviews);
-  searchInput.addEventListener('input', renderReviews);
-
-  // calendario
-  const calendarEl = document.getElementById('calendar');
-  function renderCalendar(){
-    calendarEl.innerHTML='';
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
-    const daysInMonth = new Date(year,month+1,0).getDate();
-    for(let d=1; d<=daysInMonth; d++){
-      const dayStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-      const dayDiv = document.createElement('div'); dayDiv.className='day';
-      const dayReviews = reviews.filter(r=>r.date===dayStr);
-      if(dayReviews.length>0){
-        const cat = dayReviews[0].category;
-        dayDiv.classList.add(cat);
-        dayDiv.title=dayReviews.map(r=>r.name).join(', ');
+    function renderList(items){
+      listEl.innerHTML = '';
+      if(!items.length){
+        listEl.innerHTML = '<div class="card">No hay reseñas para los filtros seleccionados.</div>';
+        return;
       }
-      dayDiv.textContent=d;
-      calendarEl.appendChild(dayDiv);
+      items.forEach(r => {
+        const div = document.createElement('div'); div.className = 'card';
+        div.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div style="flex:1">
+            <div class="meta">${r.date} · ${r.category} › ${r.sub}</div>
+            <h3>${r.title}</h3>
+            <p class="meta">${r.summary}</p>
+          </div>
+          <div style="margin-left:8px"><button class="btn" data-id="${r.id}" style="background:#fff;color:var(--text);border:1px solid #e6eef8">Ver</button></div>
+        </div>`;
+        listEl.appendChild(div);
+      });
+      // attach view handlers
+      listEl.querySelectorAll('button[data-id]').forEach(b => b.addEventListener('click', e => {
+        const id = Number(e.currentTarget.dataset.id);
+        openDetail(id);
+      }));
     }
-  }
 
-  renderReviews();
-  renderCalendar();
-</script>
+    function applyFilters(){
+      const cat = categorySelect.value;
+      const sub = subSelect.value;
+      const q = (document.getElementById('searchBox')?.value || '').toLowerCase().trim();
+      const date = dateFilter.value;
+      let filtered = CATALOG.slice();
+      if(cat && cat !== 'all') filtered = filtered.filter(x => x.category === cat);
+      if(sub && sub !== 'all') filtered = filtered.filter(x => x.sub === sub);
+      if(q) filtered = filtered.filter(x => (x.title + ' ' + x.summary + ' ' + x.sub).toLowerCase().includes(q));
+      if(date) filtered = filtered.filter(x => x.date === date);
+      renderList(filtered);
+      renderCalendar(calDate, filtered);
+    }
+
+    // calendar render
+    function renderCalendar(target, highlightList = null){
+      calGrid.innerHTML = '';
+      const headers = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+      headers.forEach(h => { const el = document.createElement('div'); el.className = 'cal-head'; el.textContent = h; calGrid.appendChild(el); });
+
+      const start = new Date(target.getFullYear(), target.getMonth(), 1);
+      const end = new Date(target.getFullYear(), target.getMonth()+1, 0);
+      const firstWeekday = (start.getDay() + 6) % 7;
+      for(let i=0;i<firstWeekday;i++){ const blank = document.createElement('div'); blank.className = 'cal-cell'; blank.style.background='transparent'; blank.style.border='none'; calGrid.appendChild(blank); }
+      for(let d=1; d<=end.getDate(); d++){
+        const iso = `${target.getFullYear()}-${pad(target.getMonth()+1)}-${pad(d)}`;
+        const cell = document.createElement('div'); cell.className = 'cal-cell'; cell.dataset.iso = iso;
+        cell.innerHTML = `<div style="font-weight:600">${d}</div>`;
+        const dayItems = CATALOG.filter(x => x.date === iso);
+        const source = highlightList ? highlightList : dayItems;
+        const titles = source.filter(x=>x.date===iso).map(x=>x.title);
+        if(titles.length){
+          const mini = document.createElement('div'); mini.className = 'mini-dots';
+          // show up to 3 neutral dots (one per item)
+          titles.slice(0,3).forEach(_ => {
+            const dot = document.createElement('span'); dot.className = 'mini-dot'; mini.appendChild(dot);
+          });
+          cell.appendChild(mini);
+          cell.title = titles.join(' — ');
+        }
+        cell.addEventListener('click', ()=> { dateFilter.value = iso; applyFilters(); });
+        calGrid.appendChild(cell);
+      }
+      monthLabel.textContent = start.toLocaleString('default',{month:'long', year:'numeric'});
+    }
+
+    // detail modal
+    const detailModal = document.getElementById('detailModal');
+    const detailContent = document.getElementById('detailContent');
+    function openDetail(id){
+      const item = CATALOG.find(x => x.id === id);
+      if(!item) return;
+      detailContent.innerHTML = `<div class="meta">${item.date} · ${item.category} / ${item.sub}</div>
+        <h2 style="margin:8px 0">${item.title}</h2>
+        <p class="meta">${item.summary}</p>
+        <p class="note">Aquí puedes añadir la reseña completa y enlaces.</p>`;
+      detailModal.style.display = 'flex';
+    }
+    document.getElementById('closeDetail').addEventListener('click', ()=> { detailModal.style.display = 'none'; });
+
+    // events and init
+    categorySelect.addEventListener('change', ()=> {
+      const c = categorySelect.value;
+      subSelect.innerHTML = '<option value="all">Todas las subcategorías</option>';
+      if(c && c !== 'all' && SUBCATS[c]) SUBCATS[c].forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; subSelect.appendChild(o); });
+      dateFilter.value = '';
+      applyFilters();
+    });
+    subSelect.addEventListener('change', ()=> { dateFilter.value=''; applyFilters(); });
+    document.getElementById('searchBox')?.addEventListener('input', ()=> { dateFilter.value=''; applyFilters(); });
+    dateFilter.addEventListener('change', applyFilters);
+    clearBtn.addEventListener('click', ()=> {
+      categorySelect.value = 'all';
+      subSelect.innerHTML = '<option value="all">Todas las subcategorías</option>';
+      document.getElementById('searchBox').value = '';
+      dateFilter.value = '';
+      renderList(CATALOG);
+      renderCalendar(calDate);
+    });
+    prevMonth.addEventListener('click', ()=> { calDate = new Date(calDate.getFullYear(), calDate.getMonth()-1,1); renderCalendar(calDate); });
+    nextMonth.addEventListener('click', ()=> { calDate = new Date(calDate.getFullYear(), calDate.getMonth()+1,1); renderCalendar(calDate); });
+
+    // init
+    (function init(){
+      renderList(CATALOG);
+      renderCalendar(calDate);
+    })();
+  </script>
 </body>
 </html>
