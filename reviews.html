@@ -4,193 +4,165 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Reseñas — Mi Sitio</title>
-  <meta name="description" content="Reseñas de productos, libros y más. Filtrado y calendario.">
+  <meta name="description" content="Reseñas de productos, libros y más. Filtrado por categoría, sub y fecha.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="nav">
     <div class="wrap" id="mainNav"></div>
   </header>
+  <script>
+    (function buildNav(){
+      const navWrap = document.getElementById('mainNav');
+      const pages = [
+        { file: 'index.html', label: 'Sobre mí' },
+        { file: 'libros.html', label: 'Libros' },
+        { file: 'reviews.html', label: 'Reseñas' }
+      ];
+      const current = (location.pathname.split('/').pop() || 'reviews.html').toLowerCase();
+      const left = document.createElement('div'); left.innerHTML = '<strong>Mi Sitio</strong>';
+      const right = document.createElement('nav');
+      pages.forEach(p => {
+        if (p.file === current) return;
+        const a = document.createElement('a'); a.href = p.file; a.textContent = p.label; a.style.marginLeft = '12px';
+        right.appendChild(a);
+      });
+      navWrap.appendChild(left); navWrap.appendChild(right);
+    })();
+  </script>
 
   <main class="container">
     <h1>Reseñas</h1>
 
-    <div class="card" style="margin-bottom:12px">
-      <h3>Añadir reseña</h3>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
-        <input id="rvTitle" placeholder="Título / producto" style="flex:2;padding:8px;border-radius:8px;border:1px solid #e6eef8">
-        <select id="rvCategory" style="padding:8px;border-radius:8px;border:1px solid #e6eef8">
-          <option value="salud">Salud</option>
-          <option value="informatica">Informática</option>
-          <option value="libros">Libros</option>
+    <section class="card" style="margin-bottom:12px">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <input id="searchBox" placeholder="Buscar por título, tag..." style="flex:1;padding:8px;border-radius:8px;border:1px solid #e6eef8">
+        <select id="categorySelect" style="padding:8px;border-radius:8px;border:1px solid #e6eef8">
+          <option value="all">Todas las categorías</option>
         </select>
-        <input id="rvSub" placeholder="Subcategoría" style="flex:1;padding:8px;border-radius:8px;border:1px solid #e6eef8">
-        <input id="rvDate" type="date" style="padding:8px;border-radius:8px;border:1px solid #e6eef8">
-        <button id="addReviewBtn" class="btn btn-primary">Añadir</button>
+        <select id="subSelect" style="padding:8px;border-radius:8px;border:1px solid #e6eef8">
+          <option value="all">Todas las subcategorías</option>
+        </select>
+        <input id="dateFilter" type="date" style="padding:8px;border-radius:8px;border:1px solid #e6eef8">
+        <button id="clearFilters" class="btn" style="background:#fff;border:1px solid #e6eef8">Limpiar</button>
       </div>
-      <p class="note" style="margin-top:8px">Las reseñas se guardan en tu navegador (localStorage). Para persistencia remota integra un backend o GitHub workflow.</p>
-    </div>
+    </section>
 
-    <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
-      <input id="searchBox" placeholder="Buscar por título..." style="padding:8px;border-radius:8px;border:1px solid #e6eef8;flex:1">
-      <select id="categoryFilter" style="padding:8px;border-radius:8px;border:1px solid #e6eef8">
-        <option value="all">Todas las categorías</option>
-        <option value="salud">Salud</option>
-        <option value="informatica">Informática</option>
-        <option value="libros">Libros</option>
-      </select>
-      <button id="clearFilters" class="btn" style="background:#fff;color:var(--text);border:1px solid #e6eef8">Limpiar</button>
-    </div>
-
-    <div class="layout">
-      <div class="list" id="list"></div>
-
-      <aside>
-        <div class="calendar">
-          <strong>Calendario</strong>
-          <div style="display:flex;gap:8px;align-items:center;margin-top:10px">
-            <button id="prevMonth" class="btn" style="background:#fff;color:var(--text);border:1px solid #e6eef8;padding:6px 10px">‹</button>
-            <div id="monthLabel" style="flex:1;text-align:center;font-weight:600"></div>
-            <button id="nextMonth" class="btn" style="background:#fff;color:var(--text);border:1px solid #e6eef8;padding:6px 10px">›</button>
-          </div>
-
-          <div class="cal-grid" id="calGrid" style="margin-top:10px"></div>
-        </div>
-      </aside>
-    </div>
+    <section class="list" id="reviewsList">
+      <!-- reseñas renderizadas -->
+    </section>
 
     <footer class="footer">© 2025 [Tu Nombre]</footer>
   </main>
 
-  <!-- detail modal -->
-  <div id="detailModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:18px;z-index:120">
-    <div style="background:#fff;padding:18px;border-radius:12px;max-width:720px;width:100%;position:relative;max-height:90vh;overflow:auto">
-      <button id="closeDetail" style="position:absolute;right:12px;top:12px;border:none;background:#f2f4f7;border-radius:8px;padding:6px;cursor:pointer">✕</button>
+  <!-- modal detalle -->
+  <div id="detailModal" class="modal" role="dialog" aria-hidden="true">
+    <div class="modal-card">
+      <button id="closeDetail" class="modal-close" aria-label="Cerrar">✕</button>
       <div id="detailContent"></div>
     </div>
   </div>
 
   <script>
-    (function buildNav(){
-      const navWrap = document.getElementById('mainNav');
-      const pages = [
-        { file: 'libros.html', label: 'Libros' },
-        { file: 'reviews.html', label: 'Reseñas' },
-        { file: 'about.html', label: 'Sobre mí' }
-      ];
-      const current = (location.pathname.split('/').pop() || 'reviews.html').toLowerCase();
-      const left = document.createElement('div'); left.innerHTML = '<strong>Mi Sitio</strong>';
-      const right = document.createElement('nav');
-      pages.forEach(p => { if (p.file === current) return; const a = document.createElement('a'); a.href = p.file; a.textContent = p.label; a.style.marginLeft = '12px'; right.appendChild(a); });
-      navWrap.appendChild(left); navWrap.appendChild(right);
-    })();
+    const KEY_REV = '/data/reviews.json';
+    let REVIEWS = [];
 
-    // reviews storage
-    const KEY = 'mi_reseñas_v1';
-    const DEFAULT = [ { id: 1, title: 'Mindfulness Diario', category: 'salud', sub: 'Salud mental', date: '2025-08-10', summary: 'Guía sobre meditación.' } ];
-    function load(){ try{ const raw = localStorage.getItem(KEY); return raw?JSON.parse(raw):DEFAULT.slice(); }catch(e){ return DEFAULT.slice(); } }
-    function save(list){ localStorage.setItem(KEY, JSON.stringify(list)); }
+    async function loadReviews(){
+      try {
+        const res = await fetch(KEY_REV, {cache: "no-store"});
+        if(!res.ok) throw new Error('No se pudo cargar reviews');
+        const json = await res.json();
+        REVIEWS = json.reviews || [];
+      } catch(err){
+        console.error(err);
+        REVIEWS = [];
+      }
+      populateCategoryFilters();
+      renderList(REVIEWS);
+    }
+
+    function populateCategoryFilters(){
+      const cats = Array.from(new Set(REVIEWS.map(r => r.category))).filter(Boolean);
+      const catSel = document.getElementById('categorySelect');
+      catSel.innerHTML = '<option value="all">Todas las categorías</option>';
+      cats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = capitalize(c); catSel.appendChild(o); });
+    }
+
+    function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
 
     function renderList(list){
-      const container = document.getElementById('list'); container.innerHTML = '';
-      if(!list || list.length===0){ container.innerHTML = '<div class=\"card\">No hay reseñas.</div>'; return; }
+      const el = document.getElementById('reviewsList');
+      el.innerHTML = '';
+      if(!list.length){ el.innerHTML = '<div class="card">No hay reseñas.</div>'; return; }
       list.forEach(r => {
-        const div = document.createElement('div'); div.className = 'card';
-        div.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:flex-start">
+        const d = document.createElement('div'); d.className = 'card';
+        d.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:flex-start">
           <div style="flex:1">
             <div class="meta">${r.date} · ${r.category} › ${r.sub}</div>
-            <h3>${r.title}</h3>
-            <p class="meta">${r.summary || ''}</p>
+            <h3>${escapeHtml(r.title)}</h3>
+            <p class="note">${escapeHtml(r.summary || '')}</p>
+            <div style="margin-top:8px"><small class="note">Tags: ${(r.tags||[]).join(', ')}</small></div>
           </div>
           <div style="margin-left:8px">
-            <button data-id="${r.id}" class="btn" style="background:#fff;color:var(--text);border:1px solid #e6eef8">Ver</button>
-            <button data-del="${r.id}" class="btn" style="background:#fff;border:1px solid #f5c6c6;color:#a00;margin-top:8px">Eliminar</button>
+            <button class="btn viewBtn" data-id="${r.id}" style="background:#fff;border:1px solid #e6eef8">Ver</button>
           </div>
         </div>`;
-        container.appendChild(div);
+        el.appendChild(d);
       });
-      container.querySelectorAll('button[data-id]').forEach(b => b.addEventListener('click', e => openDetail(Number(e.currentTarget.dataset.id))));
-      container.querySelectorAll('button[data-del]').forEach(b => b.addEventListener('click', e => { if(confirm('Eliminar reseña?')) removeReview(Number(e.currentTarget.dataset.del)); }));
+      document.querySelectorAll('.viewBtn').forEach(b => b.addEventListener('click', e => openDetail(Number(e.currentTarget.dataset.id))));
     }
 
-    function addReview(){
-      const title = document.getElementById('rvTitle').value.trim();
-      const category = document.getElementById('rvCategory').value;
-      const sub = document.getElementById('rvSub').value.trim() || 'General';
-      const date = document.getElementById('rvDate').value || new Date().toISOString().slice(0,10);
-      if(!title){ alert('Título requerido'); return; }
-      const list = load(); const id = Date.now();
-      list.unshift({ id, title, category, sub, date, summary: '' });
-      save(list); renderList(list); renderCalendar(calDate);
-      document.getElementById('rvTitle').value=''; document.getElementById('rvSub').value=''; document.getElementById('rvDate').value='';
+    function escapeHtml(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+    function openDetail(id){
+      const item = REVIEWS.find(x => x.id === id);
+      if(!item) return;
+      document.getElementById('detailContent').innerHTML = `<div class="meta">${item.date} · ${item.category} / ${item.sub}</div>
+        <h2 style="margin:8px 0">${escapeHtml(item.title)}</h2>
+        <p class="note">${escapeHtml(item.content || item.summary || '')}</p>`;
+      const modal = document.getElementById('detailModal');
+      modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
     }
 
-    function removeReview(id){ let list = load(); list = list.filter(x => x.id !== id); save(list); renderList(list); renderCalendar(calDate); }
+    document.getElementById('closeDetail').addEventListener('click', ()=> {
+      const modal = document.getElementById('detailModal');
+      modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');
+    });
 
-    function openDetail(id){ const item = load().find(x => x.id === id); if(!item) return; document.getElementById('detailContent').innerHTML = `<div class="meta">${item.date} · ${item.category} / ${item.sub}</div><h2 style="margin:8px 0">${item.title}</h2><p class="meta">${item.summary || 'Sin texto adicional'}</p>`; document.getElementById('detailModal').style.display = 'flex'; }
-    document.getElementById('closeDetail').addEventListener('click', ()=> document.getElementById('detailModal').style.display = 'none');
-
-    document.getElementById('addReviewBtn').addEventListener('click', addReview);
+    // filtros
     document.getElementById('searchBox').addEventListener('input', applyFilters);
-    document.getElementById('categoryFilter').addEventListener('change', applyFilters);
-    document.getElementById('clearFilters').addEventListener('click', ()=> { document.getElementById('searchBox').value=''; document.getElementById('categoryFilter').value='all'; applyFilters(); });
+    document.getElementById('categorySelect').addEventListener('change', ()=> {
+      const cat = document.getElementById('categorySelect').value;
+      const subs = Array.from(new Set(REVIEWS.filter(r => !cat || cat==='all' ? true : r.category === cat).map(r => r.sub))).filter(Boolean);
+      const subSel = document.getElementById('subSelect');
+      subSel.innerHTML = '<option value="all">Todas las subcategorías</option>';
+      subs.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; subSel.appendChild(o); });
+      applyFilters();
+    });
+    document.getElementById('subSelect').addEventListener('change', applyFilters);
+    document.getElementById('dateFilter').addEventListener('change', applyFilters);
+    document.getElementById('clearFilters').addEventListener('click', ()=> {
+      document.getElementById('searchBox').value = ''; document.getElementById('categorySelect').value = 'all';
+      document.getElementById('subSelect').innerHTML = '<option value="all">Todas las subcategorías</option>';
+      document.getElementById('dateFilter').value = '';
+      renderList(REVIEWS);
+    });
 
     function applyFilters(){
       const q = document.getElementById('searchBox').value.trim().toLowerCase();
-      const cat = document.getElementById('categoryFilter').value;
-      let list = load();
-      if(cat !== 'all') list = list.filter(x => x.category === cat);
-      if(q) list = list.filter(x => (x.title + ' ' + (x.summary || '')).toLowerCase().includes(q));
-      renderList(list); renderCalendar(calDate, list);
+      const cat = document.getElementById('categorySelect').value;
+      const sub = document.getElementById('subSelect').value;
+      const date = document.getElementById('dateFilter').value;
+      let filtered = REVIEWS.slice();
+      if(cat && cat !== 'all') filtered = filtered.filter(r => r.category === cat);
+      if(sub && sub !== 'all') filtered = filtered.filter(r => r.sub === sub);
+      if(q) filtered = filtered.filter(r => (r.title + ' ' + (r.summary||'') + ' ' + (r.tags || []).join(' ')).toLowerCase().includes(q));
+      if(date) filtered = filtered.filter(r => r.date === date);
+      renderList(filtered);
     }
-
-    // calendario
-    const calGrid = document.getElementById('calGrid');
-    const monthLabel = document.getElementById('monthLabel');
-    const prevMonth = document.getElementById('prevMonth');
-    const nextMonth = document.getElementById('nextMonth');
-    let calDate = new Date(); calDate.setDate(1);
-
-    function pad(n){ return String(n).padStart(2,'0'); }
-    function renderCalendar(target, highlightList = null){
-      calGrid.innerHTML = '';
-      const headers = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
-      headers.forEach(h => { const el = document.createElement('div'); el.className = 'cal-head'; el.textContent = h; calGrid.appendChild(el); });
-      const start = new Date(target.getFullYear(), target.getMonth(), 1);
-      const end = new Date(target.getFullYear(), target.getMonth()+1, 0);
-      const firstWeekday = (start.getDay() + 6) % 7;
-      for(let i=0;i<firstWeekday;i++){ const blank = document.createElement('div'); blank.className = 'cal-cell'; blank.style.background='transparent'; blank.style.border='none'; calGrid.appendChild(blank); }
-      for(let d=1; d<=end.getDate(); d++){
-        const iso = `${target.getFullYear()}-${pad(target.getMonth()+1)}-${pad(d)}`;
-        const cell = document.createElement('div'); cell.className = 'cal-cell'; cell.dataset.iso = iso;
-        cell.innerHTML = `<div style="font-weight:600">${d}</div>`;
-        const dayItems = load().filter(x => x.date === iso);
-        const source = highlightList ? highlightList : dayItems;
-        const titles = source.filter(x=>x.date===iso).map(x=>x.title);
-        if(titles.length){
-          const mini = document.createElement('div'); mini.className = 'mini-dots';
-          titles.slice(0,3).forEach(_ => { const dot = document.createElement('span'); dot.className = 'mini-dot'; mini.appendChild(dot); });
-          cell.appendChild(mini);
-          cell.title = titles.join(' — ');
-        }
-        cell.addEventListener('click', ()=> {
-          document.getElementById('searchBox').value=''; document.getElementById('categoryFilter').value='all';
-          const filtered = load().filter(x => x.date === iso);
-          renderList(filtered);
-        });
-        calGrid.appendChild(cell);
-      }
-      monthLabel.textContent = start.toLocaleString('default',{month:'long', year:'numeric'});
-    }
-
-    prevMonth.addEventListener('click', ()=> { calDate = new Date(calDate.getFullYear(), calDate.getMonth()-1, 1); renderCalendar(calDate); });
-    nextMonth.addEventListener('click', ()=> { calDate = new Date(calDate.getFullYear(), calDate.getMonth()+1, 1); renderCalendar(calDate); });
 
     // init
-    (function init(){
-      renderList(load());
-      renderCalendar(calDate);
-    })();
+    loadReviews();
   </script>
 </body>
 </html>
