@@ -5,149 +5,139 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Libros — Mi Sitio</title>
   <meta name="description" content="Página de Libros — muestra todos tus títulos y permite añadir nuevos (localmente)." />
-  <style>
-    :root{--accent:#0b74de;--muted:#556;--bg:#f7fbff}
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Inter,system-ui,Arial;background:var(--bg);color:#111}
-    .nav{background:#fff;border-bottom:1px solid #eee;padding:12px 18px;position:sticky;top:0;z-index:80}
-    .nav a{margin-left:14px;text-decoration:none;color:#333;font-weight:600}
-    .wrap{max-width:1100px;margin:18px auto;padding:18px}
-    .controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
-    .controls input,.controls select{padding:8px;border-radius:8px;border:1px solid #ddd}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
-    .card{background:#fff;padding:12px;border-radius:10px;border:1px solid #eef2f7}
-    .card h3{margin-bottom:6px;color:#0b3f86}
-    .meta{font-size:13px;color:var(--muted)}
-    .form-add{background:#fff;padding:12px;border-radius:10px;border:1px solid #eef2f7;margin-bottom:16px}
-    .btn{padding:8px 10px;border-radius:8px;border:none;cursor:pointer}
-    .btn-primary{background:var(--accent);color:#fff}
-    @media(max-width:760px){.controls{flex-direction:column;align-items:stretch}}
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="nav">
-    <div class="wrap" style="display:flex;justify-content:space-between;align-items:center">
-      <div><strong>Mi Sitio</strong></div>
-      <nav>
-        <a href="index.html">Inicio</a>
-        <a href="reviews.html" style="margin-left:12px">Reseñas</a>
-        <a href="about.html" style="margin-left:12px">Sobre mí</a>
-      </nav>
-    </div>
+    <div class="wrap" id="mainNav"></div>
   </header>
 
-  <main class="wrap">
-    <h1 style="color:var(--accent);margin-bottom:12px">Libros</h1>
+  <main class="container">
+    <h1>Libros</h1>
 
-    <div class="form-add" aria-labelledby="addbook">
-      <h3 id="addbook">Añadir libro (local)</h3>
-      <p class="meta">Añade libros aquí para que se muestren en la página. Esto guarda en tu navegador (localStorage) para pruebas; puedes agregar desde el CMS más adelante.</p>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <input id="bookTitle" placeholder="Título" style="flex:2;padding:8px;border-radius:8px;border:1px solid #ddd">
-        <input id="bookSubtitle" placeholder="Subtítulo (opcional)" style="flex:2;padding:8px;border-radius:8px;border:1px solid #ddd">
-        <input id="bookCover" placeholder="URL imagen (opcional)" style="flex:1;padding:8px;border-radius:8px;border:1px solid #ddd">
+    <div class="card" style="margin-bottom:12px">
+      <h3>Añadir libro</h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+        <input id="bookTitle" placeholder="Título" style="flex:2;padding:8px;border-radius:8px;border:1px solid #e6eef8">
+        <input id="bookSubtitle" placeholder="Subtítulo" style="flex:2;padding:8px;border-radius:8px;border:1px solid #e6eef8">
+        <input id="bookCover" placeholder="URL imagen (opcional)" style="flex:1;padding:8px;border-radius:8px;border:1px solid #e6eef8">
         <button id="addBookBtn" class="btn btn-primary">Añadir</button>
       </div>
+      <p class="note" style="margin-top:8px">Los libros se guardan en tu navegador (localStorage). Para publicar en conjunto a tu web, exporta o sube los metadatos al repo.</p>
     </div>
 
-    <section aria-labelledby="list">
-      <h2 id="list">Mis títulos</h2>
-      <div id="booksGrid" class="grid" style="margin-top:12px">
-        <!-- libros renderizados aquí -->
-      </div>
-      <p class="meta" style="margin-top:12px">Puedes añadir tantos libros como quieras; se guardarán localmente en este navegador. Para publicación real, sube los metadatos al repo o usa un pequeño CMS.</p>
-    </section>
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
+      <input id="searchBook" placeholder="Buscar título..." style="padding:8px;border-radius:8px;border:1px solid #e6eef8;flex:1">
+      <button id="clearBooks" class="btn" style="background:#fff;color:var(--text);border:1px solid #e6eef8">Limpiar</button>
+    </div>
 
-    <footer style="margin-top:18px;color:var(--muted)">© 2025 [Tu Nombre]</footer>
+    <div id="booksGrid" class="grid"></div>
+
+    <div id="bookDetail" class="card hidden" style="margin-top:12px"></div>
+
+    <footer class="footer">© 2025 [Tu Nombre]</footer>
   </main>
 
   <script>
-    // Lista inicial de libros (puedes editar aquí)
-    const DEFAULT_BOOKS = [
-      { id: 1, title: 'Perfecto — Reescritura', subtitle: 'Capítulo 4 reescrito', cover: 'cover.svg', amazon: 'AMAZON_LINK_AQUI' }
-    ];
+    (function buildNav(){
+      const navWrap = document.getElementById('mainNav');
+      const pages = [
+        { file: 'index.html', label: 'Inicio' },
+        { file: 'libros.html', label: 'Libros' },
+        { file: 'reviews.html', label: 'Reseñas' },
+        { file: 'about.html', label: 'Sobre mí' }
+      ];
+      const current = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+      const left = document.createElement('div'); left.innerHTML = '<strong>Mi Sitio</strong>';
+      const right = document.createElement('nav');
+      pages.forEach(p => { if (p.file === current) return; const a = document.createElement('a'); a.href = p.file; a.textContent = p.label; a.style.marginLeft = '12px'; right.appendChild(a); });
+      navWrap.appendChild(left); navWrap.appendChild(right);
+    })();
 
-    // LocalStorage key
-    const STORAGE_KEY = 'mi_libros_list_v1';
+    const KEY = 'mis_libros_v1';
+    const DEFAULT = [ {id:1,title:'Perfecto — Reescritura',subtitle:'Capítulo 4 reescrito',cover:'cover.svg',amazon:'AMAZON_LINK_AQUI'} ];
+    function load(){ try{ const raw = localStorage.getItem(KEY); return raw?JSON.parse(raw):DEFAULT.slice(); }catch(e){ return DEFAULT.slice(); } }
+    function save(list){ localStorage.setItem(KEY, JSON.stringify(list)); }
 
-    function loadBooks(){
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if(!raw) return DEFAULT_BOOKS.slice();
-        return JSON.parse(raw);
-      }catch(e){
-        return DEFAULT_BOOKS.slice();
-      }
-    }
-
-    function saveBooks(list){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-    }
-
-    function renderBooks(){
+    function renderBooks(list){
       const grid = document.getElementById('booksGrid');
-      const list = loadBooks();
       grid.innerHTML = '';
-      if(list.length === 0){
-        grid.innerHTML = '<div class="card meta">No hay libros añadidos. Usa el formulario para añadir uno.</div>';
-        return;
-      }
-      list.forEach(b=>{
-        const div = document.createElement('div');
-        div.className = 'card';
+      if(list.length===0){ grid.innerHTML = '<div class="card">No hay libros.</div>'; return; }
+      list.forEach((b, idx) => {
+        const div = document.createElement('div'); div.className = 'card';
         div.innerHTML = `
           <div style="display:flex;gap:12px;align-items:center">
-            <div style="width:80px;height:110px;background:#f2f4f7;border-radius:6px;overflow:hidden;flex-shrink:0">
-              <img src="${b.cover||'cover.svg'}" alt="${escapeHtml(b.title)}" style="width:100%;height:100%;object-fit:cover"/>
+            <div style="width:80px;height:110px;background:#f2f4f7;border-radius:6px;overflow:hidden">
+              <img src="${b.cover || 'cover.svg'}" style="width:100%;height:100%;object-fit:cover" alt="${escapeHtml(b.title)}">
             </div>
             <div style="flex:1">
               <h3>${escapeHtml(b.title)}</h3>
-              <div class="meta">${escapeHtml(b.subtitle||'')}</div>
+              <div class="meta">${escapeHtml(b.subtitle || '')}</div>
               <div style="margin-top:8px;display:flex;gap:8px">
-                <a class="btn" href="${b.amazon||'#'}" target="_blank" style="border:1px solid #ddd;background:#fff;padding:8px;border-radius:8px;text-decoration:none">Comprar</a>
-                <button class="btn" data-id="${b.id}" onclick="removeBook(${b.id})" style="background:#fff;border:1px solid #f5c6c6;color:#a00">Eliminar</button>
+                <button class="btn viewBook" data-idx="${idx}" style="background:#fff;color:var(--text);border:1px solid #e6eef8">Ver</button>
+                <button class="btn" data-del="${b.id}" style="background:#fff;border:1px solid #f5c6c6;color:#a00">Eliminar</button>
               </div>
             </div>
-          </div>
-        `;
+          </div>`;
         grid.appendChild(div);
       });
+      // handlers
+      grid.querySelectorAll('.viewBook').forEach(b => b.addEventListener('click', e => showDetail(Number(e.currentTarget.dataset.idx))));
+      grid.querySelectorAll('button[data-del]').forEach(b => b.addEventListener('click', e => { if (confirm('Eliminar libro?')) removeBook(Number(e.currentTarget.dataset.del)); }));
     }
 
-    function addBook(title, subtitle, cover){
-      const list = loadBooks();
+    function escapeHtml(s){ if(!s) return ''; return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+    function addBook(){
+      const title = document.getElementById('bookTitle').value.trim();
+      if(!title){ alert('Título requerido'); return; }
+      const subtitle = document.getElementById('bookSubtitle').value.trim();
+      const cover = document.getElementById('bookCover').value.trim();
+      const list = load();
       const id = Date.now();
-      list.unshift({id, title, subtitle, cover, amazon: 'AMAZON_LINK_AQUI'});
-      saveBooks(list);
-      renderBooks();
+      list.unshift({ id, title, subtitle, cover, amazon: 'AMAZON_LINK_AQUI' });
+      save(list);
+      renderBooks(list);
+      document.getElementById('bookTitle').value = ''; document.getElementById('bookSubtitle').value = ''; document.getElementById('bookCover').value = '';
     }
 
     function removeBook(id){
-      if(!confirm('Eliminar este libro de la lista local?')) return;
-      let list = loadBooks();
-      list = list.filter(x=> x.id !== id);
-      saveBooks(list);
-      renderBooks();
+      let list = load(); list = list.filter(x => x.id !== id); save(list); renderBooks(list); document.getElementById('bookDetail').classList.add('hidden');
     }
 
-    // Simple HTML-escape for safety (small)
-    function escapeHtml(str){
-      if(!str) return '';
-      return str.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+    function showDetail(idx){
+      const list = load(); const b = list[idx]; if(!b) return;
+      const detail = document.getElementById('bookDetail'); detail.classList.remove('hidden');
+      detail.innerHTML = `
+        <div style="display:flex;gap:12px">
+          <div style="width:120px;height:170px;overflow:hidden;border-radius:6px">
+            <img src="${b.cover || 'cover.svg'}" style="width:100%;height:100%;object-fit:cover" alt="">
+          </div>
+          <div style="flex:1">
+            <h2>${escapeHtml(b.title)}</h2>
+            <div class="meta">${escapeHtml(b.subtitle || '')}</div>
+            <div style="margin-top:12px">
+              <a class="btn btn-primary" href="${b.amazon || '#'}" target="_blank">Comprar / Ficha</a>
+              <button id="prevBook" class="btn" style="background:#fff;border:1px solid #e6eef8;margin-left:8px">‹ Anterior</button>
+              <button id="nextBook" class="btn" style="background:#fff;border:1px solid #e6eef8;margin-left:6px">Siguiente ›</button>
+            </div>
+          </div>
+        </div>`;
+      document.getElementById('prevBook').addEventListener('click', ()=> { if(idx>0) showDetail(idx-1); });
+      document.getElementById('nextBook').addEventListener('click', ()=> { const l = load(); if(idx < l.length-1) showDetail(idx+1); });
     }
 
-    // Wire UI
-    document.getElementById('addBookBtn').addEventListener('click', ()=>{
-      const t = document.getElementById('bookTitle').value.trim();
-      const s = document.getElementById('bookSubtitle').value.trim();
-      const c = document.getElementById('bookCover').value.trim();
-      if(!t){ alert('El título es obligatorio'); return; }
-      addBook(t,s,c);
-      document.getElementById('bookTitle').value=''; document.getElementById('bookSubtitle').value=''; document.getElementById('bookCover').value='';
+    // search / clear
+    document.getElementById('addBookBtn').addEventListener('click', addBook);
+    document.getElementById('searchBook').addEventListener('input', ()=> {
+      const q = document.getElementById('searchBook').value.trim().toLowerCase();
+      const list = load().filter(x => (x.title + ' ' + (x.subtitle || '')).toLowerCase().includes(q));
+      renderBooks(list);
     });
+    document.getElementById('clearBooks').addEventListener('click', ()=> { document.getElementById('searchBook').value = ''; renderBooks(load()); });
 
-    // first render
-    renderBooks();
+    // initial render
+    renderBooks(load());
   </script>
 </body>
 </html>
