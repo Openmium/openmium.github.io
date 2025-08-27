@@ -32,7 +32,7 @@
     <section class="hero card" aria-hidden="false">
       <div style="display:flex;gap:18px;align-items:center">
         <div style="flex:1">
-          <h1 id="siteTitle">Mis libros</h1>
+          <h1 id="siteTitle">Libros</h1>
           <p class="note" id="siteIntro">Explora los títulos publicados. Haz click en una tarjeta para ver la ficha completa y descargar un adelanto.</p>
         </div>
       </div>
@@ -48,7 +48,7 @@
       <div id="booksGrid" class="books-grid" aria-live="polite"></div>
     </section>
 
-    <footer class="footer" style="margin-top:22px">© 2025 [Tu Nombre]</footer>
+    <footer class="footer" style="margin-top:22px">© 2025 [Openmium]</footer>
   </main>
 
   <!-- Modal: ficha libro -->
@@ -63,8 +63,8 @@
   <div id="consentModal" class="modal" role="dialog" aria-hidden="true">
     <div class="modal-card">
       <button id="closeConsent" class="modal-close" aria-label="Cerrar">✕</button>
-      <h3>Recibir adelanto</h3>
-      <p class="note">Introduce tu email para recibir un extracto del libro por correo.</p>
+      <h3>Descargar adelanto</h3>
+      <p class="note">Introduce tu email para recibir un extracto del libro.</p>
 
       <form id="consentForm" action="https://formspree.io/f/movnqwgr" method="POST">
         <input type="hidden" name="book_id" id="consent_book_id">
@@ -96,7 +96,7 @@
 
     async function loadBooks(){
       try{
-        const res = await fetch('/data/books.json', {cache: "no-store"});
+        const res = await fetch('data/books.json', {cache: "no-store"});
         if(!res.ok) throw new Error('No se pudo cargar data/books.json');
         const data = await res.json();
         BOOKS = data.books || [];
@@ -112,7 +112,7 @@
     function renderBooks(list){
       booksGrid.innerHTML = '';
       if(!list || list.length === 0){
-        booksGrid.innerHTML = '<div class="card">No hay libros aún. Añade entradas editando <code>data/books.json</code>.</div>';
+        booksGrid.innerHTML = '<div class="card">No hay libros aún.<code>data/books.json</code>.</div>';
         return;
       }
       list.forEach((b) => {
