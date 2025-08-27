@@ -3,51 +3,63 @@
     {
       "id": 169300001001,
       "title": "Narrativa Contemporánea",
-      "date": "2025-08-15",
+      "date": "15-08-2025",
       "category": "libros",
       "sub": "Narrativa",
       "tags": ["ficción", "voz femenina", "gore"],
       "summary": "Reseña breve: contundente y sin concesiones.",
       "content": "Texto largo de la reseña... (opcional).",
       "rating": 4,
+      "price": "12,90€ (con cupón de -2€ aplicado)",
+      "link": "https://ejemplo.com/libro-narrativa",
       "images": [
-        "assets/reviews/narrativa-1.jpg",
-        "assets/reviews/narrativa-2.jpg",
-        "assets/reviews/narrativa-3.jpg"
+        "https://ejemplo.com/imagenes/libro1.jpg",
+        "https://ejemplo.com/imagenes/libro1-contraportada.jpg"
       ]
     },
     {
       "id": 169300001002,
       "title": "Laptop Ultra X",
-      "date": "2025-08-12",
+      "date": "12-08-2025",
       "category": "informatica",
       "sub": "Hardware",
-      "tags": ["laptop", "reviews", "hardware"],
+      "tags": ["laptop","reviews","hardware"],
       "summary": "Laptop con buena relación calidad-precio.",
       "content": "Revisión completa...",
       "rating": 3,
+      "price": "599,00€ (incluye cupón -50€)",
+      "link": "https://ejemplo.com/laptop-ultra-x",
       "images": [
-        "assets/reviews/laptopx-1.jpg",
-        "assets/reviews/laptopx-2.jpg",
-        "assets/reviews/laptopx-3.jpg"
+        "https://ejemplo.com/imagenes/laptop1.jpg",
+        "https://ejemplo.com/imagenes/laptop1-puertos.jpg"
       ]
     },
     {
       "id": 169300001003,
       "title": "Grabador de Blu-Ray USB3.0",
-      "date": "2025-08-27",
+      "date": "27-08-2025",
       "category": "informatica",
       "sub": "Hardware",
-      "tags": ["laptop", "burner", "hardware", "blu-ray"],
+      "tags": ["laptop","burner","hardware", "blu-ray"],
       "summary": "Lector/grabador de Blu-Ray para computadora insuperable calidad precio",
-      "content": "El producto llegó muy bien embalado, incluye el cable de alimentación, el cable USB 3.0 micro-B y un manual sencillo. El PC lo reconoció al instante y con ImgBurn confirmé que se trata de una grabadora Blu-ray (modelo MATSHITA UJ240AS), compatible con BD-R y BD-RE, además de leer/grabar CDs y DVDs. Aún no lo he probado con discos Blu-ray vírgenes, pero la detección y compatibilidad son correctas. Hace bastante ruido durante la lectura, lo cual es normal considerando que hay piezas móviles en su interior. No creo que el exterior sea de aluminio, aunque parece bastante sólido. La bahía en la que se desplaza el lector tiene un poco más de juego del que me gustaría, pero en general funciona correctamente.",
+      "content": "El producto llegó muy bien embalado, incluye el cable de alimentación, el cable USB 3.0 micro-B y un manual sencillo...",
       "rating": 4.5,
+      "price": "34,57€",
+      "link": "https://ejemplo.com/grabador-blu-ray",
       "images": [
-        "assets/reviews/LectorBlueRay.jpg",
-        "assets/reviews/LectorBlueRay1.jpg",
-        "assets/reviews/LectorBlueRay2.jpg",
-        "assets/reviews/LectorBlueRay3.jpg"
+        "https://ejemplo.com/imagenes/blu-ray1.jpg",
+        "https://ejemplo.com/imagenes/blu-ray1-cables.jpg"
       ]
     }
-  ]
+  ],
+  "categories": {
+    "informática": ["Hardware","Periféricos","Placas de desarrollo","Accesorios"],
+    "electrónica DIY": ["Sensores","Módulos y placas","Herramientas de soldadura","Pantallas y displays"],
+    "accesorios móviles/tablets": ["Protectores de pantalla","Fundas y estuches","Stylus y repuestos","Baterías y cargadores"],
+    "juguetes y ocio": ["Juegos de mesa","Consolas retro","Juguetes de agua"],
+    "papelería y oficina": ["Marcadores y recambios","Borradores magnéticos","Marcapáginas","Organizadores"],
+    "hogar y estilo de vida": ["Accesorios de cocina","Cintas y pegatinas","Joyas y bisutería"],
+    "audio": ["Altavoces","Auriculares","Repuestos"],
+    "libros": ["Narrativa","Ensayo","Educativos","Arte y fotografía"]
+  }
 }
