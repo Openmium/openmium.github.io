@@ -1,0 +1,26 @@
+{
+  "reviews": [
+    {
+      "id": 169300001001,
+      "title": "Narrativa Contemporánea",
+      "date": "2025-08-15",
+      "category": "libros",
+      "sub": "Narrativa",
+      "tags": ["ficción", "voz femenina", "gore"],
+      "summary": "Reseña breve: contundente y sin concesiones.",
+      "content": "Texto largo de la reseña... (opcional).",
+      "rating": 4
+    },
+    {
+      "id": 169300001002,
+      "title": "Laptop Ultra X",
+      "date": "2025-08-12",
+      "category": "informatica",
+      "sub": "Hardware",
+      "tags": ["laptop","reviews","hardware"],
+      "summary": "Laptop con buena relación calidad-precio.",
+      "content": "Revisión completa...",
+      "rating": 3
+    }
+  ]
+}
