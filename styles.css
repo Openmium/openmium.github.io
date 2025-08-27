@@ -1,16 +1,6 @@
-/* styles.css - global + catálogo */
 :root{
-  --text:#111;
-  --muted:#666;
-  --bg:#fff;
-  --card:#fff;
-  --border:#e7eef6;
-  --accent:#0b74de;
-  --radius:10px;
-  --shadow:0 8px 30px rgba(2,6,23,0.06);
-  --max-width:1200px;
+  --text:#111; --muted:#666; --bg:#fff; --card:#fff; --border:#e7eef6; --accent:#0b74de; --radius:10px; --shadow:0 8px 30px rgba(2,6,23,0.06); --max-width:1200px;
 }
-
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
@@ -23,10 +13,10 @@ a{color:inherit;text-decoration:none}
 .cover{width:140px;height:210px;border-radius:8px;overflow:hidden;background:#eee;flex-shrink:0}
 .cover img{width:100%;height:100%;object-fit:cover}
 
-/* Search row */
+/* Input */
 input[type="text"], input[type="date"], select{padding:8px;border-radius:8px;border:1px solid var(--border);background:#fff}
 
-/* Books grid (estilo catálogo) */
+/* Books grid */
 .books-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px;margin-top:10px}
 .book-card{background:#fff;border-radius:8px;overflow:hidden;cursor:pointer;border:1px solid var(--border);transition:transform .18s ease,box-shadow .18s ease;display:flex;flex-direction:column;align-items:stretch;height:100%}
 .book-card:focus{outline:3px solid rgba(11,116,222,0.14)}
@@ -47,6 +37,9 @@ input[type="text"], input[type="date"], select{padding:8px;border-radius:8px;bor
 .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:700}
 .btn-primary{background:var(--accent);color:#fff}
 .btn-ghost{background:transparent;border:1px solid #e6eef8;color:var(--text)}
+
+/* Reviews list */
+.list .card{margin-bottom:12px}
 
 /* Footer */
 .footer{text-align:center;color:var(--muted);margin-top:22px;padding:12px 0;font-size:13px}
