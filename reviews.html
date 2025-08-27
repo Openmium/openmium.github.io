@@ -1,435 +1,648 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reseñas — Mi Sitio</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Arial, sans-serif;
-        }
-        
-        body {
-            background-color: #f5f7f9;
-            color: #333;
-            line-height: 1.6;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .nav {
-            background: #fff;
-            border-bottom: 1px solid #ddd;
-            padding: 15px 0;
-        }
-        
-        .wrap {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .nav strong {
-            font-size: 1.5rem;
-            color: #2c3e50;
-        }
-        
-        .nav nav a {
-            color: #2c3e50;
-            text-decoration: none;
-            margin-left: 20px;
-            font-weight: 500;
-        }
-        
-        .nav nav a:hover {
-            text-decoration: underline;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        h1 {
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-            color: #2c3e50;
-        }
-        
-        .card {
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        
-        input, select {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-        
-        .btn {
-            padding: 10px 15px;
-            background: #ecf0f1;
-            color: #2c3e50;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        .btn:hover {
-            background: #ddd;
-        }
-        
-        .review-card {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background: white;
-        }
-        
-        .review-image {
-            width: 120px;
-            height: 80px;
-            flex-shrink: 0;
-            overflow: hidden;
-            border-radius: 4px;
-        }
-        
-        .review-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .review-content {
-            flex: 1;
-        }
-        
-        .meta {
-            font-size: 0.9rem;
-            color: #7f8c8d;
-            margin-bottom: 5px;
-        }
-        
-        .review-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-            color: #2c3e50;
-        }
-        
-        .note {
-            color: #34495e;
-            margin-bottom: 10px;
-        }
-        
-        .rating {
-            color: #f39c12;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        
-        .price {
-            font-weight: bold;
-            color: #e74c3c;
-            margin-bottom: 8px;
-        }
-        
-        .product-link {
-            display: inline-block;
-            padding: 6px 12px;
-            background: #3498db;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            font-size: 0.9rem;
-        }
-        
-        .product-link:hover {
-            background: #2980b9;
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #7f8c8d;
-            margin-top: 30px;
-            border-top: 1px solid #ddd;
-        }
-        
-        .filter-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .filter-row input, .filter-row select {
-            flex: 1;
-            min-width: 150px;
-            margin-bottom: 0;
-        }
-        
-        @media (max-width: 768px) {
-            .review-card {
-                flex-direction: column;
-            }
-            
-            .review-image {
-                width: 100%;
-                height: 160px;
-            }
-            
-            .filter-row {
-                flex-direction: column;
-            }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Reseñas — Mi Sitio</title>
+  <meta name="description" content="Reseñas de productos, libros y más. Filtrado por categoría, sub y fecha.">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f7f9;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    .nav {
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+      padding: 15px 0;
+    }
+    
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .nav strong {
+      font-size: 1.5rem;
+      color: #2c3e50;
+    }
+    
+    .nav nav a {
+      color: #2c3e50;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 500;
+    }
+    
+    .nav nav a:hover {
+      text-decoration: underline;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+    
+    .card {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    
+    input, select {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    
+    .btn {
+      padding: 10px 15px;
+      background: #ecf0f1;
+      color: #2c3e50;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .btn:hover {
+      background: #ddd;
+    }
+    
+    .btn-primary {
+      background: #3498db;
+      color: white;
+      border: 1px solid #2980b9;
+    }
+    
+    .btn-primary:hover {
+      background: #2980b9;
+    }
+    
+    .review-card {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background: white;
+      cursor: pointer;
+    }
+    
+    .review-card:hover {
+      background: #f8f9fa;
+    }
+    
+    .review-image {
+      width: 120px;
+      height: 80px;
+      flex-shrink: 0;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+    
+    .review-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .review-content {
+      flex: 1;
+    }
+    
+    .meta {
+      font-size: 0.9rem;
+      color: #7f8c8d;
+      margin-bottom: 5px;
+    }
+    
+    .review-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      color: #2c3e50;
+    }
+    
+    .note {
+      color: #34495e;
+      margin-bottom: 10px;
+    }
+    
+    .rating {
+      color: #f39c12;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    
+    .price {
+      font-weight: bold;
+      color: #e74c3c;
+      margin-bottom: 8px;
+    }
+    
+    .product-link {
+      display: inline-block;
+      padding: 6px 12px;
+      background: #3498db;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    
+    .product-link:hover {
+      background: #2980b9;
+    }
+    
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: #7f8c8d;
+      margin-top: 30px;
+      border-top: 1px solid #ddd;
+    }
+    
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .filter-row input, .filter-row select {
+      flex: 1;
+      min-width: 150px;
+      margin-bottom: 0;
+    }
+    
+    /* Modal Styles */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    
+    .modal.open {
+      display: flex;
+    }
+    
+    .modal-card {
+      background: white;
+      border-radius: 8px;
+      padding: 25px;
+      width: 90%;
+      max-width: 800px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+    
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #7f8c8d;
+    }
+    
+    .modal-close:hover {
+      color: #34495e;
+    }
+    
+    .modal-gallery {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .modal-main-image {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+    
+    .modal-main-image img {
+      width: 100%;
+      max-height: 400px;
+      object-fit: contain;
+      border-radius: 5px;
+    }
+    
+    .modal-thumbnail {
+      width: 100px;
+      height: 70px;
+      cursor: pointer;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .modal-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .modal-thumbnail.active {
+      border: 2px solid #3498db;
+    }
+    
+    @media (max-width: 768px) {
+      .review-card {
+        flex-direction: column;
+      }
+      
+      .review-image {
+        width: 100%;
+        height: 160px;
+      }
+      
+      .filter-row {
+        flex-direction: column;
+      }
+      
+      .modal-card {
+        width: 95%;
+        padding: 15px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header class="nav">
-        <div class="wrap">
-            <strong>Mi Sitio</strong>
-            <nav>
-                <a href="index.html">Sobre mí</a>
-                <a href="libros.html">Libros</a>
-                <a href="reviews.html">Reseñas</a>
-            </nav>
-        </div>
-    </header>
+  <header class="nav">
+    <div class="wrap" id="mainNav"></div>
+  </header>
 
-    <main class="container">
-        <h1>Reseñas</h1>
+  <script>
+    (function buildNav(){
+      const navWrap = document.getElementById('mainNav');
+      const pages = [
+        { file: 'index.html', label: 'Sobre mí' },
+        { file: 'libros.html', label: 'Libros' },
+        { file: 'reviews.html', label: 'Reseñas' }
+      ];
+      const current = (location.pathname.split('/').pop() || 'reviews.html').toLowerCase();
+      const left = document.createElement('div'); left.innerHTML = '<strong>Mi Sitio</strong>';
+      const right = document.createElement('nav');
+      pages.forEach(p => { 
+        if (p.file === current) return; 
+        const a = document.createElement('a'); 
+        a.href = p.file; 
+        a.textContent = p.label; 
+        a.style.marginLeft = '12px'; 
+        right.appendChild(a); 
+      });
+      navWrap.appendChild(left); 
+      navWrap.appendChild(right);
+    })();
+  </script>
+
+  <main class="container">
+    <h1>Reseñas</h1>
+    
+    <section class="card">
+      <div class="filter-row">
+        <input id="searchBox" placeholder="Buscar por título, tag...">
+        <select id="categorySelect">
+          <option value="all">Todas las categorías</option>
+        </select>
+        <select id="subSelect">
+          <option value="all">Todas las subcategorías</option>
+        </select>
+        <input id="dateFilter" type="date">
+        <button id="clearFilters" class="btn">Limpiar</button>
+      </div>
+    </section>
+    
+    <section id="reviewsList"></section>
+    
+    <footer class="footer">© 2025 Mi Sitio</footer>
+  </main>
+
+  <!-- Modal: detalles de la reseña -->
+  <div id="reviewModal" class="modal" role="dialog" aria-hidden="true">
+    <div class="modal-card">
+      <button id="closeReviewModal" class="modal-close" aria-label="Cerrar">✕</button>
+      <div id="reviewModalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    // Variables globales
+    let REVIEWS = [];
+    const CATEGORIES = {
+      "informática": ["Hardware","Periféricos","Placas de desarrollo","Accesorios"],
+      "electrónica DIY": ["Sensores","Módulos y placas","Herramientas de soldadura","Pantallas y displays"],
+      "accesorios móviles/tablets": ["Protectores de pantalla","Fundas y estuches","Stylus y repuestos","Baterías y cargadores"],
+      "juguetes y ocio": ["Juegos de mesa","Consolas retro","Juguetes de agua"],
+      "papelería y oficina": ["Marcadores y recambios","Borradores magnéticos","Marcapáginas","Organizadores"],
+      "hogar y estilo de vida": ["Accesorios de cocina","Cintas y pegatinas","Joyas y bisutería"],
+      "audio": ["Altavoces","Auriculares","Repuestos"],
+      "libros": ["Narrativa","Ensayo","Educativos","Arte y fotografía"]
+    };
+
+    // Función para cargar reseñas desde el archivo JSON
+    async function loadReviews() {
+      try {
+        const res = await fetch('data/reviews.json', { cache: "no-store" });
+        if (!res.ok) {
+          throw new Error('No se pudo cargar data/reviews.json — status ' + res.status);
+        }
+        const data = await res.json();
+        REVIEWS = data.reviews || [];
         
-        <section class="card">
-            <div class="filter-row">
-                <input id="searchBox" placeholder="Buscar por título, tag...">
-                <select id="categorySelect">
-                    <option value="all">Todas las categorías</option>
-                </select>
-                <select id="subSelect">
-                    <option value="all">Todas las subcategorías</option>
-                </select>
-                <input id="dateFilter" type="date">
-                <button id="clearFilters" class="btn">Limpiar</button>
-            </div>
-        </section>
+        populateCategoryFilters();
+        renderList(REVIEWS);
+      } catch (err) {
+        console.error('[loadReviews] Error cargando reviews.json:', err);
+        REVIEWS = [];
+        const container = document.getElementById('reviewsList');
+        if (container) {
+          container.innerHTML = '<div class="card">Error cargando reseñas: revisa la consola (F12).</div>';
+        }
+      }
+    }
+
+    // Función para generar estrellas de valoración
+    function generateStarRating(rating) {
+      let stars = '';
+      const fullStars = Math.floor(rating);
+      const hasHalfStar = rating % 1 >= 0.5;
+      
+      for (let i = 0; i < fullStars; i++) {
+        stars += '★';
+      }
+      
+      if (hasHalfStar) {
+        stars += '½';
+      }
+      
+      const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+      for (let i = 0; i < emptyStars; i++) {
+        stars += '☆';
+      }
+      
+      return stars;
+    }
+
+    // Llenar los filtros de categorías
+    function populateCategoryFilters() {
+      const categorySelect = document.getElementById('categorySelect');
+      
+      // Agregar categorías al selector
+      for (const category in CATEGORIES) {
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+        categorySelect.appendChild(option);
+      }
+    }
+
+    // Renderizar la lista de reseñas
+    function renderList(list) {
+      const el = document.getElementById('reviewsList');
+      el.innerHTML = '';
+      
+      if (!list.length) {
+        el.innerHTML = '<div class="card">No hay reseñas que coincidan con los filtros.</div>';
+        return;
+      }
+      
+      list.forEach(r => {
+        const d = document.createElement('div');
+        d.className = 'review-card';
+        d.tabIndex = 0;
         
-        <section class="list" id="reviewsList"></section>
-    </main>
-
-    <footer class="footer">
-        © 2025 Mi Sitio
-    </footer>
-
-    <script>
-        // Variables globales
-        let REVIEWS = [];
-        const CATEGORIES = {
-            "informática": ["Hardware","Periféricos","Placas de desarrollo","Accesorios"],
-            "electrónica DIY": ["Sensores","Módulos y placas","Herramientas de soldadura","Pantallas y displays"],
-            "accesorios móviles/tablets": ["Protectores de pantalla","Fundas y estuches","Stylus y repuestos","Baterías y cargadores"],
-            "juguetes y ocio": ["Juegos de mesa","Consolas retro","Juguetes de agua"],
-            "papelería y oficina": ["Marcadores y recambios","Borradores magnéticos","Marcapáginas","Organizadores"],
-            "hogar y estilo de vida": ["Accesorios de cocina","Cintas y pegatinas","Joyas y bisutería"],
-            "audio": ["Altavoces","Auriculares","Repuestos"],
-            "libros": ["Narrativa","Ensayo","Educativos","Arte y fotografía"]
-        };
-
-        // Función para cargar reseñas desde el archivo JSON
-        async function loadReviews() {
-            try {
-                const res = await fetch('data/reviews.json');
-                if (!res.ok) throw new Error('No se pudo cargar el archivo de reseñas');
-                
-                const data = await res.json();
-                REVIEWS = data.reviews || [];
-                
-                populateCategoryFilters();
-                renderList(REVIEWS);
-            } catch (err) {
-                console.error('Error cargando reseñas:', err);
-                const container = document.getElementById('reviewsList');
-                if (container) {
-                    container.innerHTML = '<div class="card">Error cargando reseñas. Verifique la consola para más detalles.</div>';
-                }
-            }
+        // Verificar si las imágenes son del Blu-ray y usar las locales
+        let images = r.images || [];
+        if (r.title.includes('Blu-Ray') || r.title.includes('Blu-ray')) {
+          images = [
+            'assets/reviews/BlueRay.jpg',
+            'assets/reviews/BlueRay1.jpg',
+            'assets/reviews/BlueRay2.jpg',
+            'assets/reviews/BlueRay3.jpg'
+          ];
         }
-
-        // Función para generar estrellas de valoración
-        function generateStarRating(rating) {
-            let stars = '';
-            const fullStars = Math.floor(rating);
-            const hasHalfStar = rating % 1 >= 0.5;
-            
-            for (let i = 0; i < fullStars; i++) {
-                stars += '★';
-            }
-            
-            if (hasHalfStar) {
-                stars += '½';
-            }
-            
-            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-            for (let i = 0; i < emptyStars; i++) {
-                stars += '☆';
-            }
-            
-            return stars;
-        }
-
-        // Llenar los filtros de categorías
-        function populateCategoryFilters() {
-            const categorySelect = document.getElementById('categorySelect');
-            
-            // Agregar categorías al selector
-            for (const category in CATEGORIES) {
-                const option = document.createElement('option');
-                option.value = category;
-                option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-                categorySelect.appendChild(option);
-            }
-        }
-
-        // Renderizar la lista de reseñas
-        function renderList(list) {
-            const el = document.getElementById('reviewsList');
-            el.innerHTML = '';
-            
-            if (!list.length) {
-                el.innerHTML = '<div class="card">No hay reseñas que coincidan con los filtros.</div>';
-                return;
-            }
-            
-            list.forEach(r => {
-                const d = document.createElement('div');
-                d.className = 'review-card';
-                
-                // Verificar si las imágenes son del Blu-ray y usar las locales
-                let images = r.images || [];
-                if (r.title.includes('Blu-Ray') || r.title.includes('Blu-ray')) {
-                    images = [
-                        'assets/reviews/BlueRay.jpg',
-                        'assets/reviews/BlueRay1.jpg',
-                        'assets/reviews/BlueRay2.jpg',
-                        'assets/reviews/BlueRay3.jpg'
-                    ];
-                }
-                
-                const thumb = images.length ? images[0] : 'assets/covers/placeholder.jpg';
-                
-                d.innerHTML = `
-                    <div class="review-image">
-                        <img src="${thumb}" alt="${r.title}">
-                    </div>
-                    <div class="review-content">
-                        <div class="meta">${r.date} · ${r.category} › ${r.sub}</div>
-                        <h3>${escapeHtml(r.title)}</h3>
-                        <p class="note">${escapeHtml(r.summary || '')}</p>
-                        <div class="price">${escapeHtml(r.price)}</div>
-                        <div class="rating">${generateStarRating(r.rating)} (${r.rating}/5)</div>
-                        <a href="${r.link}" target="_blank" class="product-link">Ver producto</a>
-                    </div>
-                `;
-                
-                el.appendChild(d);
-            });
-        }
-
-        // Función para escapar HTML
-        function escapeHtml(s) {
-            if (!s) return '';
-            return String(s).replace(/&/g, '&amp;')
-                           .replace(/</g, '&lt;')
-                           .replace(/>/g, '&gt;')
-                           .replace(/"/g, '&quot;')
-                           .replace(/'/g, '&#039;');
-        }
-
-        // Aplicar filtros
-        function applyFilters() {
-            const searchText = document.getElementById('searchBox').value.toLowerCase();
-            const category = document.getElementById('categorySelect').value;
-            const subCategory = document.getElementById('subSelect').value;
-            const date = document.getElementById('dateFilter').value;
-            
-            let filtered = REVIEWS.filter(r => {
-                // Filtro de búsqueda
-                const matchesSearch = !searchText || 
-                    r.title.toLowerCase().includes(searchText) ||
-                    (r.summary && r.summary.toLowerCase().includes(searchText)) ||
-                    (r.tags && r.tags.some(tag => tag.toLowerCase().includes(searchText)));
-                
-                // Filtro de categoría
-                const matchesCategory = category === 'all' || r.category === category;
-                
-                // Filtro de subcategoría
-                const matchesSubCategory = subCategory === 'all' || r.sub === subCategory;
-                
-                // Filtro de fecha
-                const matchesDate = !date || r.date === date;
-                
-                return matchesSearch && matchesCategory && matchesSubCategory && matchesDate;
-            });
-            
-            renderList(filtered);
-        }
-
-        // Limpiar filtros
-        function clearFilters() {
-            document.getElementById('searchBox').value = '';
-            document.getElementById('categorySelect').value = 'all';
-            document.getElementById('subSelect').value = 'all';
-            document.getElementById('dateFilter').value = '';
-            
-            renderList(REVIEWS);
-        }
-
-        // Actualizar subcategorías cuando cambia la categoría
-        function updateSubcategories() {
-            const categorySelect = document.getElementById('categorySelect');
-            const subSelect = document.getElementById('subSelect');
-            const selectedCategory = categorySelect.value;
-            
-            subSelect.innerHTML = '<option value="all">Todas las subcategorías</option>';
-            
-            if (selectedCategory !== 'all' && CATEGORIES[selectedCategory]) {
-                CATEGORIES[selectedCategory].forEach(sub => {
-                    const option = document.createElement('option');
-                    option.value = sub;
-                    option.textContent = sub;
-                    subSelect.appendChild(option);
-                });
-            }
-        }
-
-        // Inicializar eventos
-        document.addEventListener('DOMContentLoaded', function() {
-            loadReviews();
-            
-            document.getElementById('searchBox').addEventListener('input', applyFilters);
-            document.getElementById('categorySelect').addEventListener('change', function() {
-                updateSubcategories();
-                applyFilters();
-            });
-            document.getElementById('subSelect').addEventListener('change', applyFilters);
-            document.getElementById('dateFilter').addEventListener('change', applyFilters);
-            document.getElementById('clearFilters').addEventListener('click', clearFilters);
+        
+        const thumb = images.length ? images[0] : 'assets/covers/placeholder.jpg';
+        
+        d.innerHTML = `
+          <div class="review-image">
+            <img src="${thumb}" alt="${r.title}">
+          </div>
+          <div class="review-content">
+            <div class="meta">${r.date} · ${r.category} › ${r.sub}</div>
+            <h3>${escapeHtml(r.title)}</h3>
+            <p class="note">${escapeHtml(r.summary || '')}</p>
+            <div class="price">${escapeHtml(r.price)}</div>
+            <div class="rating">${generateStarRating(r.rating)} (${r.rating}/5)</div>
+          </div>
+        `;
+        
+        // Hacer la tarjeta clickable para abrir el modal
+        d.addEventListener('click', () => openReviewModal(r));
+        d.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') openReviewModal(r);
         });
-    </script>
+        
+        el.appendChild(d);
+      });
+    }
+
+    // Función para escapar HTML
+    function escapeHtml(s) {
+      if (!s) return '';
+      return String(s).replace(/&/g, '&amp;')
+                     .replace(/</g, '&lt;')
+                     .replace(/>/g, '&gt;')
+                     .replace(/"/g, '&quot;')
+                     .replace(/'/g, '&#039;');
+    }
+
+    // Modal de detalles de la reseña
+    const reviewModal = document.getElementById('reviewModal');
+    const reviewModalContent = document.getElementById('reviewModalContent');
+    const closeReviewModal = document.getElementById('closeReviewModal');
+
+    function openReviewModal(review) {
+      // Verificar si las imágenes son del Blu-ray y usar las locales
+      let images = review.images || [];
+      if (review.title.includes('Blu-Ray') || review.title.includes('Blu-ray')) {
+        images = [
+          'assets/reviews/BlueRay.jpg',
+          'assets/reviews/BlueRay1.jpg',
+          'assets/reviews/BlueRay2.jpg',
+          'assets/reviews/BlueRay3.jpg'
+        ];
+      }
+      
+      let galleryHtml = '';
+      if (images.length) {
+        galleryHtml += `
+          <div class="modal-main-image">
+            <img src="${images[0]}" alt="${review.title}">
+          </div>
+          <div class="modal-gallery">
+        `;
+        
+        images.forEach((img, index) => {
+          galleryHtml += `
+            <div class="modal-thumbnail ${index === 0 ? 'active' : ''}">
+              <img src="${img}" alt="Miniatura ${index + 1}" data-index="${index}">
+            </div>
+          `;
+        });
+        
+        galleryHtml += '</div>';
+      }
+      
+      reviewModalContent.innerHTML = `
+        ${galleryHtml}
+        <div class="meta">${review.date} · ${review.category} › ${review.sub}</div>
+        <h2>${escapeHtml(review.title)}</h2>
+        <div class="price" style="margin: 10px 0;">${escapeHtml(review.price)}</div>
+        <div class="rating" style="margin-bottom: 15px;">${generateStarRating(review.rating)} (${review.rating}/5)</div>
+        <p class="note">${escapeHtml(review.content || review.summary || '')}</p>
+        <div style="margin-top: 20px;">
+          <a href="${review.link}" target="_blank" class="product-link">Ver producto</a>
+        </div>
+      `;
+      
+      // Mostrar el modal
+      reviewModal.classList.add('open');
+      reviewModal.setAttribute('aria-hidden', 'false');
+      
+      // Agregar event listeners para las miniaturas
+      const thumbnails = reviewModalContent.querySelectorAll('.modal-thumbnail img');
+      const mainImage = reviewModalContent.querySelector('.modal-main-image img');
+      
+      thumbnails.forEach(thumb => {
+        thumb.addEventListener('click', () => {
+          const index = thumb.getAttribute('data-index');
+          mainImage.src = images[index];
+          
+          // Actualizar la miniatura activa
+          thumbnails.forEach(t => t.parentElement.classList.remove('active'));
+          thumb.parentElement.classList.add('active');
+        });
+      });
+    }
+
+    // Cerrar el modal
+    closeReviewModal.addEventListener('click', () => {
+      reviewModal.classList.remove('open');
+      reviewModal.setAttribute('aria-hidden', 'true');
+    });
+    
+    reviewModal.addEventListener('click', (e) => {
+      if (e.target === reviewModal) {
+        reviewModal.classList.remove('open');
+        reviewModal.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    // Aplicar filtros
+    function applyFilters() {
+      const searchText = document.getElementById('searchBox').value.toLowerCase();
+      const category = document.getElementById('categorySelect').value;
+      const subCategory = document.getElementById('subSelect').value;
+      const date = document.getElementById('dateFilter').value;
+      
+      let filtered = REVIEWS.filter(r => {
+        // Filtro de búsqueda
+        const matchesSearch = !searchText || 
+          r.title.toLowerCase().includes(searchText) ||
+          (r.summary && r.summary.toLowerCase().includes(searchText)) ||
+          (r.tags && r.tags.some(tag => tag.toLowerCase().includes(searchText)));
+        
+        // Filtro de categoría
+        const matchesCategory = category === 'all' || r.category === category;
+        
+        // Filtro de subcategoría
+        const matchesSubCategory = subCategory === 'all' || r.sub === subCategory;
+        
+        // Filtro de fecha
+        const matchesDate = !date || r.date === date;
+        
+        return matchesSearch && matchesCategory && matchesSubCategory && matchesDate;
+      });
+      
+      renderList(filtered);
+    }
+
+    // Limpiar filtros
+    function clearFilters() {
+      document.getElementById('searchBox').value = '';
+      document.getElementById('categorySelect').value = 'all';
+      document.getElementById('subSelect').value = 'all';
+      document.getElementById('dateFilter').value = '';
+      
+      renderList(REVIEWS);
+    }
+
+    // Actualizar subcategorías cuando cambia la categoría
+    function updateSubcategories() {
+      const categorySelect = document.getElementById('categorySelect');
+      const subSelect = document.getElementById('subSelect');
+      const selectedCategory = categorySelect.value;
+      
+      subSelect.innerHTML = '<option value="all">Todas las subcategorías</option>';
+      
+      if (selectedCategory !== 'all' && CATEGORIES[selectedCategory]) {
+        CATEGORIES[selectedCategory].forEach(sub => {
+          const option = document.createElement('option');
+          option.value = sub;
+          option.textContent = sub;
+          subSelect.appendChild(option);
+        });
+      }
+    }
+
+    // Inicializar eventos
+    document.addEventListener('DOMContentLoaded', function() {
+      loadReviews();
+      
+      document.getElementById('searchBox').addEventListener('input', applyFilters);
+      document.getElementById('categorySelect').addEventListener('change', function() {
+        updateSubcategories();
+        applyFilters();
+      });
+      document.getElementById('subSelect').addEventListener('change', applyFilters);
+      document.getElementById('dateFilter').addEventListener('change', applyFilters);
+      document.getElementById('clearFilters').addEventListener('click', clearFilters);
+    });
+  </script>
 </body>
 </html>
