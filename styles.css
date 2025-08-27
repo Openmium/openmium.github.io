@@ -5,7 +5,7 @@
   --background: #ffffff;
   --card-bg: #fbfcfd;
   --border: #e7eef6;
-  --accent: #0b74de; /* color de botones (puedes cambiarlo si quieres) */
+  --accent: #0b74de;
   --radius: 10px;
   --shadow: 0 6px 18px rgba(15,23,42,0.06);
   --max-width: 1100px;
@@ -49,7 +49,7 @@ p, .meta { color: var(--muted); font-size:14px; }
 
 /* Forms */
 label { display:block; margin-top:10px; font-weight:700; }
-input[type="email"], input[type="text"], input[type="date"], select { width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; margin-top:6px; background:#fff; }
+input[type="email"], input[type="text"], input[type="date"], select, textarea { width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; margin-top:6px; background:#fff; }
 
 /* Reviews layout and calendar */
 .layout { display:grid; grid-template-columns: 1fr 320px; gap:18px; align-items:start; }
@@ -68,6 +68,4 @@ input[type="email"], input[type="text"], input[type="date"], select { width:100%
 /* Utility */
 .note { font-size:13px; color:var(--muted); margin-top:8px; }
 .footer { text-align:center; color:var(--muted); margin-top:22px; font-size:13px; padding:12px 0; }
-
-/* Small helpers */
 .hidden { display:none !important; }
