@@ -11,6 +11,7 @@
   <header class="nav">
     <div class="wrap" id="mainNav"></div>
   </header>
+
   <script>
     (function buildNav(){
       const navWrap = document.getElementById('mainNav');
@@ -22,11 +23,7 @@
       const current = (location.pathname.split('/').pop() || 'reviews.html').toLowerCase();
       const left = document.createElement('div'); left.innerHTML = '<strong>Mi Sitio</strong>';
       const right = document.createElement('nav');
-      pages.forEach(p => {
-        if (p.file === current) return;
-        const a = document.createElement('a'); a.href = p.file; a.textContent = p.label; a.style.marginLeft = '12px';
-        right.appendChild(a);
-      });
+      pages.forEach(p => { if (p.file === current) return; const a = document.createElement('a'); a.href = p.file; a.textContent = p.label; a.style.marginLeft = '12px'; right.appendChild(a); });
       navWrap.appendChild(left); navWrap.appendChild(right);
     })();
   </script>
@@ -48,14 +45,12 @@
       </div>
     </section>
 
-    <section class="list" id="reviewsList">
-      <!-- reseñas renderizadas -->
-    </section>
+    <section class="list" id="reviewsList"></section>
 
     <footer class="footer">© 2025 [Tu Nombre]</footer>
   </main>
 
-  <!-- modal detalle -->
+  <!-- modal detalle con galería -->
   <div id="detailModal" class="modal" role="dialog" aria-hidden="true">
     <div class="modal-card">
       <button id="closeDetail" class="modal-close" aria-label="Cerrar">✕</button>
@@ -70,7 +65,7 @@
     async function loadReviews(){
       try {
         const res = await fetch(KEY_REV, {cache: "no-store"});
-        if(!res.ok) throw new Error('No se pudo cargar reviews');
+        if(!res.ok) throw new Error('No se pudo cargar data/reviews.json');
         const json = await res.json();
         REVIEWS = json.reviews || [];
       } catch(err){
@@ -85,48 +80,46 @@
       const cats = Array.from(new Set(REVIEWS.map(r => r.category))).filter(Boolean);
       const catSel = document.getElementById('categorySelect');
       catSel.innerHTML = '<option value="all">Todas las categorías</option>';
-      cats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = capitalize(c); catSel.appendChild(o); });
-    }
-
-    function capitalize(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
-
-    function renderList(list){
-      const el = document.getElementById('reviewsList');
-      el.innerHTML = '';
-      if(!list.length){ el.innerHTML = '<div class="card">No hay reseñas.</div>'; return; }
-      list.forEach(r => {
-        const d = document.createElement('div'); d.className = 'card';
-        d.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div style="flex:1">
-            <div class="meta">${r.date} · ${r.category} › ${r.sub}</div>
-            <h3>${escapeHtml(r.title)}</h3>
-            <p class="note">${escapeHtml(r.summary || '')}</p>
-            <div style="margin-top:8px"><small class="note">Tags: ${(r.tags||[]).join(', ')}</small></div>
-          </div>
-          <div style="margin-left:8px">
-            <button class="btn viewBtn" data-id="${r.id}" style="background:#fff;border:1px solid #e6eef8">Ver</button>
-          </div>
-        </div>`;
-        el.appendChild(d);
-      });
-      document.querySelectorAll('.viewBtn').forEach(b => b.addEventListener('click', e => openDetail(Number(e.currentTarget.dataset.id))));
+      cats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c.charAt(0).toUpperCase()+c.slice(1); catSel.appendChild(o); });
     }
 
     function escapeHtml(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 
+    function renderList(list){
+      const el = document.getElementById('reviewsList'); el.innerHTML = '';
+      if(!list.length){ el.innerHTML = '<div class="card">No hay reseñas.</div>'; return; }
+      list.forEach(r => {
+        const d = document.createElement('div'); d.className = 'card review-card'; d.tabIndex = 0;
+        const thumb = (r.images && r.images[0]) ? r.images[0] : 'assets/covers/placeholder.jpg';
+        d.innerHTML = `<div style="display:flex;gap:12px;align-items:flex-start"><div style="width:120px;height:80px;flex-shrink:0;overflow:hidden;border-radius:6px"><img src="${thumb}" style="width:100%;height:100%;object-fit:cover" alt=""></div><div style="flex:1"><div class="meta">${r.date} · ${r.category} › ${r.sub}</div><h3>${escapeHtml(r.title)}</h3><p class="note">${escapeHtml(r.summary || '')}</p></div></div>`;
+        // tarjeta entera clickable
+        d.addEventListener('click', ()=> openDetail(r.id));
+        d.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') openDetail(r.id); });
+        el.appendChild(d);
+      });
+    }
+
     function openDetail(id){
-      const item = REVIEWS.find(x => x.id === id);
-      if(!item) return;
-      document.getElementById('detailContent').innerHTML = `<div class="meta">${item.date} · ${item.category} / ${item.sub}</div>
-        <h2 style="margin:8px 0">${escapeHtml(item.title)}</h2>
-        <p class="note">${escapeHtml(item.content || item.summary || '')}</p>`;
-      const modal = document.getElementById('detailModal');
-      modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
+      const item = REVIEWS.find(x => x.id === id); if(!item) return;
+      const imgs = (item.images || []).slice(0,8); // up to 8 images
+      let galleryHtml = '';
+      if(imgs.length){
+        galleryHtml += '<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;align-items:flex-start">';
+        galleryHtml += `<div id="mainImg" style="flex:1;min-width:220px"><img src="${imgs[0]}" style="width:100%;height:auto;max-height:420px;object-fit:cover;border-radius:6px"></div>`;
+        galleryHtml += '<div style="display:flex;flex-direction:column;gap:8px;min-width:110px">';
+        imgs.forEach((u)=>{ galleryHtml += `<img class="thumb" src="${u}" data-src="${u}" style="width:100px;height:70px;object-fit:cover;border-radius:4px;cursor:pointer">`; });
+        galleryHtml += '</div></div>';
+      }
+      document.getElementById('detailContent').innerHTML = `${galleryHtml}<div class="meta">${item.date} · ${item.category} / ${item.sub}</div><h2 style="margin:8px 0">${escapeHtml(item.title)}</h2><p class="note">${escapeHtml(item.content || item.summary || '')}</p>`;
+      // attach thumb handlers
+      setTimeout(()=>{
+        document.querySelectorAll('#detailContent .thumb').forEach(t => t.addEventListener('click', (e)=>{ const src = e.currentTarget.dataset.src; const main = document.getElementById('mainImg'); if(main) main.querySelector('img').src = src; }));
+      }, 20);
+      const modal = document.getElementById('detailModal'); modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
     }
 
     document.getElementById('closeDetail').addEventListener('click', ()=> {
-      const modal = document.getElementById('detailModal');
-      modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');
+      const modal = document.getElementById('detailModal'); modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');
     });
 
     // filtros
@@ -141,12 +134,7 @@
     });
     document.getElementById('subSelect').addEventListener('change', applyFilters);
     document.getElementById('dateFilter').addEventListener('change', applyFilters);
-    document.getElementById('clearFilters').addEventListener('click', ()=> {
-      document.getElementById('searchBox').value = ''; document.getElementById('categorySelect').value = 'all';
-      document.getElementById('subSelect').innerHTML = '<option value="all">Todas las subcategorías</option>';
-      document.getElementById('dateFilter').value = '';
-      renderList(REVIEWS);
-    });
+    document.getElementById('clearFilters').addEventListener('click', ()=> { document.getElementById('searchBox').value=''; document.getElementById('categorySelect').value='all'; document.getElementById('subSelect').innerHTML='<option value=\"all\">Todas las subcategorías</option>'; document.getElementById('dateFilter').value=''; renderList(REVIEWS); });
 
     function applyFilters(){
       const q = document.getElementById('searchBox').value.trim().toLowerCase();
