@@ -1,1 +1,435 @@
-<!doctype html> <html lang="es"> <head> <meta charset="utf-8" /> <meta name="viewport" content="width=device-width,initial-scale=1" /> <title>Libros — Mi Sitio</title> <meta name="description" content="Catálogo de libros: portada, ficha, adelanto con consentimiento." /> <link rel="stylesheet" href="styles.css"> </head> <body> <header class="nav"> <div class="wrap" id="mainNav"></div> </header> <script> (function buildNav(){ const navWrap = document.getElementById('mainNav'); const pages = [ { file: 'index.html', label: 'Sobre mí' }, { file: 'libros.html', label: 'Libros' }, { file: 'reviews.html', label: 'Reseñas' } ]; const current = (location.pathname.split('/').pop() || 'libros.html').toLowerCase(); const left = document.createElement('div'); left.innerHTML = '<strong>Mi Sitio</strong>'; const right = document.createElement('nav'); pages.forEach(p => { if (p.file === current) return; const a = document.createElement('a'); a.href = p.file; a.textContent = p.label; a.style.marginLeft = '12px'; right.appendChild(a); }); navWrap.appendChild(left); navWrap.appendChild(right); })(); </script> <main class="container"> <section class="hero card" aria-hidden="false"> <div style="display:flex;gap:18px;align-items:center"> <div style="flex:1"> <h1 id="siteTitle">Libros</h1> <p class="note" id="siteIntro">Explora los títulos publicados. Haz click en una tarjeta para ver la ficha completa y descargar un adelanto.</p> </div> </div> </section> <section style="margin-top:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap"> <input id="searchInput" type="text" placeholder="Buscar por título..." aria-label="Buscar libros" style="padding:8px;border-radius:8px;border:1px solid #e6eef8;flex:1;min-width:220px"> <input id="dateInput" type="date" aria-label="Filtrar por fecha" style="padding:8px;border-radius:8px;border:1px solid #e6eef8"> <button id="clearFilters" class="btn" style="background:#fff;border:1px solid #e6eef8">Limpiar</button> </section> <section id="booksSection" style="margin-top:16px"> <div id="booksGrid" class="books-grid" aria-live="polite"></div> </section> <footer class="footer" style="margin-top:22px">© 2025 [Openmium]</footer> </main> <!-- Modal: ficha libro --> <div id="bookModal" class="modal" role="dialog" aria-hidden="true"> <div class="modal-card"> <button id="closeBookModal" class="modal-close" aria-label="Cerrar">✕</button> <div id="bookModalContent"></div> </div> </div> <!-- Modal: consentimiento + formspree --> <div id="consentModal" class="modal" role="dialog" aria-hidden="true"> <div class="modal-card"> <button id="closeConsent" class="modal-close" aria-label="Cerrar">✕</button> <h3>Descargar adelanto</h3> <p class="note">Introduce tu email para recibir un extracto del libro.</p> <form id="consentForm" action="https://formspree.io/f/movnqwgr" method="POST"> <input type="hidden" name="book_id" id="consent_book_id"> <label for="emailConsent">Email</label> <input id="emailConsent" name="email" type="email" required placeholder="tu@correo.com"> <div style="display:flex;gap:8px;align-items:flex-start;margin-top:10px"> <input id="consentCheckbox" name="consent" type="checkbox" required style="margin-top:6px"> <label for="consentCheckbox" style="font-weight:700">Acepto recibir el extracto por email</label> </div> <input type="hidden" name="_subject" value="Solicitud de adelanto - Libros"> <div style="margin-top:12px"> <button type="submit" class="btn btn-primary">Enviar y descargar</button> </div> <div id="consentMsg" class="note" aria-live="polite" style="margin-top:10px"></div> <hr style="margin:14px 0"> <p class="note" style="font-size:13px"> <strong>Privacidad:</strong> Usamos tu email solo para enviar el extracto y comunicaciones relacionadas. Base legal: consentimiento. Puedes darte de baja en cualquier momento. No compartimos tu email sin permiso. </p> </form> </div> </div> <script> const booksGrid = document.getElementById('booksGrid'); let BOOKS = []; async function loadBooks(){ try{ // ruta relativa para GitHub Pages de proyecto: 'data/books.json' const res = await fetch('data/books.json', { cache: "no-store" }); if(!res.ok){ // lanza con el status para que quede claro en consola por qué falló throw new Error('No se pudo cargar data/books.json — status ' + res.status); } const data = await res.json(); BOOKS = data.books || []; } catch(err){ console.error('[loadBooks] Error cargando books.json:', err); BOOKS = []; // muestra mensaje visible en la página para depuración const grid = document.getElementById('booksGrid'); if(grid){ grid.innerHTML = <div class="card">Error cargando libros: revisa la consola (F12) y que <code>data/books.json</code> exista en el repo. (${escapeHtml(err.message || '')})</div>; } } // renderiza (aunque esté vacío) para que el UI actualice renderBooks(BOOKS); } function escapeHtml(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); } function renderBooks(list){ booksGrid.innerHTML = ''; if(!list || list.length === 0){ booksGrid.innerHTML = '<div class="card">No hay libros aún.<code>data/books.json</code>.</div>'; return; } list.forEach((b) => { const el = document.createElement('article'); el.className = 'book-card'; el.tabIndex = 0; el.innerHTML = <div class="book-thumb"><img src="${b.cover || 'assets/covers/placeholder.jpg'}" alt="Portada de ${escapeHtml(b.title)}"></div> <div class="book-info"> <h3 class="book-title">${escapeHtml(b.title)}</h3> <p class="book-desc">${escapeHtml((b.description||'').slice(0,280))}</p> </div> ; // tarjeta entera clickable (accesible) el.addEventListener('click', ()=> openBookModal(b)); el.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') openBookModal(b); }); booksGrid.appendChild(el); }); } // Modal ficha libro const bookModal = document.getElementById('bookModal'); const bookModalContent = document.getElementById('bookModalContent'); const closeBookModal = document.getElementById('closeBookModal'); function openBookModal(book){ bookModalContent.innerHTML = <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start"> <div style="min-width:160px"><img src="${book.cover || 'assets/covers/placeholder.jpg'}" alt="${escapeHtml(book.title)}" style="width:160px;height:240px;object-fit:cover;border-radius:6px"></div> <div style="flex:1"> <h2>${escapeHtml(book.title)}</h2> <p class="meta">${escapeHtml(book.subtitle || '')} ${book.date? '· ' + book.date : ''}</p> <p style="margin-top:8px">${escapeHtml(book.description || '')}</p> <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"> <a class="btn btn-primary" href="${book.amazon || '#'}" target="_blank" rel="noopener">Comprar</a> <button id="downloadSampleBtn" class="btn btn-ghost">Descargar adelanto</button> </div> </div> </div> ; bookModal.classList.add('open'); bookModal.setAttribute('aria-hidden','false'); // attach sample button const ds = document.getElementById('downloadSampleBtn'); ds.onclick = ()=> openConsentModal(book.id, book.sample || 'assets/samples/placeholder.pdf'); } closeBookModal.addEventListener('click', ()=> { bookModal.classList.remove('open'); bookModal.setAttribute('aria-hidden','true'); }); bookModal.addEventListener('click', (e)=> { if(e.target === bookModal){ bookModal.classList.remove('open'); bookModal.setAttribute('aria-hidden','true'); } }); // Consent modal & Formspree submit const consentModal = document.getElementById('consentModal'); const consentForm = document.getElementById('consentForm'); const consentMsg = document.getElementById('consentMsg'); const consentBookId = document.getElementById('consent_book_id'); const closeConsent = document.getElementById('closeConsent'); function openConsentModal(bookId, samplePath){ consentBookId.value = bookId; consentForm.dataset.sample = samplePath; consentModal.classList.add('open'); consentModal.setAttribute('aria-hidden','false'); consentMsg.textContent = ''; } closeConsent.addEventListener('click', ()=> { consentModal.classList.remove('open'); consentModal.setAttribute('aria-hidden','true'); }); consentForm.addEventListener('submit', async (ev) => { ev.preventDefault(); consentMsg.textContent = ''; const data = new FormData(consentForm); try { const res = await fetch(consentForm.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } }); if(res.ok){ consentMsg.style.color = 'green'; consentMsg.textContent = 'Gracias — ya puedes descargar el adelanto abajo.'; const sample = consentForm.dataset.sample || 'assets/samples/placeholder.pdf'; const a = document.createElement('a'); a.href = sample; a.download = ''; a.textContent = 'Descargar adelanto'; a.style.display = 'inline-block'; a.style.marginTop = '12px'; a.className = 'btn btn-primary'; const existing = document.getElementById('downloadLink'); if(existing) existing.remove(); a.id = 'downloadLink'; consentForm.appendChild(a); consentForm.reset(); } else { const body = await res.json().catch(()=>null); consentMsg.style.color = 'crimson'; consentMsg.textContent = body?.error || 'Error al enviar. Intenta más tarde.'; } } catch(err){ consentMsg.style.color = 'crimson'; consentMsg.textContent = 'Error de red. Intenta más tarde.'; } }); // Filtros document.getElementById('searchInput').addEventListener('input', applyFilters); document.getElementById('dateInput').addEventListener('change', applyFilters); document.getElementById('clearFilters').addEventListener('click', ()=> { document.getElementById('searchInput').value=''; document.getElementById('dateInput').value=''; renderBooks(BOOKS); }); function applyFilters(){ const q = document.getElementById('searchInput').value.trim().toLowerCase(); const d = document.getElementById('dateInput').value; let filtered = BOOKS.slice(); if(q) filtered = filtered.filter(b => (b.title + ' ' + (b.subtitle||'') + ' ' + (b.description||'')).toLowerCase().includes(q)); if(d) filtered = filtered.filter(b => b.date === d); renderBooks(filtered); } // init loadBooks(); </script> </body> </html><!doctype html> <html lang="es"> <head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width,initial-scale=1"> <title>Reseñas — Mi Sitio</title> <meta name="description" content="Reseñas de productos, libros y más. Filtrado por categoría, sub y fecha."> <link rel="stylesheet" href="styles.css"> </head> <body> <header class="nav"> <div class="wrap" id="mainNav"></div> </header> <script> (function buildNav(){ const navWrap = document.getElementById('mainNav'); const pages = [ { file: 'index.html', label: 'Sobre mí' }, { file: 'libros.html', label: 'Libros' }, { file: 'reviews.html', label: 'Reseñas' } ]; const current = (location.pathname.split('/').pop() || 'reviews.html').toLowerCase(); const left = document.createElement('div'); left.innerHTML = '<strong>Mi Sitio</strong>'; const right = document.createElement('nav'); pages.forEach(p => { if (p.file === current) return; const a = document.createElement('a'); a.href = p.file; a.textContent = p.label; a.style.marginLeft = '12px'; right.appendChild(a); }); navWrap.appendChild(left); navWrap.appendChild(right); })(); </script> <main class="container"> <h1>Reseñas</h1> <section class="card" style="margin-bottom:12px"> <div style="display:flex;gap:8px;flex-wrap:wrap"> <input id="searchBox" placeholder="Buscar por título, tag..." style="flex:1;padding:8px;border-radius:8px;border:1px solid #e6eef8"> <select id="categorySelect" style="padding:8px;border-radius:8px;border:1px solid #e6eef8"> <option value="all">Todas las categorías</option> </select> <select id="subSelect" style="padding:8px;border-radius:8px;border:1px solid #e6eef8"> <option value="all">Todas las subcategorías</option> </select> <input id="dateFilter" type="date" style="padding:8px;border-radius:8px;border:1px solid #e6eef8"> <button id="clearFilters" class="btn" style="background:#fff;border:1px solid #e6eef8">Limpiar</button> </div> </section> <section class="list" id="reviewsList"></section> <footer class="footer">© 2025 [Tu Nombre]</footer> </main> <!-- modal detalle con galería --> <div id="detailModal" class="modal" role="dialog" aria-hidden="true"> <div class="modal-card"> <button id="closeDetail" class="modal-close" aria-label="Cerrar">✕</button> <div id="detailContent"></div> </div> </div> <script> const KEY_REV = 'data/reviews.json'; let REVIEWS = []; async function loadReviews(){ try { // ruta relativa correcta const res = await fetch('data/reviews.json', { cache: "no-store" }); if(!res.ok) throw new Error('No se pudo cargar data/reviews.json — status ' + res.status); const json = await res.json(); REVIEWS = json.reviews || []; } catch(err){ console.error('[loadReviews] Error cargando reviews.json:', err); REVIEWS = []; const container = document.getElementById('reviewsList'); if(container){ container.innerHTML = <div class="card">Error cargando reseñas: revisa la consola (F12). (${escapeHtml(err.message || '')})</div>; } } populateCategoryFilters(); renderList(REVIEWS); } function populateCategoryFilters(){ const cats = Array.from(new Set(REVIEWS.map(r => r.category))).filter(Boolean); const catSel = document.getElementById('categorySelect'); catSel.innerHTML = '<option value="all">Todas las categorías</option>'; cats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c.charAt(0).toUpperCase()+c.slice(1); catSel.appendChild(o); }); } function escapeHtml(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); } function renderList(list){ const el = document.getElementById('reviewsList'); el.innerHTML = ''; if(!list.length){ el.innerHTML = '<div class="card">No hay reseñas.</div>'; return; } list.forEach(r => { const d = document.createElement('div'); d.className = 'card review-card'; d.tabIndex = 0; const thumb = (r.images && r.images[0]) ? r.images[0] : 'assets/covers/placeholder.jpg'; d.innerHTML = <div style="display:flex;gap:12px;align-items:flex-start"><div style="width:120px;height:80px;flex-shrink:0;overflow:hidden;border-radius:6px"><img src="${thumb}" style="width:100%;height:100%;object-fit:cover" alt=""></div><div style="flex:1"><div class="meta">${r.date} · ${r.category} › ${r.sub}</div><h3>${escapeHtml(r.title)}</h3><p class="note">${escapeHtml(r.summary || '')}</p></div></div>; // tarjeta entera clickable d.addEventListener('click', ()=> openDetail(r.id)); d.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') openDetail(r.id); }); el.appendChild(d); }); } function openDetail(id){ const item = REVIEWS.find(x => x.id === id); if(!item) return; const imgs = (item.images || []).slice(0,8); // up to 8 images let galleryHtml = ''; if(imgs.length){ galleryHtml += '<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;align-items:flex-start">'; galleryHtml += <div id="mainImg" style="flex:1;min-width:220px"><img src="${imgs[0]}" style="width:100%;height:auto;max-height:420px;object-fit:cover;border-radius:6px"></div>; galleryHtml += '<div style="display:flex;flex-direction:column;gap:8px;min-width:110px">'; imgs.forEach((u)=>{ galleryHtml += <img class="thumb" src="${u}" data-src="${u}" style="width:100px;height:70px;object-fit:cover;border-radius:4px;cursor:pointer">; }); galleryHtml += '</div></div>'; } document.getElementById('detailContent').innerHTML = ${galleryHtml}<div class="meta">${item.date} · ${item.category} / ${item.sub}</div><h2 style="margin:8px 0">${escapeHtml(item.title)}</h2><p class="note">${escapeHtml(item.content || item.summary || '')}</p>; // attach thumb handlers setTimeout(()=>{ document.querySelectorAll('#detailContent .thumb').forEach(t => t.addEventListener('click', (e)=>{ const src = e.currentTarget.dataset.src; const main = document.getElementById('mainImg'); if(main) main.querySelector('img').src = src; })); }, 20); const modal = document.getElementById('detailModal'); modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); } document.getElementById('closeDetail').addEventListener('click', ()=> { const modal = document.getElementById('detailModal'); modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }); // filtros document.getElementById('searchBox').addEventListener('input', applyFilters); document.getElementById('categorySelect').addEventListener('change', ()=> { const cat = document.getElementById('categorySelect').value; const subs = Array.from(new Set(REVIEWS.filter(r => !cat || cat==='all' ? true : r.category === cat).map(r => r.sub))).filter(Boolean); const subSel = document.getElementById('subSelect'); subSel.innerHTML = '<option value="all">Todas las subcategorías</option>'; subs.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; subSel.appendChild(o); }); applyFilters(); }); document.getElementById('subSelect').addEventListener('change', applyFilters); document.getElementById('dateFilter').addEventListener('change', applyFilters); document.getElementById('clearFilters').addEventListener('click', ()=> { document.getElementById('searchBox').value=''; document.getElementById('categorySelect').value='all'; document.getElementById('subSelect').innerHTML='<option value=\"all\">Todas las subcategorías</option>'; document.getElementById('dateFilter').value=''; renderList(REVIEWS); }); function applyFilters(){ const q = document.getElementById('searchBox').value.trim().toLowerCase(); const cat = document.getElementById('categorySelect').value; const sub = document.getElementById('subSelect').value; const date = document.getElementById('dateFilter').value; let filtered = REVIEWS.slice(); if(cat && cat !== 'all') filtered = filtered.filter(r => r.category === cat); if(sub && sub !== 'all') filtered = filtered.filter(r => r.sub === sub); if(q) filtered = filtered.filter(r => (r.title + ' ' + (r.summary||'') + ' ' + (r.tags || []).join(' ')).toLowerCase().includes(q)); if(date) filtered = filtered.filter(r => r.date === date); renderList(filtered); } // init loadReviews(); </script> </body> </html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reseñas — Mi Sitio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7f9;
+            color: #333;
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .nav {
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+        
+        .wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav strong {
+            font-size: 1.5rem;
+            color: #2c3e50;
+        }
+        
+        .nav nav a {
+            color: #2c3e50;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+        }
+        
+        .nav nav a:hover {
+            text-decoration: underline;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        input, select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            background: #ecf0f1;
+            color: #2c3e50;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #ddd;
+        }
+        
+        .review-card {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+        }
+        
+        .review-image {
+            width: 120px;
+            height: 80px;
+            flex-shrink: 0;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+        
+        .review-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .review-content {
+            flex: 1;
+        }
+        
+        .meta {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+        
+        .review-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        
+        .note {
+            color: #34495e;
+            margin-bottom: 10px;
+        }
+        
+        .rating {
+            color: #f39c12;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .price {
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 8px;
+        }
+        
+        .product-link {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .product-link:hover {
+            background: #2980b9;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            margin-top: 30px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .filter-row input, .filter-row select {
+            flex: 1;
+            min-width: 150px;
+            margin-bottom: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .review-card {
+                flex-direction: column;
+            }
+            
+            .review-image {
+                width: 100%;
+                height: 160px;
+            }
+            
+            .filter-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="nav">
+        <div class="wrap">
+            <strong>Mi Sitio</strong>
+            <nav>
+                <a href="index.html">Sobre mí</a>
+                <a href="libros.html">Libros</a>
+                <a href="reviews.html">Reseñas</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>Reseñas</h1>
+        
+        <section class="card">
+            <div class="filter-row">
+                <input id="searchBox" placeholder="Buscar por título, tag...">
+                <select id="categorySelect">
+                    <option value="all">Todas las categorías</option>
+                </select>
+                <select id="subSelect">
+                    <option value="all">Todas las subcategorías</option>
+                </select>
+                <input id="dateFilter" type="date">
+                <button id="clearFilters" class="btn">Limpiar</button>
+            </div>
+        </section>
+        
+        <section class="list" id="reviewsList"></section>
+    </main>
+
+    <footer class="footer">
+        © 2025 Mi Sitio
+    </footer>
+
+    <script>
+        // Variables globales
+        let REVIEWS = [];
+        const CATEGORIES = {
+            "informática": ["Hardware","Periféricos","Placas de desarrollo","Accesorios"],
+            "electrónica DIY": ["Sensores","Módulos y placas","Herramientas de soldadura","Pantallas y displays"],
+            "accesorios móviles/tablets": ["Protectores de pantalla","Fundas y estuches","Stylus y repuestos","Baterías y cargadores"],
+            "juguetes y ocio": ["Juegos de mesa","Consolas retro","Juguetes de agua"],
+            "papelería y oficina": ["Marcadores y recambios","Borradores magnéticos","Marcapáginas","Organizadores"],
+            "hogar y estilo de vida": ["Accesorios de cocina","Cintas y pegatinas","Joyas y bisutería"],
+            "audio": ["Altavoces","Auriculares","Repuestos"],
+            "libros": ["Narrativa","Ensayo","Educativos","Arte y fotografía"]
+        };
+
+        // Función para cargar reseñas desde el archivo JSON
+        async function loadReviews() {
+            try {
+                const res = await fetch('data/reviews.json');
+                if (!res.ok) throw new Error('No se pudo cargar el archivo de reseñas');
+                
+                const data = await res.json();
+                REVIEWS = data.reviews || [];
+                
+                populateCategoryFilters();
+                renderList(REVIEWS);
+            } catch (err) {
+                console.error('Error cargando reseñas:', err);
+                const container = document.getElementById('reviewsList');
+                if (container) {
+                    container.innerHTML = '<div class="card">Error cargando reseñas. Verifique la consola para más detalles.</div>';
+                }
+            }
+        }
+
+        // Función para generar estrellas de valoración
+        function generateStarRating(rating) {
+            let stars = '';
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            
+            for (let i = 0; i < fullStars; i++) {
+                stars += '★';
+            }
+            
+            if (hasHalfStar) {
+                stars += '½';
+            }
+            
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+            for (let i = 0; i < emptyStars; i++) {
+                stars += '☆';
+            }
+            
+            return stars;
+        }
+
+        // Llenar los filtros de categorías
+        function populateCategoryFilters() {
+            const categorySelect = document.getElementById('categorySelect');
+            
+            // Agregar categorías al selector
+            for (const category in CATEGORIES) {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                categorySelect.appendChild(option);
+            }
+        }
+
+        // Renderizar la lista de reseñas
+        function renderList(list) {
+            const el = document.getElementById('reviewsList');
+            el.innerHTML = '';
+            
+            if (!list.length) {
+                el.innerHTML = '<div class="card">No hay reseñas que coincidan con los filtros.</div>';
+                return;
+            }
+            
+            list.forEach(r => {
+                const d = document.createElement('div');
+                d.className = 'review-card';
+                
+                // Verificar si las imágenes son del Blu-ray y usar las locales
+                let images = r.images || [];
+                if (r.title.includes('Blu-Ray') || r.title.includes('Blu-ray')) {
+                    images = [
+                        'assets/reviews/BlueRay.jpg',
+                        'assets/reviews/BlueRay1.jpg',
+                        'assets/reviews/BlueRay2.jpg',
+                        'assets/reviews/BlueRay3.jpg'
+                    ];
+                }
+                
+                const thumb = images.length ? images[0] : 'assets/covers/placeholder.jpg';
+                
+                d.innerHTML = `
+                    <div class="review-image">
+                        <img src="${thumb}" alt="${r.title}">
+                    </div>
+                    <div class="review-content">
+                        <div class="meta">${r.date} · ${r.category} › ${r.sub}</div>
+                        <h3>${escapeHtml(r.title)}</h3>
+                        <p class="note">${escapeHtml(r.summary || '')}</p>
+                        <div class="price">${escapeHtml(r.price)}</div>
+                        <div class="rating">${generateStarRating(r.rating)} (${r.rating}/5)</div>
+                        <a href="${r.link}" target="_blank" class="product-link">Ver producto</a>
+                    </div>
+                `;
+                
+                el.appendChild(d);
+            });
+        }
+
+        // Función para escapar HTML
+        function escapeHtml(s) {
+            if (!s) return '';
+            return String(s).replace(/&/g, '&amp;')
+                           .replace(/</g, '&lt;')
+                           .replace(/>/g, '&gt;')
+                           .replace(/"/g, '&quot;')
+                           .replace(/'/g, '&#039;');
+        }
+
+        // Aplicar filtros
+        function applyFilters() {
+            const searchText = document.getElementById('searchBox').value.toLowerCase();
+            const category = document.getElementById('categorySelect').value;
+            const subCategory = document.getElementById('subSelect').value;
+            const date = document.getElementById('dateFilter').value;
+            
+            let filtered = REVIEWS.filter(r => {
+                // Filtro de búsqueda
+                const matchesSearch = !searchText || 
+                    r.title.toLowerCase().includes(searchText) ||
+                    (r.summary && r.summary.toLowerCase().includes(searchText)) ||
+                    (r.tags && r.tags.some(tag => tag.toLowerCase().includes(searchText)));
+                
+                // Filtro de categoría
+                const matchesCategory = category === 'all' || r.category === category;
+                
+                // Filtro de subcategoría
+                const matchesSubCategory = subCategory === 'all' || r.sub === subCategory;
+                
+                // Filtro de fecha
+                const matchesDate = !date || r.date === date;
+                
+                return matchesSearch && matchesCategory && matchesSubCategory && matchesDate;
+            });
+            
+            renderList(filtered);
+        }
+
+        // Limpiar filtros
+        function clearFilters() {
+            document.getElementById('searchBox').value = '';
+            document.getElementById('categorySelect').value = 'all';
+            document.getElementById('subSelect').value = 'all';
+            document.getElementById('dateFilter').value = '';
+            
+            renderList(REVIEWS);
+        }
+
+        // Actualizar subcategorías cuando cambia la categoría
+        function updateSubcategories() {
+            const categorySelect = document.getElementById('categorySelect');
+            const subSelect = document.getElementById('subSelect');
+            const selectedCategory = categorySelect.value;
+            
+            subSelect.innerHTML = '<option value="all">Todas las subcategorías</option>';
+            
+            if (selectedCategory !== 'all' && CATEGORIES[selectedCategory]) {
+                CATEGORIES[selectedCategory].forEach(sub => {
+                    const option = document.createElement('option');
+                    option.value = sub;
+                    option.textContent = sub;
+                    subSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Inicializar eventos
+        document.addEventListener('DOMContentLoaded', function() {
+            loadReviews();
+            
+            document.getElementById('searchBox').addEventListener('input', applyFilters);
+            document.getElementById('categorySelect').addEventListener('change', function() {
+                updateSubcategories();
+                applyFilters();
+            });
+            document.getElementById('subSelect').addEventListener('change', applyFilters);
+            document.getElementById('dateFilter').addEventListener('change', applyFilters);
+            document.getElementById('clearFilters').addEventListener('click', clearFilters);
+        });
+    </script>
+</body>
+</html>
