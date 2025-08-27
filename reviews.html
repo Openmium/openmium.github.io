@@ -43,9 +43,7 @@
     </div>
 
     <div class="layout">
-      <div class="list" id="list">
-        <!-- rendered reviews -->
-      </div>
+      <div class="list" id="list"></div>
 
       <aside>
         <div class="calendar">
@@ -56,9 +54,7 @@
             <button id="nextMonth" class="btn" style="background:#fff;color:var(--text);border:1px solid #e6eef8;padding:6px 10px">›</button>
           </div>
 
-          <div class="cal-grid" id="calGrid" style="margin-top:10px">
-            <!-- calendar -->
-          </div>
+          <div class="cal-grid" id="calGrid" style="margin-top:10px"></div>
         </div>
       </aside>
     </div>
@@ -78,12 +74,11 @@
     (function buildNav(){
       const navWrap = document.getElementById('mainNav');
       const pages = [
-        { file: 'index.html', label: 'Inicio' },
         { file: 'libros.html', label: 'Libros' },
         { file: 'reviews.html', label: 'Reseñas' },
         { file: 'about.html', label: 'Sobre mí' }
       ];
-      const current = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+      const current = (location.pathname.split('/').pop() || 'reviews.html').toLowerCase();
       const left = document.createElement('div'); left.innerHTML = '<strong>Mi Sitio</strong>';
       const right = document.createElement('nav');
       pages.forEach(p => { if (p.file === current) return; const a = document.createElement('a'); a.href = p.file; a.textContent = p.label; a.style.marginLeft = '12px'; right.appendChild(a); });
@@ -92,15 +87,13 @@
 
     // reviews storage
     const KEY = 'mi_reseñas_v1';
-    const DEFAULT = [
-      { id: 1, title: 'Mindfulness Diario', category: 'salud', sub: 'Salud mental', date: '2025-08-10', summary: 'Guía sobre meditación.' }
-    ];
+    const DEFAULT = [ { id: 1, title: 'Mindfulness Diario', category: 'salud', sub: 'Salud mental', date: '2025-08-10', summary: 'Guía sobre meditación.' } ];
     function load(){ try{ const raw = localStorage.getItem(KEY); return raw?JSON.parse(raw):DEFAULT.slice(); }catch(e){ return DEFAULT.slice(); } }
     function save(list){ localStorage.setItem(KEY, JSON.stringify(list)); }
 
     function renderList(list){
       const container = document.getElementById('list'); container.innerHTML = '';
-      if(!list || list.length===0){ container.innerHTML = '<div class="card">No hay reseñas.</div>'; return; }
+      if(!list || list.length===0){ container.innerHTML = '<div class=\"card\">No hay reseñas.</div>'; return; }
       list.forEach(r => {
         const div = document.createElement('div'); div.className = 'card';
         div.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:flex-start">
@@ -116,7 +109,6 @@
         </div>`;
         container.appendChild(div);
       });
-      // attach handlers
       container.querySelectorAll('button[data-id]').forEach(b => b.addEventListener('click', e => openDetail(Number(e.currentTarget.dataset.id))));
       container.querySelectorAll('button[data-del]').forEach(b => b.addEventListener('click', e => { if(confirm('Eliminar reseña?')) removeReview(Number(e.currentTarget.dataset.del)); }));
     }
@@ -129,7 +121,8 @@
       if(!title){ alert('Título requerido'); return; }
       const list = load(); const id = Date.now();
       list.unshift({ id, title, category, sub, date, summary: '' });
-      save(list); renderList(list); document.getElementById('rvTitle').value=''; document.getElementById('rvSub').value=''; document.getElementById('rvDate').value='';
+      save(list); renderList(list); renderCalendar(calDate);
+      document.getElementById('rvTitle').value=''; document.getElementById('rvSub').value=''; document.getElementById('rvDate').value='';
     }
 
     function removeReview(id){ let list = load(); list = list.filter(x => x.id !== id); save(list); renderList(list); renderCalendar(calDate); }
@@ -151,7 +144,7 @@
       renderList(list); renderCalendar(calDate, list);
     }
 
-    // calendar basics
+    // calendario
     const calGrid = document.getElementById('calGrid');
     const monthLabel = document.getElementById('monthLabel');
     const prevMonth = document.getElementById('prevMonth');
@@ -180,8 +173,8 @@
           cell.appendChild(mini);
           cell.title = titles.join(' — ');
         }
-        cell.addEventListener('click', ()=> { document.getElementById('searchBox').value=''; document.getElementById('categoryFilter').value='all'; document.getElementById('rvDate').value = iso; // set date on add form
-          // filter by date
+        cell.addEventListener('click', ()=> {
+          document.getElementById('searchBox').value=''; document.getElementById('categoryFilter').value='all';
           const filtered = load().filter(x => x.date === iso);
           renderList(filtered);
         });
