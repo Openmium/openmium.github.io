@@ -5,42 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Mi Landing — Ebook</title>
   <meta name="description" content="Landing del ebook — descarga de capítulo y enlaces a Sobre mí, Libros y Reseñas." />
-  <style>
-    :root{
-      --accent:#0b74de;
-      --muted:#556;
-      --card:#fff;
-      --bg:#f6f9ff;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Inter,system-ui,Arial;background:var(--bg);color:#111;line-height:1.5}
-    .nav{background:#fff;border-bottom:1px solid #eee;position:sticky;top:0;z-index:80}
-    .nav .wrap{max-width:1100px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;justify-content:space-between}
-    .nav a{margin-left:14px;text-decoration:none;color:#333;font-weight:600}
-    .container{max-width:1100px;margin:24px auto;padding:18px}
-    .hero{display:flex;gap:22px;align-items:center;background:linear-gradient(90deg,#fbfeff,#ffffff);padding:22px;border-radius:12px;box-shadow:0 6px 30px rgba(2,6,23,0.06)}
-    .cover{width:210px;height:300px;border-radius:8px;overflow:hidden;background:#eee;flex-shrink:0}
-    .cover img{width:100%;height:100%;object-fit:cover}
-    .hero h1{font-size:26px;margin-bottom:6px}
-    .hero p{color:var(--muted);margin-bottom:12px}
-    .btn{padding:10px 14px;border-radius:8px;border:none;cursor:pointer}
-    .btn-primary{background:var(--accent);color:#fff}
-    .btn-ghost{background:transparent;border:1px solid #ddd}
-    section{margin-top:18px;padding:22px;border-radius:10px}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-    .card{background:var(--card);padding:14px;border-radius:10px;border:1px solid #eef2f7;box-shadow:0 3px 10px rgba(2,6,23,0.04)}
-    footer{text-align:center;color:var(--muted);font-size:13px;margin-top:26px}
-    /* modal */
-    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;padding:18px;z-index:120}
-    .modal.open{display:flex}
-    .modal-card{background:#fff;border-radius:12px;padding:18px;max-width:720px;width:100%;max-height:90vh;overflow:auto;position:relative}
-    .modal-close{position:absolute;right:12px;top:12px;border:none;background:#f2f4f7;border-radius:6px;padding:6px;cursor:pointer}
-    label{display:block;margin-top:10px;font-weight:600}
-    input[type=email]{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin-top:6px}
-    .consent{display:flex;gap:10px;align-items:flex-start;margin-top:10px}
-    .note{font-size:13px;color:var(--muted);margin-top:8px}
-    @media(max-width:780px){.hero{flex-direction:column;align-items:flex-start}.cover{width:160px;height:220px}}
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="nav">
@@ -48,24 +13,24 @@
       <div><strong>Mi Sitio</strong></div>
       <nav>
         <a href="index.html">Inicio</a>
-        <a href="libros.html">Libros</a>
-        <a href="reviews.html">Reseñas</a>
-        <a href="about.html" style="margin-left:14px">Sobre mí</a>
+        <a href="libros.html" style="margin-left:12px">Libros</a>
+        <a href="reviews.html" style="margin-left:12px">Reseñas</a>
+        <a href="about.html" style="margin-left:12px">Sobre mí</a>
       </nav>
     </div>
   </header>
 
   <main class="container">
-    <section class="hero" id="libro">
+    <section class="hero">
       <div class="cover card"><img src="cover.svg" alt="Portada del libro"></div>
-      <div>
+      <div style="flex:1">
         <h1>Mi Ebook — Subtítulo potente</h1>
-        <p>Relatos intensos y directos. Extra gratuito, reseñas y proyectos relacionados.</p>
-        <div style="display:flex;gap:12px;margin-top:8px">
+        <p class="note">Relatos intensos y directos. Extra gratuito, reseñas y proyectos relacionados.</p>
+        <div style="margin-top:12px;display:flex;gap:10px">
           <a class="btn btn-primary" href="AMAZON_LINK_AQUI" target="_blank" rel="noopener">Comprar en Amazon</a>
           <button id="openModal" class="btn btn-ghost">Leer capítulo gratis</button>
         </div>
-        <p class="note" style="margin-top:10px">Puedes ver ejemplos y el repositorio en <a href="GITHUB_LINK_AQUI" target="_blank">GitHub</a> · <a href="PINTEREST_LINK_AQUI" target="_blank">Pinterest</a></p>
+        <p class="note" style="margin-top:10px">Enlaces: <a href="GITHUB_LINK_AQUI" target="_blank">GitHub</a> · <a href="PINTEREST_LINK_AQUI" target="_blank">Pinterest</a></p>
       </div>
     </section>
 
@@ -78,60 +43,77 @@
       </div>
     </section>
 
-    <section class="card" style="margin-top:18px">
-      <h2>Reseñas destacadas</h2>
-      <div class="grid" style="margin-top:12px">
-        <div class="card"><strong>Relatos crudos</strong><p class="note">Una reseña sobre el estilo narrativo.</p></div>
-        <div class="card"><strong>Guía de escritura</strong><p class="note">Un recurso práctico que recomiendo.</p></div>
-      </div>
-    </section>
-
-    <footer>
-      <p class="note">© 2025 [Tu Nombre] · Reemplaza placeholders (AMAZON_LINK_AQUI, GITHUB_LINK_AQUI, etc.) por tus enlaces reales.</p>
+    <footer class="footer">
+      © 2025 [Tu Nombre] · Reemplaza placeholders por tus enlaces reales.
     </footer>
   </main>
 
-  <!-- Modal: formulario + política resumida -->
+  <!-- Modal -->
   <div id="modal" class="modal" role="dialog" aria-hidden="true">
     <div class="modal-card" role="document">
       <button class="modal-close" id="modalClose" aria-label="Cerrar">✕</button>
-      <h3>Descarga el capítulo 1 (extracto)</h3>
-      <p class="note">Introduce tu email para recibir el extracto. Revisa tu bandeja (puede llegar a spam).</p>
+      <h3>Descarga el capítulo 1</h3>
+      <p class="note">Introduce tu email para recibir el extracto.</p>
 
-      <form id="leadForm" action="https://formspree.io/f/movnqwgr" method="POST" style="margin-top:10px">
+      <form id="leadForm" action="https://formspree.io/f/movnqwgr" method="POST">
         <label for="emailInput">Email</label>
         <input id="emailInput" name="email" type="email" required placeholder="tu@correo.com">
-
-        <div class="consent">
+        <div style="display:flex;gap:8px;align-items:flex-start;margin-top:10px">
           <input id="consent" name="consent" type="checkbox" required style="margin-top:6px">
           <div>
             <label for="consent"><strong>Acepto recibir correos relacionados con este ebook</strong></label>
-            <p class="note">Puedes darte de baja en cualquier momento. Tus datos no se compartirán sin tu permiso.</p>
+            <p class="note">Puedes darte de baja en cualquier momento.</p>
           </div>
         </div>
 
         <input type="hidden" name="_subject" value="Nuevo suscriptor - Ebook">
-        <div style="margin-top:12px;"><button type="submit" class="btn btn-primary">Recibir capítulo</button></div>
+        <div style="margin-top:12px">
+          <button type="submit" class="btn btn-primary">Recibir capítulo</button>
+        </div>
+        <div id="formMsg" class="note" aria-live="polite" style="margin-top:10px"></div>
       </form>
 
       <hr style="margin:14px 0">
-
       <div>
         <h4>Política de privacidad (resumen)</h4>
-        <p class="note">Recopilamos el email solo para enviar el extracto y comunicaciones relacionadas. Base legal: consentimiento. Para ejercer derechos (acceso, rectificación, supresión) contacta en contacto@tusitio.com.</p>
+        <p class="note">Recopilamos el email solo para enviar el extracto y comunicaciones relacionadas.</p>
       </div>
     </div>
   </div>
 
   <script>
-    // Modal behavior (open/close outside and Escape)
+    // modal open/close
     const modal = document.getElementById('modal');
     const openModalBtn = document.getElementById('openModal');
     const modalCloseBtn = document.getElementById('modalClose');
-    openModalBtn.addEventListener('click', ()=>{ modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); });
-    modalCloseBtn.addEventListener('click', ()=>{ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); });
-    modal.addEventListener('click', (e)=>{ if(e.target === modal){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); } });
-    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && modal.classList.contains('open')){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); } });
+    openModalBtn.addEventListener('click', ()=> { modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); });
+    modalCloseBtn.addEventListener('click', ()=> { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); });
+    modal.addEventListener('click', e => { if(e.target === modal) { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); } });
+    document.addEventListener('keydown', e => { if(e.key === 'Escape' && modal.classList.contains('open')) { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); } });
+
+    // Formspree submit with fetch and inline feedback
+    const form = document.getElementById('leadForm');
+    const formMsg = document.getElementById('formMsg');
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      formMsg.textContent = '';
+      const data = new FormData(form);
+      try {
+        const res = await fetch(form.action, { method:'POST', body: data, headers: {'Accept':'application/json'} });
+        if(res.ok) {
+          formMsg.style.color = 'green';
+          formMsg.textContent = '¡Gracias! Revisa tu correo para el extracto.';
+          form.reset();
+        } else {
+          const body = await res.json().catch(()=>null);
+          formMsg.style.color = 'crimson';
+          formMsg.textContent = body?.error || 'Error al enviar. Intenta de nuevo más tarde.';
+        }
+      } catch (err) {
+        formMsg.style.color = 'crimson';
+        formMsg.textContent = 'Error de red. Intenta de nuevo.';
+      }
+    });
   </script>
 </body>
 </html>
