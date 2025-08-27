@@ -2,12 +2,12 @@
   "books": [
     {
       "id": 1693000000001,
-      "title": "Perfecto — Reescritura",
-      "subtitle": "Capítulo 4 reescrito",
-      "description": "Relatos en voz femenina, directos y crudos. Prosa contundente y escenas que impactan.",
-      "cover": "assets/covers/perfecto.jpg",
-      "sample": "assets/samples/perfecto-sample.pdf",
-      "amazon": "https://www.amazon.example/book/perfecto",
+      "title": "Mental ruins",
+      "subtitle": "Cuando ya no puedes más",
+      "description": "Relato sobre una joven que ha sido maltratada por la vida; sufre intentando ser ella la que controle sus acciones. Para el comienzo del descubrimiento que es vivir bien.",
+      "cover": "assets/covers/Mental-ruins.jpg",
+      "sample": "assets/samples/Mental-ruins.pdf",
+      "amazon": "https://kdp.amazon.com/es_ES/bookshelf",
       "date": "2025-08-15"
     },
     {
