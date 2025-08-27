@@ -1,119 +1,67 @@
 <!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mi Landing — Ebook</title>
-  <meta name="description" content="Landing del ebook — descarga de capítulo y enlaces a Sobre mí, Libros y Reseñas." />
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <header class="nav">
-    <div class="wrap">
-      <div><strong>Mi Sitio</strong></div>
-      <nav>
-        <a href="index.html">Inicio</a>
-        <a href="libros.html" style="margin-left:12px">Libros</a>
-        <a href="reviews.html" style="margin-left:12px">Reseñas</a>
-        <a href="about.html" style="margin-left:12px">Sobre mí</a>
-      </nav>
-    </div>
-  </header>
 
-  <main class="container">
-    <section class="hero">
-      <div class="cover card"><img src="cover.svg" alt="Portada del libro"></div>
-      <div style="flex:1">
-        <h1>Mi Ebook — Subtítulo potente</h1>
-        <p class="note">Relatos intensos y directos. Extra gratuito, reseñas y proyectos relacionados.</p>
-        <div style="margin-top:12px;display:flex;gap:10px">
-          <a class="btn btn-primary" href="AMAZON_LINK_AQUI" target="_blank" rel="noopener">Comprar en Amazon</a>
-          <button id="openModal" class="btn btn-ghost">Leer capítulo gratis</button>
-        </div>
-        <p class="note" style="margin-top:10px">Enlaces: <a href="GITHUB_LINK_AQUI" target="_blank">GitHub</a> · <a href="PINTEREST_LINK_AQUI" target="_blank">Pinterest</a></p>
-      </div>
-    </section>
 
-    <section class="card" style="margin-top:18px">
-      <h2>Lo que encontrarás</h2>
-      <div class="grid" style="margin-top:12px">
-        <div class="card"><strong>Voz intensa</strong><p class="note">Prosa directa y sensación inmediata.</p></div>
-        <div class="card"><strong>Material extra</strong><p class="note">Apuntes y ejemplos prácticos en GitHub.</p></div>
-        <div class="card"><strong>Formato</strong><p class="note">Kindle y PDF de muestra.</p></div>
-      </div>
-    </section>
+<input type="hidden" name="_subject" value="Nuevo suscriptor - Ebook">
+<div style="margin-top:12px">
+<button type="submit" class="btn btn-primary">Recibir capítulo</button>
+</div>
+<div id="formMsg" class="note" aria-live="polite" style="margin-top:10px"></div>
+</form>
 
-    <footer class="footer">
-      © 2025 [Tu Nombre] · Reemplaza placeholders por tus enlaces reales.
-    </footer>
-  </main>
 
-  <!-- Modal -->
-  <div id="modal" class="modal" role="dialog" aria-hidden="true">
-    <div class="modal-card" role="document">
-      <button class="modal-close" id="modalClose" aria-label="Cerrar">✕</button>
-      <h3>Descarga el capítulo 1</h3>
-      <p class="note">Introduce tu email para recibir el extracto.</p>
+<hr style="margin:14px 0">
+<div>
+<h4>Política de privacidad (resumen)</h4>
+<p class="note">Recopilamos el email solo para enviar el extracto y comunicaciones relacionadas.</p>
+</div>
+</div>
+</div>
 
-      <form id="leadForm" action="https://formspree.io/f/movnqwgr" method="POST">
-        <label for="emailInput">Email</label>
-        <input id="emailInput" name="email" type="email" required placeholder="tu@correo.com">
-        <div style="display:flex;gap:8px;align-items:flex-start;margin-top:10px">
-          <input id="consent" name="consent" type="checkbox" required style="margin-top:6px">
-          <div>
-            <label for="consent"><strong>Acepto recibir correos relacionados con este ebook</strong></label>
-            <p class="note">Puedes darte de baja en cualquier momento.</p>
-          </div>
-        </div>
 
-        <input type="hidden" name="_subject" value="Nuevo suscriptor - Ebook">
-        <div style="margin-top:12px">
-          <button type="submit" class="btn btn-primary">Recibir capítulo</button>
-        </div>
-        <div id="formMsg" class="note" aria-live="polite" style="margin-top:10px"></div>
-      </form>
+<script>
+// --- Dynamic header: show only other pages (not current) ---
+(function buildNav(){
+const nav = document.getElementById('mainNav');
+const pages = [
+{file:'index.html', label:'Inicio'},
+{file:'libros.html', label:'Libros'},
+{file:'reviews.html', label:'Reseñas'},
+{file:'about.html', label:'Sobre mí'}
+];
+const current = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+const left = document.createElement('div'); left.innerHTML = '<strong>Mi Sitio</strong>';
+const right = document.createElement('nav');
+pages.forEach(p => {
+if(p.file === current) return; // skip current
+const a = document.createElement('a'); a.href = p.file; a.textContent = p.label; a.style.marginLeft = '12px';
+right.appendChild(a);
+});
+nav.appendChild(left); nav.appendChild(right);
+})();
 
-      <hr style="margin:14px 0">
-      <div>
-        <h4>Política de privacidad (resumen)</h4>
-        <p class="note">Recopilamos el email solo para enviar el extracto y comunicaciones relacionadas.</p>
-      </div>
-    </div>
-  </div>
 
-  <script>
-    // modal open/close
-    const modal = document.getElementById('modal');
-    const openModalBtn = document.getElementById('openModal');
-    const modalCloseBtn = document.getElementById('modalClose');
-    openModalBtn.addEventListener('click', ()=> { modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); });
-    modalCloseBtn.addEventListener('click', ()=> { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); });
-    modal.addEventListener('click', e => { if(e.target === modal) { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); } });
-    document.addEventListener('keydown', e => { if(e.key === 'Escape' && modal.classList.contains('open')) { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); } });
+// modal logic
+const modal = document.getElementById('modal');
+const openModalBtn = document.getElementById('openModal');
+const modalCloseBtn = document.getElementById('modalClose');
+openModalBtn && openModalBtn.addEventListener('click', ()=> { modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); });
+modalCloseBtn && modalCloseBtn.addEventListener('click', ()=> { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); });
+modal && modal.addEventListener('click', e => { if(e.target === modal){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); } });
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && modal.classList.contains('open')) { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); } });
 
-    // Formspree submit with fetch and inline feedback
-    const form = document.getElementById('leadForm');
-    const formMsg = document.getElementById('formMsg');
-    form.addEventListener('submit', async (ev) => {
-      ev.preventDefault();
-      formMsg.textContent = '';
-      const data = new FormData(form);
-      try {
-        const res = await fetch(form.action, { method:'POST', body: data, headers: {'Accept':'application/json'} });
-        if(res.ok) {
-          formMsg.style.color = 'green';
-          formMsg.textContent = '¡Gracias! Revisa tu correo para el extracto.';
-          form.reset();
-        } else {
-          const body = await res.json().catch(()=>null);
-          formMsg.style.color = 'crimson';
-          formMsg.textContent = body?.error || 'Error al enviar. Intenta de nuevo más tarde.';
-        }
-      } catch (err) {
-        formMsg.style.color = 'crimson';
-        formMsg.textContent = 'Error de red. Intenta de nuevo.';
-      }
-    });
-  </script>
+
+// Formspree with fetch feedback
+const form = document.getElementById('leadForm');
+const formMsg = document.getElementById('formMsg');
+form && form.addEventListener('submit', async (ev) => {
+ev.preventDefault(); formMsg.textContent = '';
+const data = new FormData(form);
+try{
+const res = await fetch(form.action, {method:'POST', body: data, headers:{'Accept':'application/json'}});
+if(res.ok){ formMsg.style.color='green'; formMsg.textContent='¡Gracias! Revisa tu correo.'; form.reset(); }
+else{ const body = await res.json().catch(()=>null); formMsg.style.color='crimson'; formMsg.textContent = body?.error || 'Error al enviar.'; }
+}catch(err){ formMsg.style.color='crimson'; formMsg.textContent='Error de red.'; }
+});
+</script>
 </body>
 </html>
