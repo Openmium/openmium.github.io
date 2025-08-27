@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Libros — Mi Sitio</title>
+  <meta name="description" content="Landing / Libros — muestra tus títulos, modal con ficha y descarga de adelanto (Formspree)." />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap" id="mainNav"></div>
+  </header>
+
+  <main class="container">
+    <section class="hero card" id="heroStatic" aria-hidden="false">
+      <div style="display:flex;gap:18px;align-items:center">
+        <div class="cover" id="heroCover"><img src="cover.svg" alt="Portada destacada"></div>
+        <div style="flex:1">
+          <h1 id="siteTitle">Mis libros</h1>
+          <p class="note" id="siteIntro">Explora los títulos publicados. Haz click en una portada para ver la ficha completa y descargar un adelanto.</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-top:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <input id="searchInput" type="text" placeholder="Buscar por título..." style="padding:8px;border-radius:8px;border:1px solid #e6eef8;flex:1;min-width:220px">
+      <input id="dateInput" type="date" style="padding:8px;border-radius:8px;border:1px solid #e6eef8">
+      <button id="clearFilters" class="btn" style="background:#fff;border:1px solid #e6eef8">Limpiar</button>
+    </section>
+
+    <section id="booksSection" style="margin-top:16px">
+      <div id="booksGrid" class="books-grid" aria-live="polite">
+        <!-- Cards renderizadas desde data/books.json -->
+      </div>
+    </section>
+
+    <footer class="footer" style="margin-top:22px">© 2025 [Tu Nombre]</footer>
+  </main>
+
+  <!-- Modal: ficha libro -->
+  <div id="bookModal" class="modal" role="dialog" aria-hidden="true">
+    <div class="modal-card">
+      <button id="closeBookModal" class="modal-close" aria-label="Cerrar">✕</button>
+      <div id="bookModalContent"></div>
+    </div>
+  </div>
+
+  <!-- Modal: consentimiento + formspree -->
+  <div id="consentModal" class="modal" role="dialog" aria-hidden="true">
+    <div class="modal-card">
+      <button id="closeConsent" class="modal-close" aria-label="Cerrar">✕</button>
+      <h3>Recibir adelanto</h3>
+      <p class="note">Introduce tu email para recibir un extracto del libro por correo.</p>
+
+      <form id="consentForm" action="https://formspree.io/f/movnqwgr" method="POST">
+        <input type="hidden" name="book_id" id="consent_book_id">
+        <label for="emailConsent">Email</label>
+        <input id="emailConsent" name="email" type="email" required placeholder="tu@correo.com">
+        <div style="display:flex;gap:8px;align-items:flex-start;margin-top:10px">
+          <input id="consentCheckbox" name="consent" type="checkbox" required style="margin-top:6px">
+          <label for="consentCheckbox" style="font-weight:700">Acepto recibir el extracto por email</label>
+        </div>
+
+        <input type="hidden" name="_subject" value="Solicitud de adelanto - Libros">
+        <div style="margin-top:12px">
+          <button type="submit" class="btn btn-primary">Enviar y descargar</button>
+        </div>
+        <div id="consentMsg" class="note" aria-live="polite" style="margin-top:10px"></div>
+
+        <hr style="margin:14px 0">
+        <p class="note" style="font-size:13px">
+          <strong>Privacidad:</strong> Usamos tu email solo para enviar el extracto y comunicaciones relacionadas. Base legal: consentimiento.
+          Puedes darte de baja en cualquier momento. No compartimos tu email sin permiso.
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    /* Header builder: muestra solo 'Sobre mí' y 'Reseñas' (no repetir la página actual) */
+    (function buildNav(){
+      const navWrap = document.getElementById('mainNav');
+      const pages = [
+        { file: 'libros.html', label: 'Libros' },
+        { file: 'reviews.html', label: 'Reseñas' },
+        { file: 'about.html', label: 'Sobre mí' }
+      ];
+      const current = (location.pathname.split('/').pop() || 'libros.html').toLowerCase();
+      const left = document.createElement('div'); left.innerHTML = '<strong>Mi Sitio</strong>';
+      const right = document.createElement('nav');
+      pages.forEach(p => { if (p.file === current) return; const a = document.createElement('a'); a.href = p.file; a.textContent = p.label; a.style.marginLeft = '12px'; right.appendChild(a); });
+      navWrap.appendChild(left); navWrap.appendChild(right);
+    })();
+
+    // -----------------------------
+    // Carga y renderización estática desde /data/books.json
+    // -----------------------------
+    const booksGrid = document.getElementById('booksGrid');
+    let BOOKS = [];
+
+    async function loadBooks(){
+      try{
+        const res = await fetch('/data/books.json', {cache: "no-store"});
+        if(!res.ok) throw new Error('No se pudo cargar data/books.json');
+        const data = await res.json();
+        BOOKS = data.books || [];
+      } catch(err){
+        console.error(err);
+        BOOKS = []; // Si quieres, puedes poner aquí un fallback estático
+      }
+      renderBooks(BOOKS);
+    }
+
+    function truncateTwoLines(text){
+      // not used in JS: CSS gestionará el recorte. Keep for future.
+      return text;
+    }
+
+    function renderBooks(list){
+      booksGrid.innerHTML = '';
+      if(!list || list.length === 0){
+        booksGrid.innerHTML = '<div class="card">No hay libros aún. Añade entradas editando <code>data/books.json</code>.</div>';
+        return;
+      }
+      list.forEach((b, idx) => {
+        const el = document.createElement('article');
+        el.className = 'book-card';
+        el.tabIndex = 0;
+        el.innerHTML = `
+          <div class="book-thumb"><img src="${b.cover || 'cover.svg'}" alt="${escapeHtml(b.title)}"></div>
+          <div class="book-info">
+            <h3 class="book-title">${escapeHtml(b.title)}</h3>
+            <p class="book-desc">${escapeHtml((b.description||'').slice(0,280))}</p>
+          </div>
+        `;
+        el.addEventListener('click', ()=> openBookModal(b));
+        el.addEventListener('keydown', (e)=>{ if(e.key==='Enter') openBookModal(b); });
+        booksGrid.appendChild(el);
+      });
+    }
+
+    function escapeHtml(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+    // -----------------------------
+    // Modal ficha libro
+    // -----------------------------
+    const bookModal = document.getElementById('bookModal');
+    const bookModalContent = document.getElementById('bookModalContent');
+    const closeBookModal = document.getElementById('closeBookModal');
+
+    function openBookModal(book){
+      bookModalContent.innerHTML = `
+        <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start">
+          <div style="min-width:160px"><img src="${book.cover || 'cover.svg'}" alt="${escapeHtml(book.title)}" style="width:160px;height:240px;object-fit:cover;border-radius:6px"></div>
+          <div style="flex:1">
+            <h2>${escapeHtml(book.title)}</h2>
+            <p class="meta">${escapeHtml(book.subtitle || '')} ${book.date? '· ' + book.date : ''}</p>
+            <p style="margin-top:8px">${escapeHtml(book.description || '')}</p>
+            <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+              <a class="btn btn-primary" href="${book.amazon || '#'}" target="_blank" rel="noopener">Comprar</a>
+              <button id="downloadSampleBtn" class="btn btn-ghost">Descargar adelanto</button>
+            </div>
+          </div>
+        </div>
+      `;
+      bookModal.classList.add('open'); bookModal.setAttribute('aria-hidden','false');
+
+      // attach sample button
+      const ds = document.getElementById('downloadSampleBtn');
+      ds.onclick = ()=> openConsentModal(book.id, book.sample || 'sample-chapter.pdf');
+    }
+
+    closeBookModal.addEventListener('click', ()=> { bookModal.classList.remove('open'); bookModal.setAttribute('aria-hidden','true'); });
+    bookModal.addEventListener('click', (e)=> { if(e.target === bookModal){ bookModal.classList.remove('open'); bookModal.setAttribute('aria-hidden','true'); } });
+
+    // -----------------------------
+    // Consent modal & Formspree submit
+    // -----------------------------
+    const consentModal = document.getElementById('consentModal');
+    const consentForm = document.getElementById('consentForm');
+    const consentMsg = document.getElementById('consentMsg');
+    const consentBookId = document.getElementById('consent_book_id');
+    const closeConsent = document.getElementById('closeConsent');
+
+    function openConsentModal(bookId, samplePath){
+      consentBookId.value = bookId;
+      consentForm.dataset.sample = samplePath;
+      consentModal.classList.add('open'); consentModal.setAttribute('aria-hidden','false');
+      consentMsg.textContent = '';
+    }
+
+    closeConsent.addEventListener('click', ()=> { consentModal.classList.remove('open'); consentModal.setAttribute('aria-hidden','true'); });
+
+    consentForm.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      consentMsg.textContent = '';
+      const data = new FormData(consentForm);
+      // include book id and optionally book title
+      try {
+        const res = await fetch(consentForm.action, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+        if(res.ok){
+          consentMsg.style.color = 'green';
+          consentMsg.textContent = 'Gracias — ya puedes descargar el adelanto abajo.';
+          // show download link
+          const sample = consentForm.dataset.sample || 'sample-chapter.pdf';
+          const a = document.createElement('a');
+          a.href = sample;
+          a.download = '';
+          a.textContent = 'Descargar adelanto';
+          a.style.display = 'inline-block';
+          a.style.marginTop = '12px';
+          a.className = 'btn btn-primary';
+          // remove previous existing link if any
+          const existing = document.getElementById('downloadLink');
+          if(existing) existing.remove();
+          a.id = 'downloadLink';
+          consentForm.appendChild(a);
+          consentForm.reset();
+        } else {
+          const body = await res.json().catch(()=>null);
+          consentMsg.style.color = 'crimson';
+          consentMsg.textContent = body?.error || 'Error al enviar. Intenta más tarde.';
+        }
+      } catch(err){
+        consentMsg.style.color = 'crimson';
+        consentMsg.textContent = 'Error de red. Intenta más tarde.';
+      }
+    });
+
+    // -----------------------------
+    // Filtros
+    // -----------------------------
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('dateInput').addEventListener('change', applyFilters);
+    document.getElementById('clearFilters').addEventListener('click', ()=> { document.getElementById('searchInput').value=''; document.getElementById('dateInput').value=''; renderBooks(BOOKS); });
+
+    function applyFilters(){
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+      const d = document.getElementById('dateInput').value;
+      let filtered = BOOKS.slice();
+      if(q) filtered = filtered.filter(b => (b.title + ' ' + (b.subtitle||'') + ' ' + (b.description||'')).toLowerCase().includes(q));
+      if(d) filtered = filtered.filter(b => b.date === d);
+      renderBooks(filtered);
+    }
+
+    // init
+    loadBooks();
+  </script>
+</body>
+</html>
