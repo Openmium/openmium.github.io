@@ -11,13 +11,12 @@
   <header class="nav" role="banner">
     <div class="wrap" id="mainNav" role="navigation" aria-label="Principal">
       <a class="logo" href="index.html">Mi Sitio</a>
-      <!-- nav links built by script below -->
       <nav id="navRight"></nav>
     </div>
   </header>
 
   <main class="container" id="main">
-    <!-- HERO: único rectángulo con divisores internos -->
+    <!-- HERO: único rectángulo con TODO el contenido, unificado -->
     <section class="hero-card card" aria-labelledby="hero-title">
       <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
         <div style="flex-shrink:0">
@@ -34,39 +33,33 @@
             <p class="note" style="margin:0">Trabajo en <strong>[tu área profesional]</strong> y desarrollo proyectos personales relacionados con narrativa y recursos prácticos.</p>
           </div>
 
-          <div class="hero-row" style="display:flex;gap:10px;align-items:center;margin-top:10px">
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <a class="btn btn-primary" href="libros.html">Mis libros</a>
-              <a class="btn btn-ghost" href="reviews.html">Reseñas</a>
-            </div>
-            <div style="margin-left:auto" class="hero-links note" aria-hidden="false">
-              <a href="LINKEDIN_LINK_AQUI" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">LinkedIn</a>
-              <span style="margin:0 6px;color:var(--muted)">·</span>
-              <a href="GITHUB_LINK_AQUI" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">GitHub</a>
-              <span style="margin:0 6px;color:var(--muted)">·</span>
-              <a href="PINTEREST_LINK_AQUI" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Pinterest</a>
-            </div>
+          <div class="hero-row" style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+            <!-- Aquí dejamos los textos de referencia (sin duplicar enlaces activos) -->
+            <div><strong>Mis libros</strong> · <strong>Reseñas</strong></div>
+            <div>LinkedIn · GitHub · Pinterest</div>
           </div>
+
+          <div class="hero-row" style="margin-top:12px">
+            <h2 style="margin:0 0 8px 0;color:var(--title)">Breve biografía</h2>
+            <p class="note" style="margin:0">Hola — soy <strong>[Tu Nombre]</strong>. Me dedico a escribir ficción intensa y a crear recursos prácticos (apuntes y mini-proyectos) para quienes aprenden haciendo.</p>
+          </div>
+
+          <div class="hero-row" style="margin-top:12px">
+            <h2 style="margin:0 0 8px 0;color:var(--title)">Experiencia</h2>
+            <p class="note" style="margin:0">[Año–Año] — Rol en Empresa X: breve descripción.</p>
+            <p class="note" style="margin:6px 0 0 0">[Año–Año] — Freelance: proyectos destacados.</p>
+          </div>
+
         </div>
       </div>
     </section>
 
-    <section class="card" style="margin-top:12px">
-      <h2>Breve biografía</h2>
-      <p class="note">Hola — soy <strong>[Tu Nombre]</strong>. Me dedico a escribir ficción intensa y a crear recursos prácticos (apuntes y mini-proyectos) para quienes aprenden haciendo.</p>
-    </section>
-
-    <section class="card" style="margin-top:12px">
-      <h2>Experiencia</h2>
-      <p class="note">[Año–Año] — Rol en Empresa X: breve descripción.</p>
-      <p class="note">[Año–Año] — Freelance: proyectos destacados.</p>
-    </section>
-
+    <!-- Si quieres más secciones, puedes añadirlas debajo -->
     <footer class="footer">© 2025 [Tu Nombre]</footer>
   </main>
 
   <script>
-    // build navigation (no link to current page)
+    // build navigation (no link to current)
     (function buildNav(){
       const navRight = document.getElementById('navRight');
       const pages = [
