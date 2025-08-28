@@ -3,37 +3,41 @@
     {
       "id": "informatica",
       "label": "Informática",
-      "subs": ["Hardware", "Periféricos", "Placas de desarrollo", "Accesorios"]
+      "subs": [
+        "Hardware",
+        "Periféricos",
+        "Placas de desarrollo",
+        "Accesorios",
+        "Electrónica",
+        "Auriculares/Cascos"
+      ]
     },
     {
-      "id": "electronica_diy",
-      "label": "Electrónica DIY",
-      "subs": ["Sensores", "Módulos y placas", "Herramientas de soldadura", "Displays"]
+      "id": "libros",
+      "label": "Libros",
+      "subs": [
+        "Novelas",
+        "Psicología",
+        "Narrativa"
+      ]
     },
     {
-      "id": "moviles_tablets",
-      "label": "Accesorios móviles / tablets",
-      "subs": ["Protectores", "Fundas", "Stylus", "Baterías y cargadores"]
+      "id": "accesorios",
+      "label": "Accesorios",
+      "subs": [
+        "Cables",
+        "Fundas",
+        "Adaptadores"
+      ]
     },
     {
-      "id": "juguetes_ocio",
-      "label": "Juguetes y ocio",
-      "subs": ["Juguetes de agua", "Consolas", "Juegos de mesa"]
-    },
-    {
-      "id": "papeleria_oficina",
-      "label": "Papelería y oficina",
-      "subs": ["Marcadores", "Borradores", "Organizadores"]
-    },
-    {
-      "id": "hogar_estilo",
-      "label": "Hogar y estilo de vida",
-      "subs": ["Accesorios", "Cuidado personal", "Organización"]
-    },
-    {
-      "id": "audio",
-      "label": "Audio",
-      "subs": ["Altavoces", "Auriculares", "Repuestos"]
+      "id": "ocio",
+      "label": "Ocio",
+      "subs": [
+        "Juguetes",
+        "Juegos de mesa",
+        "Consolas"
+      ]
     }
   ],
   "reviews": [
@@ -81,10 +85,10 @@
       "sub": "Hardware",
       "tags": ["burner", "blu-ray", "unidad óptica"],
       "summary": "Lector/grabador de Blu-Ray: buena compatibilidad y precio correcto.",
-      "content": "El producto llegó muy bien embalado, incluye el cable de alimentación, el cable USB 3.0 micro-B y un manual sencillo. El PC lo reconoció al instante y con ImgBurn confirmé que se trata de una grabadora Blu-ray (modelo MATSHITA UJ240AS), compatible con BD-R y BD-RE, además de leer/grabar CDs y DVDs. Aún no lo he probado con discos Blu-ray vírgenes, pero la detección y compatibilidad son correctas. Hace bastante ruido durante la lectura, lo cual es normal considerando que hay piezas móviles en su interior. No creo que el exterior sea de aluminio, aunque parece bastante sólido. La bahía en la que se desplaza el lector tiene un poco más de juego del que me gustaría, pero en general funciona correctamente.",
+      "content": "El dispositivo se reconoce al instante; incluye cables y manual. Ruidoso en lectura pero funcional.",
       "rating": 4.5,
       "price": "34,57€",
-      "link": "https://es.aliexpress.com/item/1005006034405894.html?spm=a2g0s.12269583.0.0.4076abebqLYc78&gatewayAdapt=glo2esp",
+      "link": "https://ejemplo.com/grabador-blu-ray",
       "images": [
         "assets/reviews/LectorBlueRay.jpg",
         "assets/reviews/LectorBlueRay1.jpg",
@@ -96,8 +100,8 @@
       "id": 169300001004,
       "title": "Pasta térmica 4g",
       "date": "2025-06-01",
-      "category": "electronica_diy",
-      "sub": "Herramientas de soldadura",
+      "category": "informatica",
+      "sub": "Electrónica",
       "tags": ["pasta térmica", "cpu", "refrigeración"],
       "summary": "Buena conductividad térmica para proyectos de reparación.",
       "content": "Pequeños tubos de 2g/4g, aplicable en CPU y GPU; relación calidad/precio correcta.",
