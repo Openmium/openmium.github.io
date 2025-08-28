@@ -7,13 +7,34 @@
   <meta name="description" content="Reseñas de productos, libros y más. Filtrado y galería." />
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* pequeñas utilidades para estrellas */
-    .stars { display:inline-block; vertical-align:middle; }
-    .star { font-size:14px; margin-right:2px; color:#f5b301; }
+    /* --- mejoras visuales específicas para reseñas --- */
+    .list { display:flex; flex-direction:column; gap:12px; margin-top:10px; }
+    .review-card { display:flex; gap:12px; align-items:flex-start; padding:12px; border-radius:10px; border:1px solid #eef3f8; background:#fff; box-shadow:0 6px 18px rgba(15,23,42,0.03); cursor:pointer; transition:transform .16s ease, box-shadow .16s ease; }
+    .review-card:hover { transform:translateY(-6px); box-shadow:0 18px 40px rgba(2,6,23,0.09); }
+    .review-card:focus { outline:3px solid rgba(11,116,222,0.12); }
+    .review-thumb { width:140px; height:92px; flex-shrink:0; border-radius:8px; overflow:hidden; background:#f6f8fb; display:block; }
+    .review-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .review-body { flex:1; display:flex; flex-direction:column; gap:6px; }
+    .meta { font-size:12px; color:#6b7280; }
+    .price { font-weight:800; color:#0b74de; margin-top:4px; }
+    .product-link-btn { display:inline-block; margin-top:8px; padding:8px 10px; border-radius:8px; background:#0b74de; color:#fff; text-decoration:none; font-weight:700; font-size:13px; }
+    .product-link-btn:visited{ color:#fff; }
+    .stars { display:inline-flex; align-items:center; gap:4px; }
+    .star { font-size:14px; line-height:1; }
+    .star.full { color:#f5b301; }
+    .star.half { 
+      color:transparent;
+      background: linear-gradient(90deg, #f5b301 50%, #ddd 50%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      display:inline-block;
+    }
     .star.empty { color:#ddd; }
-    .price { font-weight:700; margin-top:6px; display:block; }
-    .product-link { display:inline-block; margin-top:8px; text-decoration:underline; color:var(--accent); }
-    .review-card .meta { font-size:12px; color:var(--muted); margin-bottom:6px; }
+    /* small responsive */
+    @media(max-width:720px){
+      .review-card{flex-direction:row;gap:10px}
+      .review-thumb{width:110px;height:72px}
+    }
   </style>
 </head>
 <body>
@@ -72,16 +93,13 @@
     let REVIEWS = [];
     let CATEGORIES = [];
 
-    // helper: format date to DD-MM-YYYY (accepts YYYY-MM-DD or DD-MM-YYYY)
+    // formatea fecha a DD-MM-YYYY
     function formatDateToDDMMYYYY(raw){
       if(!raw) return '';
-      // if already DD-MM-YYYY
       if(/^\d{2}-\d{2}-\d{4}$/.test(raw)) return raw;
-      // if ISO YYYY-MM-DD
       if(/^\d{4}-\d{2}-\d{2}$/.test(raw)){
         const [y,m,d] = raw.split('-'); return `${d}-${m}-${y}`;
       }
-      // try Date parse fallback
       const date = new Date(raw);
       if(!isNaN(date)) {
         const d = String(date.getDate()).padStart(2,'0');
@@ -92,17 +110,20 @@
       return raw;
     }
 
+    function escapeHtml(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+    // crea HTML de estrellas (full, half, empty)
     function renderStars(rating){
-      // rating up to 5, can be decimal
+      if(rating == null) return '';
       const full = Math.floor(rating);
       const half = (rating - full) >= 0.5 ? 1 : 0;
       const empty = 5 - full - half;
-      let html = '<span class="stars" aria-hidden="true">';
-      for(let i=0;i<full;i++) html += '<span class="star">★</span>';
-      if(half) html += '<span class="star">☆</span>';
-      for(let i=0;i<empty;i++) html += '<span class="star empty">★</span>';
-      html += `</span> <span style="font-size:13px;color:var(--muted);margin-left:6px">(${rating}/5)</span>`;
-      return html;
+      let out = '<span class="stars" aria-hidden="true">';
+      for(let i=0;i<full;i++) out += '<span class="star full">★</span>';
+      if(half) out += '<span class="star half">★</span>';
+      for(let i=0;i<empty;i++) out += '<span class="star empty">★</span>';
+      out += `</span> <span style="font-size:13px;color:var(--muted);margin-left:6px">(${rating}/5)</span>`;
+      return out;
     }
 
     async function loadData(){
@@ -121,8 +142,6 @@
       populateCategoryFilters();
       renderList(REVIEWS);
     }
-
-    function escapeHtml(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 
     function populateCategoryFilters(){
       const catSelect = document.getElementById('categorySelect');
@@ -147,30 +166,31 @@
       const el = document.getElementById('reviewsList'); el.innerHTML = '';
       if(!list.length){ el.innerHTML = '<div class="card">No hay reseñas.</div>'; return; }
       list.forEach(r => {
-        const d = document.createElement('div'); d.className = 'card review-card';
-        d.tabIndex = 0;
-        const thumb = (r.images && r.images[0]) ? r.images[0] : 'assets/covers/placeholder.jpg';
         const dateStr = formatDateToDDMMYYYY(r.date || '');
-        const price = r.price ? `<div class="price">${escapeHtml(r.price)}</div>` : '';
-        const linkHtml = r.link ? `<a class="product-link" href="${r.link}" target="_blank" rel="noopener">Ir al producto</a>` : '';
+        const thumb = (r.images && r.images[0]) ? r.images[0] : 'assets/covers/placeholder.jpg';
+        const priceHtml = r.price ? `<div class="price">${escapeHtml(r.price)}</div>` : '';
         const starsHtml = r.rating ? renderStars(r.rating) : '';
-        d.innerHTML = `<div style="display:flex;gap:12px;align-items:flex-start">
-          <div style="width:120px;height:80px;flex-shrink:0;overflow:hidden;border-radius:6px">
-            <img src="${thumb}" style="width:100%;height:100%;object-fit:cover" alt="">
-          </div>
-          <div style="flex:1">
+        // tarjeta
+        const card = document.createElement('article');
+        card.className = 'review-card';
+        card.tabIndex = 0;
+        card.innerHTML = `
+          <div class="review-thumb"><img src="${thumb}" alt=""></div>
+          <div class="review-body">
             <div class="meta">${escapeHtml(dateStr)} · ${escapeHtml(r.category||'')} › ${escapeHtml(r.sub||'')}</div>
             <h3>${escapeHtml(r.title)}</h3>
             <p class="note">${escapeHtml(r.summary || '')}</p>
-            ${starsHtml}
-            ${price}
-            ${linkHtml}
+            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+              ${starsHtml}
+              ${priceHtml}
+            </div>
+            ${ r.link ? `<a class="product-link-btn" href="${r.link}" target="_blank" rel="noopener">Ver producto</a>` : '' }
           </div>
-        </div>`;
-        // tarjeta entera clickable
-        d.addEventListener('click', ()=> openDetail(r.id));
-        d.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') openDetail(r.id); });
-        el.appendChild(d);
+        `;
+        // comportamiento accesible: toda la tarjeta abre el modal
+        card.addEventListener('click', ()=> openDetail(r.id));
+        card.addEventListener('keydown', (e)=> { if(e.key === 'Enter' || e.key === ' ') openDetail(r.id); });
+        el.appendChild(card);
       });
     }
 
@@ -197,7 +217,7 @@
         <p class="note" style="margin-top:8px">${escapeHtml(item.content || item.summary || '')}</p>
         ${linkHtml}
       `;
-      // thumb handlers
+      // thumbs handler
       setTimeout(()=>{
         document.querySelectorAll('#detailContent .thumb').forEach(t => t.addEventListener('click', (e)=>{
           const src = e.currentTarget.dataset.src;
@@ -224,7 +244,7 @@
     document.getElementById('clearFilters').addEventListener('click', ()=> {
       document.getElementById('searchBox').value = '';
       document.getElementById('categorySelect').value = 'all';
-      document.getElementById('subSelect').innerHTML = '<option value=\"all\">Todas las subcategorías</option>';
+      document.getElementById('subSelect').innerHTML = '<option value="all">Todas las subcategorías</option>';
       document.getElementById('dateFilter').value = '';
       renderList(REVIEWS);
     });
@@ -233,13 +253,12 @@
       const q = document.getElementById('searchBox').value.trim().toLowerCase();
       const cat = document.getElementById('categorySelect').value;
       const sub = document.getElementById('subSelect').value;
-      const date = document.getElementById('dateFilter').value; // YYYY-MM-DD from input
+      const date = document.getElementById('dateFilter').value;
       let filtered = REVIEWS.slice();
       if(cat && cat !== 'all') filtered = filtered.filter(r => r.category === cat);
       if(sub && sub !== 'all') filtered = filtered.filter(r => r.sub === sub);
       if(q) filtered = filtered.filter(r => (r.title + ' ' + (r.summary||'') + ' ' + (r.tags||[]).join(' ')).toLowerCase().includes(q));
       if(date){
-        // compare by ISO or format DD-MM-YYYY as necessary
         const target = formatDateToDDMMYYYY(date);
         filtered = filtered.filter(r => {
           const rd = formatDateToDDMMYYYY(r.date || '');
