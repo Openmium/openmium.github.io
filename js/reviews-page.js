@@ -1,4 +1,31 @@
 // js/reviews-page.js
+// Small helpers contained aquí para evitar dependencia externa
+const AppUtils = {
+  fetchJSON: async (path) => {
+    const r = await fetch(path, { cache: "no-store" });
+    if(!r.ok) throw new Error(`Failed to load ${path} (${r.status})`);
+    return await r.json();
+  },
+  escapeHtml: (s) => {
+    if(!s) return '';
+    return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+  },
+  formatDateToDDMMYYYY: (raw) => {
+    if(!raw) return '';
+    if(/^\d{4}-\d{2}-\d{2}$/.test(raw)){
+      const [y,m,d]=raw.split('-'); return `${d}-${m}-${y}`;
+    }
+    const d = new Date(raw);
+    if(!isNaN(d)) {
+      const dd = String(d.getDate()).padStart(2,'0');
+      const mm = String(d.getMonth()+1).padStart(2,'0');
+      const yy = d.getFullYear();
+      return `${dd}-${mm}-${yy}`;
+    }
+    return raw;
+  }
+};
+
 document.addEventListener('DOMContentLoaded', async () => {
   const DATA_PATH = 'data/reviews.json';
   let REVIEWS = [];
@@ -9,8 +36,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     REVIEWS = json.reviews || [];
     CATEGORIES = json.categories || [];
   } catch (err) {
-    console.error(err);
-    document.getElementById('reviewsList').innerHTML = `<div class="card">Error cargando datos. Mira la consola (F12).</div>`;
+    console.error('[loadData] ', err);
+    document.getElementById('reviewsList').innerHTML = `<div class="card">Error cargando datos: revisa la consola (F12). ${AppUtils.escapeHtml(err.message||'')}</div>`;
     return;
   }
 
@@ -50,9 +77,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function renderList(list){
-    const container = document.getElementById('reviewsList');
-    container.innerHTML = '';
-    if(!list.length){ container.innerHTML = '<div class="card">No hay reseñas.</div>'; return; }
+    const el = document.getElementById('reviewsList'); el.innerHTML = '';
+    if(!list.length){ el.innerHTML = '<div class="card">No hay reseñas.</div>'; return; }
     list.forEach(r => {
       const dateStr = AppUtils.formatDateToDDMMYYYY(r.date || '');
       const thumb = (r.images && r.images[0]) ? r.images[0] : 'assets/covers/placeholder.jpg';
@@ -62,7 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       card.className = 'review-card';
       card.tabIndex = 0;
       card.innerHTML = `
-        <div style="display:flex;gap:12px;align-items:flex-start;flex:1">
+        <div style="display:flex;gap:12px;align-items:flex-start;flex:1;min-width:0">
           <div class="review-thumb"><img src="${thumb}" alt=""></div>
           <div class="review-body">
             <div class="meta">${AppUtils.escapeHtml(dateStr)} · ${AppUtils.escapeHtml(r.category||'')} › ${AppUtils.escapeHtml(r.sub||'')}</div>
@@ -78,12 +104,12 @@ document.addEventListener('DOMContentLoaded', async () => {
           ${ r.link ? `<a class="product-link-btn" href="${r.link}" target="_blank" rel="noopener">Ver producto</a>` : '' }
         </div>
       `;
+      // open detail on card click
       card.addEventListener('click', ()=> openDetail(r.id));
       card.addEventListener('keydown', (e)=> { if(e.key === 'Enter' || e.key === ' ') openDetail(r.id); });
-      // stop propagation on product link
-      const temp = document.createElement('div');
-      temp.innerHTML = card.innerHTML;
-      container.appendChild(card);
+      el.appendChild(card);
+
+      // prevent the product link from triggering the card click
       const btn = card.querySelector('.product-link-btn');
       if(btn) btn.addEventListener('click', (ev) => ev.stopPropagation());
     });
@@ -119,16 +145,32 @@ document.addEventListener('DOMContentLoaded', async () => {
         if(main) main.querySelector('img').src = src;
       }));
     }, 20);
-    const modal = document.getElementById('detailModal'); modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
+
+    // open modal
+    const modal = document.getElementById('detailModal');
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
   }
 
   // modal close handlers
   const detailModal = document.getElementById('detailModal');
-  document.getElementById('closeDetail').addEventListener('click', ()=> { detailModal.classList.remove('open'); detailModal.setAttribute('aria-hidden','true'); });
-  detailModal.addEventListener('click', (e)=> { if(e.target === detailModal){ detailModal.classList.remove('open'); detailModal.setAttribute('aria-hidden','true'); } });
-  document.addEventListener('keydown', (e)=> { if(e.key === 'Escape' && detailModal.classList.contains('open')) { detailModal.classList.remove('open'); detailModal.setAttribute('aria-hidden','true'); } });
+  const closeBtn = document.getElementById('closeDetail');
+  if(closeBtn){
+    closeBtn.addEventListener('click', ()=> { detailModal.classList.remove('open'); detailModal.setAttribute('aria-hidden','true'); });
+  }
+  // close on overlay (click outside modal-card)
+  if(detailModal){
+    detailModal.addEventListener('click', (e)=> {
+      if(e.target === detailModal) {
+        detailModal.classList.remove('open');
+        detailModal.setAttribute('aria-hidden','true');
+      }
+    });
+  }
+  // close on Esc
+  document.addEventListener('keydown', (e)=> { if(e.key === 'Escape' && detailModal && detailModal.classList.contains('open')) { detailModal.classList.remove('open'); detailModal.setAttribute('aria-hidden','true'); } });
 
-  // filters bindings
+  // filters and handlers
   searchBox.addEventListener('input', applyFilters);
   catSelect.addEventListener('change', (e)=> { populateSubSelect(e.currentTarget.value); applyFilters(); });
   subSelect.addEventListener('change', applyFilters);
@@ -157,6 +199,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderList(filtered);
   }
 
-  // initial render
   renderList(REVIEWS);
 });
