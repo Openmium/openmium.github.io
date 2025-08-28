@@ -29,31 +29,5 @@ window.AppUtils = (function(){
     return raw;
   }
 
-  // simple validator: comprueba que cada review/book tenga assets referenciadas
-  async function validateDataWithAssets(jsonPath, assetPrefix = 'assets/'){
-    const missing = [];
-    try{
-      const data = await fetchJSON(jsonPath);
-      const keys = [];
-      if(data.reviews) keys.push(...data.reviews.flatMap(r => (r.images||[])));
-      if(data.books) keys.push(...data.books.flatMap(b => [b.cover, b.sample].filter(Boolean)));
-      // remove duplicates
-      const uniq = Array.from(new Set(keys));
-      await Promise.all(uniq.map(async (p) => {
-        if(!p) return;
-        try{
-          const r = await fetch(p, {method:'HEAD'});
-          if(!r.ok) missing.push(p);
-        }catch(e){
-          missing.push(p);
-        }
-      }));
-    }catch(err){
-      console.warn('[validateDataWithAssets] no se pudo validar', err);
-      return { ok: false, missing, error: err.message };
-    }
-    return { ok: missing.length === 0, missing };
-  }
-
-  return { escapeHtml, fetchJSON, formatDateToDDMMYYYY, validateDataWithAssets };
+  return { escapeHtml, fetchJSON, formatDateToDDMMYYYY };
 })();
