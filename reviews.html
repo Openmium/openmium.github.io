@@ -7,61 +7,78 @@
   <meta name="description" content="Reseñas de productos, libros y más. Filtrado y galería." />
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* --- página reviews: fondo y tarjetas más visibles --- */
-    body { background: #e1e9f4; }                /* fondo general más suave */
-    .container { background: transparent; }     /* container transparente para que se note el fondo */
+    /* --- Fondo difuminado que cubre toda la página --- */
+    html,body { height:100%; margin:0; }
+    body {
+      background:
+        radial-gradient(circle at 10% 15%, rgba(11,116,222,0.03), transparent 8%),
+        radial-gradient(circle at 90% 85%, rgba(59,130,246,0.02), transparent 10%),
+        linear-gradient(180deg, #eef6fb 0%, #e1e9f4 100%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      color:var(--text);
+    }
+    .container { background: transparent; }
 
-    .list { display:flex; flex-direction:column; gap:12px; margin-top:10px; }
+    /* layout / lista */
+    .list { display:flex; flex-direction:column; gap:14px; margin-top:10px; }
 
-    /* tarjeta */
+    /* tarjeta: borde claro, sombra difusa y separación */
     .review-card {
       display:flex;
       gap:12px;
       align-items:flex-start;
       padding:14px;
       border-radius:10px;
-      border:1px solid #424548;        /* línea clara que delimita cada tarjeta */
-      background:#ffffff;              /* cajas blancas (contrastan con fondo) */
-      box-shadow: 0 4px 10px rgba(10,20,30,0.04);
+      border:1px solid rgba(2,6,23,0.06);    /* borde muy sutil */
+      background:#ffffff;
+      box-shadow: 0 6px 20px rgba(2,6,23,0.035); /* sombra ligera y difusa */
       cursor:pointer;
-      transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
-      margin-bottom:6px;               /* separación adicional (por si tu grid no aplica gap) */
+      transition: transform .14s cubic-bezier(.2,.8,.2,1), box-shadow .14s ease, border-color .14s ease;
+      margin-bottom:2px;
     }
     .review-card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 18px 40px rgba(2,6,23,0.08);
-      border-color: #c7ddf9;
+      box-shadow: 0 20px 40px rgba(2,6,23,0.07);
+      border-color: rgba(11,116,222,0.12);
     }
-    .review-card:focus { outline: 3px solid rgba(11,116,222,0.10); }
+    .review-card:focus { outline: 3px solid rgba(11,116,222,0.10); outline-offset:2px; }
 
-    .review-thumb { width:140px; height:92px; flex-shrink:0; border-radius:8px; overflow:hidden; background:#eef5fb; display:block; border:1px solid #eef6fb; }
+    /* mini separador entre tarjetas para reforzar separación */
+    .list > .review-card + .review-card { margin-top:8px; }
+
+    .review-thumb { width:140px; height:92px; flex-shrink:0; border-radius:8px; overflow:hidden; background:#f6f8fb; display:block; border:1px solid rgba(12,18,26,0.03); }
     .review-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
 
-    .review-body { flex:1; display:flex; flex-direction:column; gap:6px; }
-    .meta { font-size:12px; color:#6b7280; }
+    .review-body { flex:1; display:flex; flex-direction:column; gap:8px; }
+    .meta { font-size:12px; color:#6b7280; letter-spacing:0.1px; }
 
     /* precio y botón */
-    .price { font-weight:800; color:#0b74de; margin-top:4px; }
+    .price { font-weight:800; color:#0b74de; margin-top:2px; }
     .product-link-btn {
       display:inline-block;
       margin-top:8px;
-      padding:6px 10px;
+      padding:7px 10px;
       border-radius:8px;
       background:#0b74de;
       color:#fff;
       text-decoration:none;
       font-weight:700;
       font-size:13px;
-      max-width:150px;         /* evita que ocupe toda la fila */
+      max-width:140px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
       text-align:center;
+      box-shadow: 0 6px 18px rgba(11,116,222,0.08);
+      transition: transform .12s ease, box-shadow .12s ease;
     }
+    .product-link-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(11,116,222,0.10); }
+
     .product-link-btn:visited{ color:#fff; }
 
     /* estrellas */
-    .stars { display:inline-flex; align-items:center; gap:4px; }
+    .stars { display:inline-flex; align-items:center; gap:6px; }
     .star { font-size:14px; line-height:1; }
     .star.full { color:#f5b301; }
     .star.half {
@@ -73,14 +90,11 @@
     }
     .star.empty { color:#ddd; }
 
-    /* mejora contraste entre tarjetas: separador sutil cuando se muestre lista larga */
-    .list > .review-card + .review-card { margin-top:6px; }
-
     /* responsive */
     @media(max-width:720px){
       .review-card{ flex-direction:row; gap:10px; padding:10px; }
       .review-thumb{ width:110px; height:72px; }
-      .product-link-btn{ max-width:130px; font-size:12px; padding:6px 8px; }
+      .product-link-btn{ max-width:120px; font-size:12px; padding:6px 8px; }
     }
   </style>
 </head>
