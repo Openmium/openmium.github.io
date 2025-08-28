@@ -7,32 +7,37 @@
   <meta name="description" content="Reseñas de productos, libros y más. Filtrado y galería." />
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* --- Fondo difuminado que cubre toda la página --- */
-    html,body { height:100%; margin:0; }
-    body {
-      background:
-        radial-gradient(circle at 10% 15%, rgba(11,116,222,0.03), transparent 8%),
-        radial-gradient(circle at 90% 85%, rgba(59,130,246,0.02), transparent 10%),
-        linear-gradient(180deg, #eef6fb 0%, #e1e9f4 100%);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      color:var(--text);
-    }
+    :root { --muted:#6b7280; --accent:#0b74de; --card-blue: #f1f7ff; --filters-blue:#eef6ff; --card-border: rgba(2,6,23,0.06); --shadow: 0 6px 20px rgba(2,6,23,0.035); }
+    html,body { height:100%; margin:0; background:#ffffff; color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+
     .container { background: transparent; }
 
-    /* layout / lista */
+    /* filtros: recuadro con color y bordes redondeados */
+    .filters-card {
+      background: var(--filters-blue);
+      border-radius: 14px;
+      padding: 12px;
+      border: 1px solid rgba(11,116,222,0.06);
+      box-shadow: 0 6px 16px rgba(11,116,222,0.02);
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .filters-card input, .filters-card select { padding:8px;border-radius:10px;border:1px solid #dfeaf6;background:#fff; }
+
+    /* lista y tarjetas */
     .list { display:flex; flex-direction:column; gap:14px; margin-top:10px; }
 
-    /* tarjeta: borde claro, sombra difusa y separación */
     .review-card {
       display:flex;
       gap:12px;
       align-items:flex-start;
       padding:14px;
-      border-radius:10px;
-      border:1px solid rgba(2,6,23,0.06);    /* borde muy sutil */
-      background:#ffffff;
-      box-shadow: 0 6px 20px rgba(2,6,23,0.035); /* sombra ligera y difusa */
+      border-radius:12px;
+      border:1px solid var(--card-border);
+      background: linear-gradient(180deg, var(--card-blue) 0%, #ffffff 100%);
+      box-shadow: var(--shadow);
       cursor:pointer;
       transition: transform .14s cubic-bezier(.2,.8,.2,1), box-shadow .14s ease, border-color .14s ease;
       margin-bottom:2px;
@@ -40,27 +45,23 @@
     .review-card:hover {
       transform: translateY(-6px);
       box-shadow: 0 20px 40px rgba(2,6,23,0.07);
-      border-color: rgba(11,116,222,0.12);
+      border-color: rgba(11,116,222,0.10);
     }
     .review-card:focus { outline: 3px solid rgba(11,116,222,0.10); outline-offset:2px; }
-
-    /* mini separador entre tarjetas para reforzar separación */
-    .list > .review-card + .review-card { margin-top:8px; }
 
     .review-thumb { width:140px; height:92px; flex-shrink:0; border-radius:8px; overflow:hidden; background:#f6f8fb; display:block; border:1px solid rgba(12,18,26,0.03); }
     .review-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
 
     .review-body { flex:1; display:flex; flex-direction:column; gap:8px; }
-    .meta { font-size:12px; color:#6b7280; letter-spacing:0.1px; }
+    .meta { font-size:12px; color:var(--muted); letter-spacing:0.1px; }
 
-    /* precio y botón */
-    .price { font-weight:800; color:#0b74de; margin-top:2px; }
+    .price { font-weight:800; color:var(--accent); margin-top:2px; }
     .product-link-btn {
       display:inline-block;
       margin-top:8px;
       padding:7px 10px;
       border-radius:8px;
-      background:#0b74de;
+      background:var(--accent);
       color:#fff;
       text-decoration:none;
       font-weight:700;
@@ -75,9 +76,6 @@
     }
     .product-link-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(11,116,222,0.10); }
 
-    .product-link-btn:visited{ color:#fff; }
-
-    /* estrellas */
     .stars { display:inline-flex; align-items:center; gap:6px; }
     .star { font-size:14px; line-height:1; }
     .star.full { color:#f5b301; }
@@ -90,11 +88,40 @@
     }
     .star.empty { color:#ddd; }
 
-    /* responsive */
+    /* modal: evitar que la X tape miniaturas */
+    .modal { display:none; position:fixed; inset:0; background: rgba(0,0,0,0.45); align-items:center; justify-content:center; padding:18px; z-index:120; }
+    .modal.open { display:flex; }
+    .modal-card {
+      background:#fff;
+      border-radius:12px;
+      padding:24px 18px 18px 18px; /* padding-top mayor para que la X no tape */
+      max-width:880px;
+      width:100%;
+      max-height:90vh;
+      overflow:auto;
+      position:relative;
+      box-shadow: 0 30px 60px rgba(2,6,23,0.12);
+    }
+    .modal-close {
+      position:absolute;
+      right:14px;
+      top:14px;
+      border:none;
+      background:#f3f5f8;
+      padding:8px 10px;
+      border-radius:10px;
+      cursor:pointer;
+      z-index:40; /* alto para que quede por encima */
+    }
+
+    /* asegurar que la columna de thumbs se queda por debajo visualmente */
+    #detailContent .thumb { z-index:1; }
+
     @media(max-width:720px){
       .review-card{ flex-direction:row; gap:10px; padding:10px; }
       .review-thumb{ width:110px; height:72px; }
       .product-link-btn{ max-width:120px; font-size:12px; padding:6px 8px; }
+      .modal-card { padding:16px; }
     }
   </style>
 </head>
@@ -122,28 +149,27 @@
   <main class="container">
     <h1>Reseñas</h1>
 
-    <section class="card" style="margin-bottom:12px">
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <input id="searchBox" placeholder="Buscar por título, tag..." style="flex:1;padding:8px;border-radius:8px;border:1px solid #e6eef8">
-        <select id="categorySelect" style="padding:8px;border-radius:8px;border:1px solid #e6eef8">
-          <option value="all">Todas las categorías</option>
-        </select>
-        <select id="subSelect" style="padding:8px;border-radius:8px;border:1px solid #e6eef8">
-          <option value="all">Todas las subcategorías</option>
-        </select>
-        <input id="dateFilter" type="date" style="padding:8px;border-radius:8px;border:1px solid #e6eef8">
-        <button id="clearFilters" class="btn" style="background:#fff;border:1px solid #e6eef8">Limpiar</button>
-      </div>
+    <!-- filtros: ahora con clase filters-card -->
+    <section class="filters-card" style="margin-bottom:12px">
+      <input id="searchBox" placeholder="Buscar por título, tag..." style="flex:1">
+      <select id="categorySelect" style="padding:8px;border-radius:10px;">
+        <option value="all">Todas las categorías</option>
+      </select>
+      <select id="subSelect" style="padding:8px;border-radius:10px;">
+        <option value="all">Todas las subcategorías</option>
+      </select>
+      <input id="dateFilter" type="date" style="padding:8px;border-radius:10px;">
+      <button id="clearFilters" class="btn" style="background:#fff;border:1px solid #e6eef8">Limpiar</button>
     </section>
 
     <section id="reviewsList" class="list" aria-live="polite"></section>
 
-    <footer class="footer">© 2025 [Tu Nombre]</footer>
+    <footer class="footer" style="margin-top:22px">© 2025 [Tu Nombre]</footer>
   </main>
 
   <!-- modal detalle con galería -->
   <div id="detailModal" class="modal" role="dialog" aria-hidden="true">
-    <div class="modal-card">
+    <div class="modal-card" role="document">
       <button id="closeDetail" class="modal-close" aria-label="Cerrar">✕</button>
       <div id="detailContent"></div>
     </div>
@@ -184,6 +210,20 @@
       out += `</span> <span style="font-size:13px;color:var(--muted);margin-left:6px">(${rating}/5)</span>`;
       return out;
     }
+
+    // Helpers para abrir/cerrar modal
+    const detailModal = document.getElementById('detailModal');
+    const closeDetailBtn = document.getElementById('closeDetail');
+    function openModal(){ detailModal.classList.add('open'); detailModal.setAttribute('aria-hidden','false'); }
+    function closeModal(){ detailModal.classList.remove('open'); detailModal.setAttribute('aria-hidden','true'); }
+
+    // cerrar al clickar fuera del modal-card
+    detailModal.addEventListener('click', (e)=> {
+      if(e.target === detailModal) closeModal();
+    });
+    // cerrar con la X y con Escape
+    closeDetailBtn.addEventListener('click', closeModal);
+    document.addEventListener('keydown', (e)=> { if(e.key === 'Escape' && detailModal.classList.contains('open')) closeModal(); });
 
     async function loadData(){
       try{
@@ -258,7 +298,7 @@
       if(imgs.length){
         galleryHtml += '<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;align-items:flex-start">';
         galleryHtml += `<div id="mainImg" style="flex:1;min-width:220px"><img src="${imgs[0]}" style="width:100%;height:auto;max-height:420px;object-fit:cover;border-radius:6px"></div>`;
-        galleryHtml += '<div style="display:flex;flex-direction:column;gap:8px;min-width:110px">';
+        galleryHtml += '<div style="display:flex;flex-direction:column;gap:8px;min-width:110px;margin-top:8px">';
         imgs.forEach((u)=>{ galleryHtml += `<img class="thumb" src="${u}" data-src="${u}" style="width:100px;height:70px;object-fit:cover;border-radius:4px;cursor:pointer">`; });
         galleryHtml += '</div></div>';
       }
@@ -281,12 +321,8 @@
           if(main) main.querySelector('img').src = src;
         }));
       }, 20);
-      const modal = document.getElementById('detailModal'); modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
+      openModal();
     }
-
-    document.getElementById('closeDetail').addEventListener('click', ()=> {
-      const modal = document.getElementById('detailModal'); modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');
-    });
 
     // filtros y controles
     document.getElementById('searchBox').addEventListener('input', applyFilters);
