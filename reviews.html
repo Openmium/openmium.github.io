@@ -3,31 +3,31 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Reseñas — [Tu Nombre]</title>
+  <title>Reseñas — Mi Sitio</title>
   <meta name="description" content="Reseñas de productos, libros y más. Filtrado y galería." />
   <link rel="stylesheet" href="styles.css">
-  <script src="js/nav.js" defer></script>
-  <script src="js/reviews-page.js" defer></script>
 </head>
 <body>
   <header class="nav">
-    <div class="wrap" id="mainNav"></div>
+    <div class="wrap" id="mainNav">
+      <a class="logo" href="index.html">Mi Sitio</a>
+      <nav id="navRight"></nav>
+    </div>
   </header>
 
   <main class="container">
-    <h1>Reseñas</h1>
+    <h1 style="color:var(--title);margin-bottom:8px">Reseñas</h1>
 
-    <!-- filtros: misma apariencia que libros (search-input) -->
-    <section class="filters-card card" style="margin-bottom:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-      <input id="searchBox" class="search-input" placeholder="Buscar por título, tag..." aria-label="Buscar reseñas">
-      <select id="categorySelect" class="search-input" style="max-width:220px">
+    <section class="filters-card">
+      <input id="searchBox" class="search-input" placeholder="Buscar por título, tag..." aria-label="Buscar">
+      <select id="categorySelect" class="search-input">
         <option value="all">Todas las categorías</option>
       </select>
-      <select id="subSelect" class="search-input" style="max-width:220px">
+      <select id="subSelect" class="search-input">
         <option value="all">Todas las subcategorías</option>
       </select>
-      <input id="dateFilter" type="date" class="search-input" style="max-width:180px">
-      <button id="clearFilters" class="btn" style="background:#fff;border:1px solid var(--border)">Limpiar</button>
+      <input id="dateFilter" class="search-input" type="date" aria-label="Filtrar por fecha">
+      <button id="clearFilters" class="btn" style="background:#fff;color:var(--text);border:1px solid rgba(0,0,0,0.06)">Limpiar</button>
     </section>
 
     <section id="reviewsList" class="list" aria-live="polite"></section>
@@ -35,12 +35,34 @@
     <footer class="footer">© 2025 [Tu Nombre]</footer>
   </main>
 
-  <!-- modal detalle con galería -->
+  <!-- Modal detalle con galería -->
   <div id="detailModal" class="modal" role="dialog" aria-hidden="true">
-    <div class="modal-card" role="document" style="display:flex;gap:18px;flex-wrap:wrap">
+    <div class="modal-card">
       <button id="closeDetail" class="modal-close" aria-label="Cerrar">✕</button>
-      <div id="detailContent" style="flex:1;min-width:260px"></div>
+      <div id="detailContent"></div>
     </div>
   </div>
+
+  <script>
+    // nav builder (no link to current)
+    (function buildNav(){
+      const navRight = document.getElementById('navRight');
+      const pages = [
+        { file: 'index.html', label: 'Sobre mí' },
+        { file: 'libros.html', label: 'Libros' },
+        { file: 'reviews.html', label: 'Reseñas' }
+      ];
+      const current = (location.pathname.split('/').pop() || 'reviews.html').toLowerCase();
+      pages.forEach(p => {
+        if(p.file === current) return;
+        const a = document.createElement('a');
+        a.href = p.file;
+        a.textContent = p.label;
+        navRight.appendChild(a);
+      });
+    })();
+  </script>
+
+  <script src="js/reviews-page.js" defer></script>
 </body>
 </html>
