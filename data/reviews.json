@@ -3,90 +3,42 @@
     {
       "id": "informatica",
       "label": "Informática",
-      "subs": [
-        "Hardware",
-        "Periféricos",
-        "Placas de desarrollo",
-        "Accesorios",
-        "Electrónica",
-        "Auriculares/Cascos"
-      ]
+      "subs": ["Hardware","Electrónica","Auriculares","Accesorios"]
+    },
+    {
+      "id": "salud",
+      "label": "Salud",
+      "subs": ["Salud mental","Nutrición","Suplementos"]
     },
     {
       "id": "libros",
       "label": "Libros",
-      "subs": [
-        "Novelas",
-        "Psicología"
-      ]
-    },
-    {
-      "id": "accesorios",
-      "label": "Accesorios",
-      "subs": [
-        "Cables",
-        "Fundas",
-        "Adaptadores"
-      ]
+      "subs": ["Novelas","Psicología","Narrativa"]
     },
     {
       "id": "ocio",
       "label": "Ocio",
-      "subs": [
-        "Juegos de mesa",
-        "Consolas"
-      ]
+      "subs": ["Juguetes","Juegos de mesa","Coleccionismo"]
+    },
+    {
+      "id": "accesorios",
+      "label": "Accesorios",
+      "subs": ["Moviles","PC","Viaje"]
     }
   ],
   "reviews": [
-    {
-      "id": 169300001001,
-      "title": "Narrativa Contemporánea",
-      "date": "2025-08-15",
-      "category": "libros",
-      "sub": "Novelas",
-      "tags": ["ficción", "voz femenina", "gore"],
-      "summary": "Reseña breve: contundente y sin concesiones.",
-      "content": "Texto largo de la reseña... (opcional).",
-      "rating": 4,
-      "price": "12,90€ (-2€ cupón aplicado)",
-      "link": "https://ejemplo.com/libro-narrativa",
-      "images": [
-        "assets/reviews/narrativa-1.jpg",
-        "assets/reviews/narrativa-2.jpg",
-        "assets/reviews/narrativa-3.jpg"
-      ]
-    },
-    {
-      "id": 169300001002,
-      "title": "Laptop Ultra X",
-      "date": "2025-08-12",
-      "category": "informatica",
-      "sub": "Hardware",
-      "tags": ["laptop", "reviews", "hardware"],
-      "summary": "Laptop con buena relación calidad-precio.",
-      "content": "Revisión completa: buenas prestaciones para productividad y gaming ligero.",
-      "rating": 3,
-      "price": "599,00€ (incluye cupón -50€)",
-      "link": "https://ejemplo.com/laptop-ultra-x",
-      "images": [
-        "assets/reviews/laptopx-1.jpg",
-        "assets/reviews/laptopx-2.jpg",
-        "assets/reviews/laptopx-3.jpg"
-      ]
-    },
     {
       "id": 169300001003,
       "title": "Grabador de Blu-Ray USB3.0",
       "date": "2025-08-27",
       "category": "informatica",
       "sub": "Hardware",
-      "tags": ["burner", "blu-ray", "unidad óptica"],
-      "summary": "Lector/grabador de Blu-Ray: buena compatibilidad y precio correcto.",
-      "content": "El producto llegó muy bien embalado, incluye el cable de alimentación, el cable USB 3.0 micro-B y un manual sencillo. El PC lo reconoció al instante y con ImgBurn confirmé que se trata de una grabadora Blu-ray (modelo MATSHITA UJ240AS), compatible con BD-R y BD-RE, además de leer/grabar CDs y DVDs. Aún no lo he probado con discos Blu-ray vírgenes, pero la detección y compatibilidad son correctas. Hace bastante ruido durante la lectura, lo cual es normal considerando que hay piezas móviles en su interior. No creo que el exterior sea de aluminio, aunque parece bastante sólido. La bahía en la que se desplaza el lector tiene un poco más de juego del que me gustaría, pero en general funciona correctamente.",
+      "tags": ["blu-ray","grabador","hardware"],
+      "summary": "Lector/grabador de Blu-Ray para computadora con buena relación calidad precio.",
+      "content": "El producto llegó bien embalado, reconocido al instante en Windows y Linux. La bahía tiene algo de juego, pero cumple su función.",
       "rating": 4.5,
       "price": "34,57€",
-      "link": "https://es.aliexpress.com/item/1005006034405894.html?spm=a2g0s.12269583.0.0.4076abebqLYc78&gatewayAdapt=glo2esp",
+      "link": "https://example.com/producto/blueray",
       "images": [
         "assets/reviews/LectorBlueRay.jpg",
         "assets/reviews/LectorBlueRay1.jpg",
@@ -95,37 +47,39 @@
       ]
     },
     {
-      "id": 169300001004,
-      "title": "Pasta térmica 4g",
-      "date": "2025-06-01",
+      "id": 169300001002,
+      "title": "Laptop Ultra X",
+      "date": "2025-08-12",
       "category": "informatica",
-      "sub": "Electrónica",
-      "tags": ["pasta térmica", "cpu", "refrigeración"],
-      "summary": "Buena conductividad térmica para proyectos de reparación.",
-      "content": "Pequeños tubos de 2g/4g, aplicable en CPU y GPU; relación calidad/precio correcta.",
-      "rating": 4,
-      "price": "3,40€",
-      "link": "https://ejemplo.com/pasta-termica",
+      "sub": "Hardware",
+      "tags": ["laptop","reviews","hardware"],
+      "summary": "Laptop con buena relación calidad-precio.",
+      "content": "Revisión completa... buen rendimiento por el precio.",
+      "rating": 3,
+      "price": "16,89€",
+      "link": "https://example.com/producto/laptop-ultra-x",
       "images": [
-        "assets/reviews/pasta-1.jpg",
-        "assets/reviews/pasta-2.jpg"
+        "assets/reviews/laptopx-1.jpg",
+        "assets/reviews/laptopx-2.jpg",
+        "assets/reviews/laptopx-3.jpg"
       ]
     },
     {
-      "id": 169300001005,
-      "title": "Placa de desarrollo ESP32-C3",
-      "date": "2025-07-20",
-      "category": "informatica",
-      "sub": "Placas de desarrollo",
-      "tags": ["esp32", "arduino", "iot"],
-      "summary": "Pequeña, barata y perfecta para prototipos IoT.",
-      "content": "Ideal para proyectos de bajo consumo; muchas librerías disponibles.",
-      "rating": 4.2,
-      "price": "1,59€",
-      "link": "https://ejemplo.com/esp32-c3",
+      "id": 169300001001,
+      "title": "Narrativa Contemporánea",
+      "date": "2025-08-15",
+      "category": "libros",
+      "sub": "Narrativa",
+      "tags": ["ficción","voz femenina","gore"],
+      "summary": "Reseña breve: contundente y sin concesiones.",
+      "content": "Texto largo de la reseña... (opcional).",
+      "rating": 4,
+      "price": "—",
+      "link": "",
       "images": [
-        "assets/reviews/esp32-1.jpg",
-        "assets/reviews/esp32-2.jpg"
+        "assets/reviews/narrativa-1.jpg",
+        "assets/reviews/narrativa-2.jpg",
+        "assets/reviews/narrativa-3.jpg"
       ]
     }
   ]
