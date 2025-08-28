@@ -6,6 +6,9 @@
   <title>Libros — Mi Sitio</title>
   <meta name="description" content="Catálogo de libros: portada, ficha, adelanto con consentimiento." />
   <link rel="stylesheet" href="styles.css">
+  <script src="js/nav.js" defer></script>
+  <script src="js/utils.js" defer></script>
+  <script src="js/libros-page.js" defer></script>
 </head>
 <body>
   <header class="nav"><div class="wrap" id="mainNav"></div></header>
@@ -40,111 +43,5 @@
       <div id="bookModalContent"></div>
     </div>
   </div>
-
-  <script>
-    // nav builder
-    (function buildNav(){
-      const navWrap = document.getElementById('mainNav');
-      const pages = [
-        { file: 'index.html', label: 'Sobre mí' },
-        { file: 'libros.html', label: 'Libros' },
-        { file: 'reviews.html', label: 'Reseñas' }
-      ];
-      const current = (location.pathname.split('/').pop() || 'libros.html').toLowerCase();
-      const left = document.createElement('div'); left.innerHTML = '<strong>Mi Sitio</strong>';
-      const right = document.createElement('nav');
-      pages.forEach(p => { if (p.file === current) return; const a = document.createElement('a'); a.href = p.file; a.textContent = p.label; a.style.marginLeft = '12px'; right.appendChild(a); });
-      navWrap.appendChild(left); navWrap.appendChild(right);
-    })();
-
-    // load books from data/books.json
-    async function fetchJSON(path){
-      const res = await fetch(path, {cache:'no-store'});
-      if(!res.ok) throw new Error('No se pudo cargar ' + path);
-      return res.json();
-    }
-
-    const booksGrid = document.getElementById('booksGrid');
-    let BOOKS = [];
-
-    async function loadBooks(){
-      try {
-        const data = await fetchJSON('data/books.json');
-        BOOKS = data.books || [];
-      } catch(e){
-        console.error(e);
-        BOOKS = [];
-      }
-      renderBooks(BOOKS);
-    }
-
-    function escapeHtml(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
-
-    function renderBooks(list){
-      booksGrid.innerHTML = '';
-      if(!list || list.length === 0){
-        booksGrid.innerHTML = '<div class="card">No hay libros aún. Añade editar <code>data/books.json</code>.</div>';
-        return;
-      }
-      list.forEach((b, idx) => {
-        const el = document.createElement('article');
-        el.className = 'book-card card';
-        el.tabIndex = 0;
-        el.innerHTML = `
-          <div style="display:flex;gap:12px;align-items:center">
-            <div style="width:90px;height:130px;overflow:hidden;border-radius:8px;flex-shrink:0"><img src="${b.cover}" alt="${escapeHtml(b.title)}" style="width:100%;height:100%;object-fit:cover"></div>
-            <div style="flex:1;min-width:0">
-              <h3 style="margin:0 0 6px 0">${escapeHtml(b.title)}</h3>
-              <div class="meta">${escapeHtml(b.subtitle || '')}</div>
-              <p class="note" style="margin-top:8px">${escapeHtml((b.description||'').slice(0,140))}</p>
-            </div>
-          </div>
-        `;
-        el.addEventListener('click', ()=> openBookModal(b));
-        el.addEventListener('keydown', (e) => { if(e.key==='Enter' || e.key===' ') openBookModal(b); });
-        booksGrid.appendChild(el);
-      });
-    }
-
-    const bookModal = document.getElementById('bookModal');
-    const bookModalContent = document.getElementById('bookModalContent');
-    const closeBookModal = document.getElementById('closeBookModal');
-
-    function openBookModal(book){
-      bookModalContent.innerHTML = `
-        <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start">
-          <div style="min-width:160px"><img src="${book.cover}" alt="${escapeHtml(book.title)}" style="width:160px;height:240px;object-fit:cover;border-radius:6px"></div>
-          <div style="flex:1">
-            <h2>${escapeHtml(book.title)}</h2>
-            <p class="meta">${escapeHtml(book.subtitle || '')} ${book.date? '· ' + escapeHtml(book.date) : ''}</p>
-            <p style="margin-top:8px">${escapeHtml(book.description || '')}</p>
-            <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-              <a class="btn btn-primary" href="${book.amazon || '#'}" target="_blank" rel="noopener">Comprar</a>
-              <a class="btn btn-ghost" href="${book.sample || '#'}" target="_blank">Ver muestra</a>
-            </div>
-          </div>
-        </div>
-      `;
-      bookModal.classList.add('open'); bookModal.setAttribute('aria-hidden','false');
-    }
-
-    closeBookModal.addEventListener('click', ()=> { bookModal.classList.remove('open'); bookModal.setAttribute('aria-hidden','true'); });
-    bookModal.addEventListener('click', (e)=> { if(e.target === bookModal){ bookModal.classList.remove('open'); bookModal.setAttribute('aria-hidden','true'); } });
-    document.addEventListener('keydown', (e)=> { if(e.key === 'Escape' && bookModal.classList.contains('open')) { bookModal.classList.remove('open'); bookModal.setAttribute('aria-hidden','true'); } });
-
-    // filters
-    document.getElementById('searchInput').addEventListener('input', ()=> {
-      const q = document.getElementById('searchInput').value.trim().toLowerCase();
-      renderBooks(BOOKS.filter(b => (b.title + ' ' + (b.subtitle||'') + ' ' + (b.description||'')).toLowerCase().includes(q)));
-    });
-    document.getElementById('dateInput').addEventListener('change', ()=> {
-      const d = document.getElementById('dateInput').value;
-      renderBooks(d ? BOOKS.filter(b => b.date === d) : BOOKS);
-    });
-    document.getElementById('clearFilters').addEventListener('click', ()=> { document.getElementById('searchInput').value=''; document.getElementById('dateInput').value=''; renderBooks(BOOKS); });
-
-    // init
-    loadBooks();
-  </script>
 </body>
 </html>
