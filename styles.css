@@ -1,107 +1,210 @@
-/* ==========================
-   PALETA Y OVERRIDES GLOBALES
-   ========================== */
+/* styles.css — Archivo completo (Pegar entero, sustituir anterior)
+   Paleta: color1 (buscador), color4 (header), color5 (cards)
+*/
+
+/* ======================
+   RESET & VARIABLES
+   ====================== */
 :root{
   --color1: #6c7792; /* barra de búsqueda / filtros */
   --color4: #74848c; /* header fijo */
   --color5: #bcc1cd; /* fondo de las cajas (cards) */
-  --card-text: #222; /* texto dentro de cards */
+  --text: #222831;
   --muted: #5c6166;
   --card-radius: 12px;
+  --shadow-weak: 0 8px 20px rgba(68,72,71,0.04);
+  --accent: #444847; /* botón oscuro neutro */
+  --max-width: 1100px;
+  --border-soft: rgba(0,0,0,0.06);
 }
 
-/* fondo global blanco */
-html,body { background: #ffffff; color: var(--card-text); }
+/* Simple reset */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html,body { height:100%; }
+body {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: #ffffff; /* fondo blanco como pediste */
+  color: var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.4;
+}
 
-/* ----- HEADER ----- */
+/* Container */
+.container {
+  max-width: var(--max-width);
+  margin: 22px auto;
+  padding: 18px;
+}
+
+/* ======================
+   NAV / HEADER
+   ====================== */
 .nav {
-  background: var(--color4);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: var(--color4); /* color4 para barra superior */
   color: #fff;
   border-bottom: 1px solid rgba(0,0,0,0.06);
 }
-.nav .wrap { color: #fff; }
-/* Nav links (asegurar contraste) */
+.nav .wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 18px;
+  gap:12px;
+}
 .nav a { color: rgba(255,255,255,0.95); text-decoration:none; font-weight:600; }
-.nav a:hover { color: #fff; opacity:0.95; }
+.nav a:hover { opacity:0.95; }
 
-/* ----- BARRA DE FILTROS / BÚSQUEDA (books + reviews) ----- */
+/* Simple logo area */
+.logo { font-weight:800; font-size:1.05rem; color:#fff; }
+
+/* ======================
+   HERO / SOBRE MÍ
+   ====================== */
+.hero {
+  display:flex;
+  gap:18px;
+  align-items:center;
+  padding:18px;
+  border-radius: calc(var(--card-radius) + 2px);
+  background: linear-gradient(180deg, rgba(0,0,0,0.02), rgba(255,255,255,0.00));
+  margin-bottom:14px;
+}
+.avatar img { width:120px; height:120px; object-fit:cover; border-radius:12px; display:block; }
+
+/* ======================
+   CARDS (GENERIC)
+   ====================== */
+.card {
+  background: var(--color5); /* color5 en cards */
+  border-radius: var(--card-radius);
+  padding:14px;
+  border:1px solid var(--border-soft);
+  box-shadow: var(--shadow-weak);
+}
+.card + .card { margin-top:12px; }
+
+/* Typography inside cards */
+h1 { font-size:22px; margin-bottom:6px; color:var(--text); }
+h2 { font-size:18px; margin-bottom:8px; color:var(--text); }
+h3 { font-size:16px; color:var(--text); margin:6px 0; }
+.note, .meta { color: var(--muted); font-size:13px; }
+
+/* ======================
+   BARRA DE FILTROS / BUSCADOR (books + reviews)
+   ====================== */
 .filters-card {
-  background: var(--color1);
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+  background: var(--color1); /* color1 */
   color: #fff;
   border-radius: 14px;
   padding: 12px;
   border: 1px solid rgba(0,0,0,0.06);
   box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+  margin-bottom:12px;
 }
 
-/* inputs dentro de la barra: fondo blanco para legibilidad */
-.filters-card .search-input,
+/* Inputs blancos dentro de la barra para legibilidad */
 .search-input {
   background: #ffffff;
-  color: var(--card-text);
+  color: var(--text);
   padding:10px 12px;
   border-radius:10px;
   border:1px solid rgba(0,0,0,0.06);
-  min-width: 140px;
-  box-shadow: none;
+  min-width:140px;
+  box-shadow:none;
 }
+.search-input::placeholder{ color:#9aa0a6; }
 
-/* placeholder color suave */
-.filters-card .search-input::placeholder,
-.search-input::placeholder {
-  color: #9aa0a6;
+/* Si tienes search inputs fuera de filters-card, usar la misma clase mantiene consistencia */
+.filters-card .search-input { background:#fff; }
+
+/* Botones */
+.btn {
+  padding:8px 12px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  font-weight:700;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
 }
+.btn-primary { background: var(--accent); color:#fff; }
+.btn-ghost { background: transparent; border:1px solid rgba(0,0,0,0.06); color:var(--text); }
 
-/* si tienes inputs fuera de .filters-card pero que usen .search-input, también se ven igual */
+/* ======================
+   BOOKS GRID
+   ====================== */
+.books-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap:14px;
+  margin-top:12px;
+}
+.book-card {
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  transition: transform .14s ease, box-shadow .14s ease;
+  cursor:pointer;
+}
+.book-card:hover{ transform: translateY(-6px); box-shadow: 0 20px 40px rgba(68,72,71,0.06); }
 
-/* ----- CARDS (libros + reseñas) ----- */
-.card,
-.book-card,
+/* thumb imagen */
+.book-card img { width:90px; height:130px; object-fit:cover; border-radius:8px; }
+
+/* ======================
+   REVIEWS LIST
+   ====================== */
+.list { display:flex; flex-direction:column; gap:12px; margin-top:12px; }
 .review-card {
-  background: var(--color5);
-  color: var(--card-text);
-  border-radius: var(--card-radius);
-  padding: 12px;
-  border: 1px solid rgba(0,0,0,0.04);
-  box-shadow: 0 8px 20px rgba(68,72,71,0.04);
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  padding:14px;
+  border-radius:12px;
+  border:1px solid rgba(68,72,71,0.06);
+  background: linear-gradient(180deg, rgba(0,0,0,0.01), rgba(255,255,255,0));
+  box-shadow: var(--shadow-weak);
   transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+  cursor:pointer;
 }
-
-/* separación entre cards */
-.list > .review-card + .review-card,
-.books-grid > .book-card + .book-card,
-.card + .card {
-  margin-top: 12px;
-}
-
-/* hover sutil */
-.review-card:hover,
-.book-card:hover,
-.card:hover {
+.review-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 20px 40px rgba(68,72,71,0.06);
   border-color: rgba(68,72,71,0.08);
 }
 
-/* texto dentro de cards (títulos, notas) */
-.card h2, .book-card h3, .review-card h3 { color: #2b2f33; }
-.note, .meta { color: var(--muted); }
+/* mini-thumbnail */
+.review-thumb { width:140px; height:92px; flex-shrink:0; border-radius:8px; overflow:hidden; background:#eef5fb; border:1px solid rgba(0,0,0,0.03); }
+.review-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
 
-/* ----- REVIEW: columna derecha para botón / estado ----- */
+/* review-body flexible */
+.review-body { flex:1; display:flex; flex-direction:column; gap:8px; min-width:0; }
+
+/* review-right: boton / estado */
 .review-right {
   display:flex;
   align-items:center;
   justify-content:flex-end;
-  min-width:140px;
+  min-width:160px;
   flex-shrink:0;
 }
-
-/* botón dentro del recuadro derecho (contraste con color5) */
 .product-link-btn {
   display:inline-block;
   padding:8px 10px;
   border-radius:10px;
-  background: #444847; /* oscuro neutro para buen contraste */
+  background: var(--accent);
   color: #fff;
   font-weight:700;
   text-decoration:none;
@@ -109,9 +212,6 @@ html,body { background: #ffffff; color: var(--card-text); }
   text-align:center;
   box-shadow: 0 6px 18px rgba(0,0,0,0.06);
 }
-.product-link-btn:visited{ color:#fff; }
-
-/* si no hay link */
 .no-link {
   display:inline-block;
   padding:6px 10px;
@@ -122,32 +222,85 @@ html,body { background: #ffffff; color: var(--card-text); }
   font-weight:600;
 }
 
-/* precio: neutro (sin azul) */
-.price { font-weight:800; color: var(--card-text); }
+/* precio neutro */
+.price { font-weight:800; color: var(--text); }
 
-/* ----- ESTRELLAS (media estrella arreglada) ----- */
+/* ======================
+   STARS (media estrella)
+   ====================== */
+.stars { display:inline-flex; gap:4px; align-items:center; }
 .star { font-size:14px; line-height:1; display:inline-block; color:#ddd; position:relative; width:14px; text-align:center; }
 .star.full { color:#f5b301; }
 .star.empty { color:#ddd; }
 .star.half { color:#ddd; }
 .star.half::before{
   content: '★';
-  position: absolute;
-  left: 0; top: 0;
-  width: 50%;
-  overflow: hidden;
-  color: #f5b301;
-  -webkit-text-fill-color: #f5b301;
+  position:absolute;
+  left:0; top:0;
+  width:50%;
+  overflow:hidden;
+  color:#f5b301;
+  -webkit-text-fill-color:#f5b301;
 }
 
-/* ----- MODAL X (asegurar X por encima) ----- */
-.modal { z-index: 150; } /* overlay */
-.modal-card { position: relative; z-index: 200; }
-.modal-close { z-index: 220; position:absolute; right:12px; top:12px; background:rgba(255,255,255,0.95); border-radius:8px; padding:6px; border:1px solid rgba(0,0,0,0.06); }
+/* ======================
+   MODAL (detalle)
+   ====================== */
+.modal {
+  display:none;
+  position:fixed;
+  inset:0;
+  background: rgba(0,0,0,0.45);
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  z-index:150;
+}
+.modal.open { display:flex; }
+.modal-card {
+  background:#fff;
+  border-radius:12px;
+  padding:18px;
+  max-width:920px;
+  width:100%;
+  max-height:90vh;
+  overflow:auto;
+  position:relative;
+  z-index:200;
+  box-shadow: 0 30px 60px rgba(15,23,42,0.12);
+}
+.modal-close {
+  z-index:220;
+  position:absolute;
+  right:12px;
+  top:12px;
+  border:none;
+  background:rgba(255,255,255,0.95);
+  padding:6px 8px;
+  border-radius:8px;
+  cursor:pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
 
-/* ----- RESPONSIVE tweaks ----- */
-@media (max-width:780px){
-  .review-right { min-width:90px; justify-content:flex-end; }
-  .product-link-btn { max-width:120px; padding:6px 8px; font-size:13px; }
-  .filters-card { padding:10px; }
+/* asegurar que la X no tape thumbs (si aún pasa, se puede mover más arriba) */
+.modal .thumb { z-index: 210; }
+
+/* ======================
+   FOOTER
+   ====================== */
+.footer { text-align:center; color:var(--muted); margin-top:18px; font-size:13px; }
+
+/* ======================
+   RESPONSIVE
+   ====================== */
+@media (max-width:920px){
+  .hero { flex-direction:column; align-items:flex-start; gap:12px; }
+  .review-thumb { width:110px; height:72px; }
+  .review-right { min-width:110px; }
+  .book-card img { width:80px; height:110px; }
+  .books-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+}
+@media (max-width:560px){
+  .review-right { min-width:90px; }
+  .search-input { min-width:120px; }
 }
