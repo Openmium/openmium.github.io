@@ -13,7 +13,7 @@
     {
       "id": "libros",
       "label": "Libros",
-      "subs": ["Novelas","Psicología","Narrativa"]
+      "subs": ["Novelas","Psicología"]
     },
     {
       "id": "ocio",
@@ -69,7 +69,7 @@
       "title": "Narrativa Contemporánea",
       "date": "2025-08-15",
       "category": "libros",
-      "sub": "Narrativa",
+      "sub": "Novelas",
       "tags": ["ficción","voz femenina","gore"],
       "summary": "Reseña breve: contundente y sin concesiones.",
       "content": "Texto largo de la reseña... (opcional).",
