@@ -1,306 +1,153 @@
-/* styles.css — Archivo completo (Pegar entero, sustituir anterior)
-   Paleta: color1 (buscador), color4 (header), color5 (cards)
-*/
+/* styles.css — completo (sustituye tu styles.css actual) */
 
-/* ======================
-   RESET & VARIABLES
-   ====================== */
+/* Variables de color según tu petición */
 :root{
-  --color1: #6c7792; /* barra de búsqueda / filtros */
-  --color4: #74848c; /* header fijo */
-  --color5: #bcc1cd; /* fondo de las cajas (cards) */
-  --text: #222831;
-  --muted: #5c6166;
-  --card-radius: 12px;
-  --shadow-weak: 0 8px 20px rgba(68,72,71,0.04);
-  --accent: #444847; /* botón oscuro neutro */
+  --header: #414254;   /* header color */
+  --search: #717088;   /* barra de búsqueda / filtros */
+  --card:   #bcc1cd;   /* fondo de las cajas (books + reviews + hero) */
+  --title:  #8e9098;   /* títulos de libros y reseñas */
+  --text:   #222831;
+  --muted:  #5c6166;
+  --accent: #444847;   /* botón oscuro neutro */
+  --radius: 12px;
   --max-width: 1100px;
   --border-soft: rgba(0,0,0,0.06);
+  --shadow-weak: 0 8px 20px rgba(68,72,71,0.04);
 }
 
-/* Simple reset */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html,body { height:100%; }
-body {
+/* Reset base */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background: #ffffff; /* fondo blanco como pediste */
-  color: var(--text);
+  color:var(--text);
+  background:#ffffff; /* blanco global */
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   line-height:1.4;
 }
 
 /* Container */
-.container {
-  max-width: var(--max-width);
-  margin: 22px auto;
-  padding: 18px;
-}
+.container{ max-width:var(--max-width); margin:22px auto; padding:18px; }
 
-/* ======================
-   NAV / HEADER
-   ====================== */
-.nav {
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  background: var(--color4); /* color4 para barra superior */
-  color: #fff;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
+/* Header / nav */
+.nav{
+  position:sticky; top:0; z-index:999;
+  background: var(--header); color:#fff;
+  border-bottom:1px solid rgba(0,0,0,0.06);
 }
-.nav .wrap {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:12px 18px;
-  gap:12px;
+.nav .wrap{
+  max-width:var(--max-width); margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 18px; gap:12px;
 }
-.nav a { color: rgba(255,255,255,0.95); text-decoration:none; font-weight:600; }
-.nav a:hover { opacity:0.95; }
+.logo{ font-weight:800; font-size:1.05rem; color:#fff; text-decoration:none; }
+.nav a{ color:rgba(255,255,255,0.95); text-decoration:none; font-weight:600; margin-left:12px; }
+.nav a:hover{ opacity:0.95; }
 
-/* Simple logo area */
-.logo { font-weight:800; font-size:1.05rem; color:#fff; }
-
-/* ======================
-   HERO / SOBRE MÍ
-   ====================== */
-.hero {
-  display:flex;
-  gap:18px;
-  align-items:center;
-  padding:18px;
-  border-radius: calc(var(--card-radius) + 2px);
-  background: linear-gradient(180deg, rgba(0,0,0,0.02), rgba(255,255,255,0.00));
-  margin-bottom:14px;
-}
-.avatar img { width:120px; height:120px; object-fit:cover; border-radius:12px; display:block; }
-
-/* ======================
-   CARDS (GENERIC)
-   ====================== */
-.card {
-  background: var(--color5); /* color5 en cards */
-  border-radius: var(--card-radius);
+/* Generic card */
+.card{
+  background: var(--card);
+  border-radius: var(--radius);
   padding:14px;
   border:1px solid var(--border-soft);
   box-shadow: var(--shadow-weak);
 }
-.card + .card { margin-top:12px; }
+.card + .card{ margin-top:12px; }
 
-/* Typography inside cards */
-h1 { font-size:22px; margin-bottom:6px; color:var(--text); }
-h2 { font-size:18px; margin-bottom:8px; color:var(--text); }
-h3 { font-size:16px; color:var(--text); margin:6px 0; }
-.note, .meta { color: var(--muted); font-size:13px; }
-
-/* ======================
-   BARRA DE FILTROS / BUSCADOR (books + reviews)
-   ====================== */
-.filters-card {
-  display:flex;
-  gap:10px;
-  align-items:center;
-  flex-wrap:wrap;
-  background: var(--color1); /* color1 */
-  color: #fff;
-  border-radius: 14px;
-  padding: 12px;
-  border: 1px solid rgba(0,0,0,0.06);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.04);
-  margin-bottom:12px;
+/* HERO (sobre mí) - único rectángulo con divisores */
+.hero-card{
+  background: var(--card); padding:16px; border-radius:14px;
+  box-shadow: 0 12px 28px rgba(68,72,71,0.05);
+  border:1px solid rgba(0,0,0,0.04);
+  margin-bottom:14px;
 }
+.hero-card .hero-row{ margin-top:12px; padding-top:12px; border-top:1px solid rgba(0,0,0,0.04); }
+.hero-card .hero-row:first-of-type{ margin-top:8px; padding-top:8px; border-top:none; }
+.avatar img{ width:120px; height:120px; object-fit:cover; border-radius:12px; display:block; }
 
-/* Inputs blancos dentro de la barra para legibilidad */
-.search-input {
-  background: #ffffff;
-  color: var(--text);
-  padding:10px 12px;
-  border-radius:10px;
-  border:1px solid rgba(0,0,0,0.06);
-  min-width:140px;
-  box-shadow:none;
+/* Filters / search box (books + reviews) */
+.filters-card{
+  display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  background: var(--search); color:#fff;
+  border-radius:14px; padding:12px; border:1px solid rgba(0,0,0,0.06);
+  box-shadow:0 6px 18px rgba(0,0,0,0.04); margin-bottom:12px;
+}
+.search-input{
+  background:#fff; color:var(--text); padding:10px 12px; border-radius:10px;
+  border:1px solid rgba(0,0,0,0.06); min-width:140px;
 }
 .search-input::placeholder{ color:#9aa0a6; }
 
-/* Si tienes search inputs fuera de filters-card, usar la misma clase mantiene consistencia */
-.filters-card .search-input { background:#fff; }
+/* Buttons */
+.btn{ padding:8px 12px; border-radius:10px; border:none; cursor:pointer; font-weight:700; display:inline-flex; align-items:center; gap:8px; text-decoration:none; }
+.btn-primary{ background:var(--accent); color:#fff; }
+.btn-ghost{ background:transparent; border:1px solid rgba(0,0,0,0.06); color:var(--text); }
 
-/* Botones */
-.btn {
-  padding:8px 12px;
-  border-radius:10px;
-  border:none;
-  cursor:pointer;
-  font-weight:700;
-  text-decoration:none;
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-}
-.btn-primary { background: var(--accent); color:#fff; }
-.btn-ghost { background: transparent; border:1px solid rgba(0,0,0,0.06); color:var(--text); }
-
-/* ======================
-   BOOKS GRID
-   ====================== */
-.books-grid {
-  display:grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap:14px;
-  margin-top:12px;
-}
-.book-card {
-  display:flex;
-  gap:12px;
-  align-items:flex-start;
+/* BOOKS grid */
+.books-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap:14px; margin-top:12px; align-items:start; }
+.book-card{
+  display:flex; gap:12px; align-items:stretch; padding:12px; min-height:150px; border-radius:12px;
   transition: transform .14s ease, box-shadow .14s ease;
   cursor:pointer;
 }
-.book-card:hover{ transform: translateY(-6px); box-shadow: 0 20px 40px rgba(68,72,71,0.06); }
+.book-card:hover{ transform:translateY(-6px); box-shadow:0 20px 40px rgba(68,72,71,0.06); }
+.book-card img{ width:100px; height:140px; object-fit:cover; border-radius:8px; flex-shrink:0; }
+.book-info{ display:flex; flex-direction:column; justify-content:space-between; min-width:0; }
+.book-title{ color:var(--title); font-weight:700; font-size:15px; margin-bottom:6px; }
+.book-subtitle{ color:var(--muted); font-size:13px; }
 
-/* thumb imagen */
-.book-card img { width:90px; height:130px; object-fit:cover; border-radius:8px; }
-
-/* ======================
-   REVIEWS LIST
-   ====================== */
-.list { display:flex; flex-direction:column; gap:12px; margin-top:12px; }
-.review-card {
-  display:flex;
-  gap:12px;
-  align-items:flex-start;
-  padding:14px;
-  border-radius:12px;
-  border:1px solid rgba(68,72,71,0.06);
-  background: linear-gradient(180deg, rgba(0,0,0,0.01), rgba(255,255,255,0));
-  box-shadow: var(--shadow-weak);
-  transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
-  cursor:pointer;
+/* REVIEWS list */
+.list{ display:flex; flex-direction:column; gap:12px; margin-top:12px; }
+.review-card{
+  display:flex; gap:12px; align-items:flex-start; padding:14px; border-radius:12px;
+  border:1px solid rgba(68,72,71,0.06); background:var(--card);
+  transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease; cursor:pointer;
 }
-.review-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 40px rgba(68,72,71,0.06);
-  border-color: rgba(68,72,71,0.08);
-}
-
-/* mini-thumbnail */
-.review-thumb { width:140px; height:92px; flex-shrink:0; border-radius:8px; overflow:hidden; background:#eef5fb; border:1px solid rgba(0,0,0,0.03); }
+.review-card:hover{ transform:translateY(-6px); box-shadow:0 20px 40px rgba(68,72,71,0.06); border-color:rgba(68,72,71,0.08); }
+.review-thumb{ width:140px; height:92px; flex-shrink:0; border-radius:8px; overflow:hidden; border:1px solid rgba(0,0,0,0.03); background:#eef5fb; }
 .review-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.review-body{ flex:1; display:flex; flex-direction:column; gap:8px; min-width:0; }
+.review-right{ display:flex; align-items:center; justify-content:flex-end; min-width:160px; flex-shrink:0; }
 
-/* review-body flexible */
-.review-body { flex:1; display:flex; flex-direction:column; gap:8px; min-width:0; }
+/* Link button or no-link */
+.product-link-btn{ display:inline-block; padding:8px 10px; border-radius:10px; background:var(--accent); color:#fff; font-weight:700; text-decoration:none; max-width:140px; text-align:center; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
+.no-link{ display:inline-block; padding:6px 10px; border-radius:8px; border:1px solid rgba(0,0,0,0.04); background:rgba(0,0,0,0.02); color:var(--muted); font-weight:600; }
 
-/* review-right: boton / estado */
-.review-right {
-  display:flex;
-  align-items:center;
-  justify-content:flex-end;
-  min-width:160px;
-  flex-shrink:0;
-}
-.product-link-btn {
-  display:inline-block;
-  padding:8px 10px;
-  border-radius:10px;
-  background: var(--accent);
-  color: #fff;
-  font-weight:700;
-  text-decoration:none;
-  max-width:140px;
-  text-align:center;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-}
-.no-link {
-  display:inline-block;
-  padding:6px 10px;
-  border-radius:8px;
-  border:1px solid rgba(0,0,0,0.04);
-  background: rgba(0,0,0,0.02);
-  color: var(--muted);
-  font-weight:600;
-}
+/* Price */
+.price{ font-weight:800; color:var(--text); }
 
-/* precio neutro */
-.price { font-weight:800; color: var(--text); }
-
-/* ======================
-   STARS (media estrella)
-   ====================== */
-.stars { display:inline-flex; gap:4px; align-items:center; }
-.star { font-size:14px; line-height:1; display:inline-block; color:#ddd; position:relative; width:14px; text-align:center; }
-.star.full { color:#f5b301; }
-.star.empty { color:#ddd; }
-.star.half { color:#ddd; }
+/* Stars */
+.stars{ display:inline-flex; gap:4px; align-items:center; }
+.star{ font-size:14px; line-height:1; display:inline-block; color:#ddd; position:relative; width:14px; text-align:center; }
+.star.full{ color:#f5b301; }
+.star.empty{ color:#ddd; }
+.star.half{ color:#ddd; }
 .star.half::before{
-  content: '★';
-  position:absolute;
-  left:0; top:0;
-  width:50%;
-  overflow:hidden;
-  color:#f5b301;
-  -webkit-text-fill-color:#f5b301;
+  content:'★'; position:absolute; left:0; top:0; width:50%; overflow:hidden; color:#f5b301; -webkit-text-fill-color:#f5b301;
 }
 
-/* ======================
-   MODAL (detalle)
-   ====================== */
-.modal {
-  display:none;
-  position:fixed;
-  inset:0;
-  background: rgba(0,0,0,0.45);
-  align-items:center;
-  justify-content:center;
-  padding:18px;
-  z-index:150;
-}
-.modal.open { display:flex; }
-.modal-card {
-  background:#fff;
-  border-radius:12px;
-  padding:18px;
-  max-width:920px;
-  width:100%;
-  max-height:90vh;
-  overflow:auto;
-  position:relative;
-  z-index:200;
-  box-shadow: 0 30px 60px rgba(15,23,42,0.12);
-}
-.modal-close {
-  z-index:220;
-  position:absolute;
-  right:12px;
-  top:12px;
-  border:none;
-  background:rgba(255,255,255,0.95);
-  padding:6px 8px;
-  border-radius:8px;
-  cursor:pointer;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-}
+/* Modal */
+.modal{ display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); align-items:center; justify-content:center; padding:18px; z-index:150; }
+.modal.open{ display:flex; }
+.modal-card{ background:#fff; border-radius:12px; padding:18px; max-width:920px; width:100%; max-height:90vh; overflow:auto; position:relative; z-index:200; box-shadow:0 30px 60px rgba(15,23,42,0.12); }
+.modal-close{ z-index:9999; position:absolute; right:10px; top:10px; border:none; background:rgba(255,255,255,0.95); padding:6px 8px; border-radius:8px; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
 
-/* asegurar que la X no tape thumbs (si aún pasa, se puede mover más arriba) */
-.modal .thumb { z-index: 210; }
+/* Ensure thumbnails in modal not hidden by X */
+.modal .thumb{ z-index:210; }
 
-/* ======================
-   FOOTER
-   ====================== */
-.footer { text-align:center; color:var(--muted); margin-top:18px; font-size:13px; }
+/* Footer */
+.footer{ text-align:center; color:var(--muted); margin-top:18px; font-size:13px; }
 
-/* ======================
-   RESPONSIVE
-   ====================== */
+/* Responsive */
 @media (max-width:920px){
-  .hero { flex-direction:column; align-items:flex-start; gap:12px; }
-  .review-thumb { width:110px; height:72px; }
-  .review-right { min-width:110px; }
-  .book-card img { width:80px; height:110px; }
-  .books-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .hero-card{ padding:12px; }
+  .review-thumb{ width:110px; height:72px; }
+  .review-right{ min-width:110px; }
+  .book-card img{ width:84px; height:120px; }
+  .books-grid{ grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
 }
 @media (max-width:560px){
-  .review-right { min-width:90px; }
-  .search-input { min-width:120px; }
+  .review-right{ min-width:90px; }
+  .search-input{ min-width:120px; }
 }
