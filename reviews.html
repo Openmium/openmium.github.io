@@ -3,28 +3,30 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Reseñas — Mi Sitio</title>
+  <title>Reseñas — [Tu Nombre]</title>
   <meta name="description" content="Reseñas de productos, libros y más. Filtrado y galería." />
   <link rel="stylesheet" href="styles.css">
   <script src="js/nav.js" defer></script>
-  <script src="js/utils.js" defer></script>
   <script src="js/reviews-page.js" defer></script>
 </head>
 <body>
-  <header class="nav"><div class="wrap" id="mainNav"></div></header>
+  <header class="nav">
+    <div class="wrap" id="mainNav"></div>
+  </header>
 
   <main class="container">
     <h1>Reseñas</h1>
 
-    <section class="filters-card" style="margin-bottom:12px" aria-label="Controles de filtrado">
-      <input id="searchBox" placeholder="Buscar por título, tag..." style="flex:1" aria-label="Buscar reseñas">
-      <select id="categorySelect" aria-label="Categoría" style="padding:8px;border-radius:10px;">
+    <!-- filtros: misma apariencia que libros (search-input) -->
+    <section class="filters-card card" style="margin-bottom:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <input id="searchBox" class="search-input" placeholder="Buscar por título, tag..." aria-label="Buscar reseñas">
+      <select id="categorySelect" class="search-input" style="max-width:220px">
         <option value="all">Todas las categorías</option>
       </select>
-      <select id="subSelect" aria-label="Subcategoría" style="padding:8px;border-radius:10px;">
+      <select id="subSelect" class="search-input" style="max-width:220px">
         <option value="all">Todas las subcategorías</option>
       </select>
-      <input id="dateFilter" type="date" aria-label="Filtrar por fecha" style="padding:8px;border-radius:10px;">
+      <input id="dateFilter" type="date" class="search-input" style="max-width:180px">
       <button id="clearFilters" class="btn" style="background:#fff;border:1px solid var(--border)">Limpiar</button>
     </section>
 
@@ -35,9 +37,9 @@
 
   <!-- modal detalle con galería -->
   <div id="detailModal" class="modal" role="dialog" aria-hidden="true">
-    <div class="modal-card" role="document">
+    <div class="modal-card" role="document" style="display:flex;gap:18px;flex-wrap:wrap">
       <button id="closeDetail" class="modal-close" aria-label="Cerrar">✕</button>
-      <div id="detailContent"></div>
+      <div id="detailContent" style="flex:1;min-width:260px"></div>
     </div>
   </div>
 </body>
