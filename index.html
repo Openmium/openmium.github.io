@@ -1,18 +1,14 @@
 <!doctype html>
 <html lang="es">
-  <link rel="stylesheet" href="styles.css">
-<!-- scripts comunes -->
-<script src="js/nav.js" defer></script>
-<script src="js/utils.js" defer></script>
-<!-- luego tu script inline o page-specific, también defer -->
-<script src="js/reviews-page.js" defer></script>
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Sobre mí — [Tu Nombre]</title>
   <meta name="description" content="Sobre mí — información personal y profesional." />
   <link rel="stylesheet" href="styles.css">
+  <!-- scripts comunes -->
+  <script src="js/nav.js" defer></script>
+  <script src="js/utils.js" defer></script>
 </head>
 <body>
   <header class="nav" role="banner">
@@ -49,26 +45,5 @@
 
     <footer class="footer">© 2025 [Tu Nombre]</footer>
   </main>
-
-  <script>
-    // Build consistent nav across pages
-    (function buildNav(){
-      const navWrap = document.getElementById('mainNav');
-      const pages = [
-        { file: 'index.html', label: 'Sobre mí' },
-        { file: 'libros.html', label: 'Libros' },
-        { file: 'reviews.html', label: 'Reseñas' }
-      ];
-      const current = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
-      const left = document.createElement('div'); left.innerHTML = '<strong>Mi Sitio</strong>';
-      const right = document.createElement('nav');
-      pages.forEach(p => {
-        if (p.file === current) continue;
-        const a = document.createElement('a'); a.href = p.file; a.textContent = p.label; a.style.marginLeft = '14px';
-        right.appendChild(a);
-      });
-      navWrap.appendChild(left); navWrap.appendChild(right);
-    })();
-  </script>
 </body>
 </html>
