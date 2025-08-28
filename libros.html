@@ -4,44 +4,61 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Libros — Mi Sitio</title>
-  <meta name="description" content="Catálogo de libros: portada, ficha, adelanto con consentimiento." />
+  <meta name="description" content="Catálogo de libros." />
   <link rel="stylesheet" href="styles.css">
-  <script src="js/nav.js" defer></script>
-  <script src="js/utils.js" defer></script>
-  <script src="js/libros-page.js" defer></script>
 </head>
 <body>
-  <header class="nav"><div class="wrap" id="mainNav"></div></header>
+  <header class="nav">
+    <div class="wrap" id="mainNav">
+      <a class="logo" href="index.html">Mi Sitio</a>
+      <nav id="navRight"></nav>
+    </div>
+  </header>
 
   <main class="container">
-    <section class="hero card" aria-hidden="false">
-      <div style="display:flex;gap:18px;align-items:center">
-        <div style="flex:1">
-          <h1 id="siteTitle">Mis libros</h1>
-          <p class="note" id="siteIntro">Explora los títulos publicados. Haz click en una tarjeta para ver la ficha completa y descargar un adelanto.</p>
-        </div>
-      </div>
+    <!-- filtros -->
+    <section class="filters-card" aria-label="Filtros de libros">
+      <input id="searchBook" class="search-input" placeholder="Buscar libros..." aria-label="Buscar libros">
+      <input id="dateInput" class="search-input" type="date" aria-label="Filtrar por fecha">
+      <button id="clearBooks" class="btn" style="background:#fff;color:var(--text);border:1px solid rgba(0,0,0,0.06)">Limpiar</button>
     </section>
 
-    <section style="margin-top:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-      <input id="searchInput" type="text" placeholder="Buscar por título..." aria-label="Buscar libros" style="padding:8px;border-radius:8px;border:1px solid var(--border);flex:1;min-width:220px">
-      <input id="dateInput" type="date" aria-label="Filtrar por fecha" style="padding:8px;border-radius:8px;border:1px solid var(--border)">
-      <button id="clearFilters" class="btn" style="background:#fff;border:1px solid var(--border)">Limpiar</button>
-    </section>
-
-    <section id="booksSection" style="margin-top:16px">
+    <!-- grid -->
+    <section id="booksSection">
       <div id="booksGrid" class="books-grid" aria-live="polite"></div>
     </section>
 
-    <footer class="footer" style="margin-top:22px">© 2025 [Tu Nombre]</footer>
+    <footer class="footer">© 2025 [Tu Nombre]</footer>
   </main>
 
-  <!-- Modal ficha libro -->
+  <!-- Modal: ficha libro -->
   <div id="bookModal" class="modal" role="dialog" aria-hidden="true">
     <div class="modal-card">
       <button id="closeBookModal" class="modal-close" aria-label="Cerrar">✕</button>
       <div id="bookModalContent"></div>
     </div>
   </div>
+
+  <script>
+    // nav builder (no link to current)
+    (function buildNav(){
+      const navRight = document.getElementById('navRight');
+      const pages = [
+        { file: 'index.html', label: 'Sobre mí' },
+        { file: 'libros.html', label: 'Libros' },
+        { file: 'reviews.html', label: 'Reseñas' }
+      ];
+      const current = (location.pathname.split('/').pop() || 'libros.html').toLowerCase();
+      pages.forEach(p => {
+        if(p.file === current) return;
+        const a = document.createElement('a');
+        a.href = p.file;
+        a.textContent = p.label;
+        navRight.appendChild(a);
+      });
+    })();
+  </script>
+
+  <script src="js/libros-page.js" defer></script>
 </body>
 </html>
