@@ -7,121 +7,49 @@
   <meta name="description" content="Reseñas de productos, libros y más. Filtrado y galería." />
   <link rel="stylesheet" href="styles.css">
   <style>
-    :root { --muted:#6b7280; --accent:#0b74de; --card-blue: #F9FFE9; --filters-blue:#e1efff; --card-border: rgba(2,6,23,0.06); --shadow: 0 6px 20px rgba(2,6,23,0.035); }
-    html,body { height:100%; margin:0; background:#ffffff; color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+    /* overrides específicos: quitar degradado y mover botón a la derecha */
+    :root { --muted:#6b7280; --accent:#5a6871; --card-bg-solid: #ffffff; }
 
-    .container { background: transparent; }
-
-    /* filtros: recuadro con color y bordes redondeados */
-    .filters-card {
-      background: var(--filters-blue);
-      border-radius: 14px;
-      padding: 12px;
-      border: 1px solid rgba(11,116,222,0.06);
-      box-shadow: 0 6px 16px rgba(11,116,222,0.02);
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-    .filters-card input, .filters-card select { padding:8px;border-radius:10px;border:1px solid #dfeaf6;background:#fff; }
-
-    /* lista y tarjetas */
-    .list { display:flex; flex-direction:column; gap:14px; margin-top:10px; }
-
-    .review-card {
+    /* tarjeta: fondo sólido, sin degradado */
+    .review-card{
+      background: var(--card-bg-solid); /* sin degradado */
+      border:1px solid rgba(68,72,71,0.06);
       display:flex;
       gap:12px;
-      align-items:flex-start;
+      align-items:center;
+      justify-content:space-between; /* separar contenido izquierdo del botón derecho */
       padding:14px;
       border-radius:12px;
-      border:1px solid var(--card-border);
-      background: linear-gradient(180deg, var(--card-blue) 0%, #ffffff 100%);
-      box-shadow: var(--shadow);
+      box-shadow: 0 6px 14px rgba(68,72,71,0.03);
       cursor:pointer;
-      transition: transform .14s cubic-bezier(.2,.8,.2,1), box-shadow .14s ease, border-color .14s ease;
-      margin-bottom:2px;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
     }
-    .review-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 40px rgba(2,6,23,0.07);
-      border-color: rgba(11,116,222,0.10);
-    }
-    .review-card:focus { outline: 3px solid rgba(11,116,222,0.10); outline-offset:2px; }
+    .review-card:hover{ transform:translateY(-4px); box-shadow: 0 14px 32px rgba(68,72,71,0.05); border-color: rgba(90,104,113,0.08); }
 
-    .review-thumb { width:140px; height:92px; flex-shrink:0; border-radius:8px; overflow:hidden; background:#f6f8fb; display:block; border:1px solid rgba(12,18,26,0.03); }
+    /* contenedor izquierdo con thumb + body */
+    .review-left { display:flex; gap:12px; align-items:flex-start; flex:1; min-width:0; }
+    .review-thumb { width:140px; height:92px; flex-shrink:0; border-radius:8px; overflow:hidden; background:#f6f8fb; border:1px solid rgba(12,18,26,0.03); }
     .review-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
 
-    .review-body { flex:1; display:flex; flex-direction:column; gap:8px; }
-    .meta { font-size:12px; color:var(--muted); letter-spacing:0.1px; }
+    .review-body { display:flex; flex-direction:column; gap:8px; min-width:0; }
+    .meta { font-size:12px; color:var(--muted); white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
 
-    .price { font-weight:800; color:var(--accent); margin-top:2px; }
-    .product-link-btn {
-      display:inline-block;
-      margin-top:8px;
-      padding:7px 10px;
-      border-radius:8px;
-      background:var(--accent);
-      color:#fff;
-      text-decoration:none;
-      font-weight:700;
-      font-size:13px;
-      max-width:140px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      text-align:center;
-      box-shadow: 0 6px 18px rgba(11,116,222,0.08);
-      transition: transform .12s ease, box-shadow .12s ease;
+    /* precio neutro, menos protagonismo */
+    .price { font-weight:700; color:var(--muted); margin-top:2px; }
+
+    /* columna derecha: botón alineado verticalmente */
+    .review-right { display:flex; align-items:center; margin-left:12px; flex-shrink:0; }
+    .product-link-btn{
+      display:inline-block; padding:8px 12px; border-radius:9px; background:var(--accent); color:#fff; text-decoration:none; font-weight:800;
+      font-size:13px; box-shadow: 0 6px 18px rgba(90,104,113,0.06);
     }
-    .product-link-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(11,116,222,0.10); }
+    .product-link-btn:hover{ transform: translateY(-2px); }
 
-    .stars { display:inline-flex; align-items:center; gap:6px; }
-    .star { font-size:14px; line-height:1; }
-    .star.full { color:#f5b301; }
-    .star.half {
-      color:transparent;
-      background: linear-gradient(90deg, #f5b301 50%, #ddd 50%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      display:inline-block;
-    }
-    .star.empty { color:#ddd; }
-
-    /* modal: evitar que la X tape miniaturas */
-    .modal { display:none; position:fixed; inset:0; background: rgba(0,0,0,0.45); align-items:center; justify-content:center; padding:18px; z-index:120; }
-    .modal.open { display:flex; }
-    .modal-card {
-      background:#fff;
-      border-radius:12px;
-      padding:24px 18px 18px 18px; /* padding-top mayor para que la X no tape */
-      max-width:880px;
-      width:100%;
-      max-height:90vh;
-      overflow:auto;
-      position:relative;
-      box-shadow: 0 30px 60px rgba(2,6,23,0.12);
-    }
-    .modal-close {
-      position:absolute;
-      right:14px;
-      top:14px;
-      border:none;
-      background:#f3f5f8;
-      padding:8px 10px;
-      border-radius:10px;
-      cursor:pointer;
-      z-index:40; /* alto para que quede por encima */
-    }
-
-    /* asegurar que la columna de thumbs se queda por debajo visualmente */
-    #detailContent .thumb { z-index:1; }
-
+    /* responsive: apilar el botón debajo en pantallas pequeñas */
     @media(max-width:720px){
-      .review-card{ flex-direction:row; gap:10px; padding:10px; }
-      .review-thumb{ width:110px; height:72px; }
-      .product-link-btn{ max-width:120px; font-size:12px; padding:6px 8px; }
-      .modal-card { padding:16px; }
+      .review-card{ flex-direction:column; align-items:stretch; }
+      .review-right{ justify-content:flex-end; margin-top:10px; }
+      .review-thumb{ width:100%; height:180px; }
     }
   </style>
 </head>
@@ -149,7 +77,6 @@
   <main class="container">
     <h1>Reseñas</h1>
 
-    <!-- filtros: ahora con clase filters-card -->
     <section class="filters-card" style="margin-bottom:12px">
       <input id="searchBox" placeholder="Buscar por título, tag..." style="flex:1">
       <select id="categorySelect" style="padding:8px;border-radius:10px;">
@@ -195,7 +122,6 @@
       }
       return raw;
     }
-
     function escapeHtml(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 
     function renderStars(rating){
@@ -210,20 +136,6 @@
       out += `</span> <span style="font-size:13px;color:var(--muted);margin-left:6px">(${rating}/5)</span>`;
       return out;
     }
-
-    // Helpers para abrir/cerrar modal
-    const detailModal = document.getElementById('detailModal');
-    const closeDetailBtn = document.getElementById('closeDetail');
-    function openModal(){ detailModal.classList.add('open'); detailModal.setAttribute('aria-hidden','false'); }
-    function closeModal(){ detailModal.classList.remove('open'); detailModal.setAttribute('aria-hidden','true'); }
-
-    // cerrar al clickar fuera del modal-card
-    detailModal.addEventListener('click', (e)=> {
-      if(e.target === detailModal) closeModal();
-    });
-    // cerrar con la X y con Escape
-    closeDetailBtn.addEventListener('click', closeModal);
-    document.addEventListener('keydown', (e)=> { if(e.key === 'Escape' && detailModal.classList.contains('open')) closeModal(); });
 
     async function loadData(){
       try{
@@ -272,22 +184,40 @@
         const card = document.createElement('article');
         card.className = 'review-card';
         card.tabIndex = 0;
+
+        // estructura: izquierda (thumb + body) y derecha (botón)
         card.innerHTML = `
-          <div class="review-thumb"><img src="${thumb}" alt=""></div>
-          <div class="review-body">
-            <div class="meta">${escapeHtml(dateStr)} · ${escapeHtml(r.category||'')} › ${escapeHtml(r.sub||'')}</div>
-            <h3>${escapeHtml(r.title)}</h3>
-            <p class="note">${escapeHtml(r.summary || '')}</p>
-            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-              ${starsHtml}
-              ${priceHtml}
+          <div class="review-left">
+            <div class="review-thumb"><img src="${thumb}" alt=""></div>
+            <div class="review-body">
+              <div class="meta">${escapeHtml(dateStr)} · ${escapeHtml(r.category||'')} › ${escapeHtml(r.sub||'')}</div>
+              <h3 style="margin:0 0 4px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(r.title)}</h3>
+              <p class="note" style="margin:0">${escapeHtml(r.summary || '')}</p>
+              <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:6px">
+                ${starsHtml}
+                ${priceHtml}
+              </div>
             </div>
+          </div>
+          <div class="review-right">
             ${ r.link ? `<a class="product-link-btn" href="${r.link}" target="_blank" rel="noopener">Ver producto</a>` : '' }
           </div>
         `;
+
+        // abrir detalle al clickar la tarjeta (pero no cuando se clica el botón)
         card.addEventListener('click', ()=> openDetail(r.id));
         card.addEventListener('keydown', (e)=> { if(e.key === 'Enter' || e.key === ' ') openDetail(r.id); });
+
         el.appendChild(card);
+
+        // proteger el botón para que no propague el click y abra el modal
+        const btn = card.querySelector('.product-link-btn');
+        if(btn){
+          btn.addEventListener('click', (ev) => {
+            ev.stopPropagation(); /* importante: evita abrir el modal al hacer click en el enlace */
+            /* el enlace seguirá su navegación normal */
+          });
+        }
       });
     }
 
@@ -321,8 +251,27 @@
           if(main) main.querySelector('img').src = src;
         }));
       }, 20);
-      openModal();
+      // abrir modal
+      const modal = document.getElementById('detailModal'); modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
+
+      // proteger cierre: click fuera y Escape ya implementados en tu versión anterior (si no, las añado)
+      // Nota: ya existentes en global si sustituimos por esta versión.
     }
+
+    // cerrar modal con X y click fuera
+    document.getElementById('closeDetail').addEventListener('click', ()=> {
+      const modal = document.getElementById('detailModal'); modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');
+    });
+    document.getElementById('detailModal').addEventListener('click', (e)=> {
+      if(e.target === document.getElementById('detailModal')){
+        document.getElementById('detailModal').classList.remove('open');
+        document.getElementById('detailModal').setAttribute('aria-hidden','true');
+      }
+    });
+    document.addEventListener('keydown', (e)=> { if(e.key === 'Escape' && document.getElementById('detailModal').classList.contains('open')) {
+      document.getElementById('detailModal').classList.remove('open');
+      document.getElementById('detailModal').setAttribute('aria-hidden','true');
+    } });
 
     // filtros y controles
     document.getElementById('searchBox').addEventListener('input', applyFilters);
