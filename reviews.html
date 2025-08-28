@@ -3,95 +3,31 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Reseñas — Openmium</title>
+  <title>Reseñas — Mi Sitio</title>
   <meta name="description" content="Reseñas de productos, libros y más. Filtrado y galería." />
   <link rel="stylesheet" href="styles.css">
-  <style>
-    /* overrides específicos: quitar degradado y mover botón a la derecha */
-    :root { --muted:#6b7280; --accent:#5a6871; --card-bg-solid: #ffffff; }
-
-    /* tarjeta: fondo sólido, sin degradado */
-    .review-card{
-      background: var(--card-bg-solid); /* sin degradado */
-      border:1px solid rgba(68,72,71,0.06);
-      display:flex;
-      gap:12px;
-      align-items:center;
-      justify-content:space-between; /* separar contenido izquierdo del botón derecho */
-      padding:14px;
-      border-radius:12px;
-      box-shadow: 0 6px 14px rgba(68,72,71,0.03);
-      cursor:pointer;
-      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-    }
-    .review-card:hover{ transform:translateY(-4px); box-shadow: 0 14px 32px rgba(68,72,71,0.05); border-color: rgba(90,104,113,0.08); }
-
-    /* contenedor izquierdo con thumb + body */
-    .review-left { display:flex; gap:12px; align-items:flex-start; flex:1; min-width:0; }
-    .review-thumb { width:140px; height:92px; flex-shrink:0; border-radius:8px; overflow:hidden; background:#f6f8fb; border:1px solid rgba(12,18,26,0.03); }
-    .review-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
-
-    .review-body { display:flex; flex-direction:column; gap:8px; min-width:0; }
-    .meta { font-size:12px; color:var(--muted); white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
-
-    /* precio neutro, menos protagonismo */
-    .price { font-weight:700; color:var(--muted); margin-top:2px; }
-
-    /* columna derecha: botón alineado verticalmente */
-    .review-right { display:flex; align-items:center; margin-left:12px; flex-shrink:0; }
-    .product-link-btn{
-      display:inline-block; padding:8px 12px; border-radius:9px; background:var(--accent); color:#fff; text-decoration:none; font-weight:800;
-      font-size:13px; box-shadow: 0 6px 18px rgba(90,104,113,0.06);
-    }
-    .product-link-btn:hover{ transform: translateY(-2px); }
-
-    /* responsive: apilar el botón debajo en pantallas pequeñas */
-    @media(max-width:720px){
-      .review-card{ flex-direction:column; align-items:stretch; }
-      .review-right{ justify-content:flex-end; margin-top:10px; }
-      .review-thumb{ width:100%; height:180px; }
-    }
-  </style>
 </head>
 <body>
-  <header class="nav">
-    <div class="wrap" id="mainNav"></div>
-  </header>
-
-  <script>
-    (function buildNav(){
-      const navWrap = document.getElementById('mainNav');
-      const pages = [
-        { file: 'index.html', label: 'Sobre mí' },
-        { file: 'libros.html', label: 'Libros' },
-        { file: 'reviews.html', label: 'Reseñas' }
-      ];
-      const current = (location.pathname.split('/').pop() || 'reviews.html').toLowerCase();
-      const left = document.createElement('div'); left.innerHTML = '<strong>Mi Sitio</strong>';
-      const right = document.createElement('nav');
-      pages.forEach(p => { if (p.file === current) return; const a = document.createElement('a'); a.href = p.file; a.textContent = p.label; a.style.marginLeft = '12px'; right.appendChild(a); });
-      navWrap.appendChild(left); navWrap.appendChild(right);
-    })();
-  </script>
+  <header class="nav"><div class="wrap" id="mainNav"></div></header>
 
   <main class="container">
     <h1>Reseñas</h1>
 
-    <section class="filters-card" style="margin-bottom:12px">
-      <input id="searchBox" placeholder="Buscar por título, tag..." style="flex:1">
-      <select id="categorySelect" style="padding:8px;border-radius:10px;">
+    <section class="filters-card" style="margin-bottom:12px" aria-label="Controles de filtrado">
+      <input id="searchBox" placeholder="Buscar por título, tag..." style="flex:1" aria-label="Buscar reseñas">
+      <select id="categorySelect" aria-label="Categoría" style="padding:8px;border-radius:10px;">
         <option value="all">Todas las categorías</option>
       </select>
-      <select id="subSelect" style="padding:8px;border-radius:10px;">
+      <select id="subSelect" aria-label="Subcategoría" style="padding:8px;border-radius:10px;">
         <option value="all">Todas las subcategorías</option>
       </select>
-      <input id="dateFilter" type="date" style="padding:8px;border-radius:10px;">
-      <button id="clearFilters" class="btn" style="background:#fff;border:1px solid #e6eef8">Limpiar</button>
+      <input id="dateFilter" type="date" aria-label="Filtrar por fecha" style="padding:8px;border-radius:10px;">
+      <button id="clearFilters" class="btn" style="background:#fff;border:1px solid var(--border)">Limpiar</button>
     </section>
 
     <section id="reviewsList" class="list" aria-live="polite"></section>
 
-    <footer class="footer" style="margin-top:22px">© 2025 [Tu Nombre]</footer>
+    <footer class="footer">© 2025 [Tu Nombre]</footer>
   </main>
 
   <!-- modal detalle con galería -->
@@ -122,6 +58,7 @@
       }
       return raw;
     }
+
     function escapeHtml(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 
     function renderStars(rating){
@@ -184,10 +121,8 @@
         const card = document.createElement('article');
         card.className = 'review-card';
         card.tabIndex = 0;
-
-        // estructura: izquierda (thumb + body) y derecha (botón)
         card.innerHTML = `
-          <div class="review-left">
+          <div style="display:flex;gap:12px;align-items:flex-start;flex:1">
             <div class="review-thumb"><img src="${thumb}" alt=""></div>
             <div class="review-body">
               <div class="meta">${escapeHtml(dateStr)} · ${escapeHtml(r.category||'')} › ${escapeHtml(r.sub||'')}</div>
@@ -203,21 +138,13 @@
             ${ r.link ? `<a class="product-link-btn" href="${r.link}" target="_blank" rel="noopener">Ver producto</a>` : '' }
           </div>
         `;
-
-        // abrir detalle al clickar la tarjeta (pero no cuando se clica el botón)
+        // open modal on card click (but not when clicking the product link)
         card.addEventListener('click', ()=> openDetail(r.id));
         card.addEventListener('keydown', (e)=> { if(e.key === 'Enter' || e.key === ' ') openDetail(r.id); });
-
         el.appendChild(card);
 
-        // proteger el botón para que no propague el click y abra el modal
         const btn = card.querySelector('.product-link-btn');
-        if(btn){
-          btn.addEventListener('click', (ev) => {
-            ev.stopPropagation(); /* importante: evita abrir el modal al hacer click en el enlace */
-            /* el enlace seguirá su navegación normal */
-          });
-        }
+        if(btn){ btn.addEventListener('click', (ev) => ev.stopPropagation()); }
       });
     }
 
@@ -251,35 +178,20 @@
           if(main) main.querySelector('img').src = src;
         }));
       }, 20);
-      // abrir modal
       const modal = document.getElementById('detailModal'); modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
 
-      // proteger cierre: click fuera y Escape ya implementados en tu versión anterior (si no, las añado)
-      // Nota: ya existentes en global si sustituimos por esta versión.
+      // close handlers already wired below
     }
 
-    // cerrar modal con X y click fuera
-    document.getElementById('closeDetail').addEventListener('click', ()=> {
-      const modal = document.getElementById('detailModal'); modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');
-    });
-    document.getElementById('detailModal').addEventListener('click', (e)=> {
-      if(e.target === document.getElementById('detailModal')){
-        document.getElementById('detailModal').classList.remove('open');
-        document.getElementById('detailModal').setAttribute('aria-hidden','true');
-      }
-    });
-    document.addEventListener('keydown', (e)=> { if(e.key === 'Escape' && document.getElementById('detailModal').classList.contains('open')) {
-      document.getElementById('detailModal').classList.remove('open');
-      document.getElementById('detailModal').setAttribute('aria-hidden','true');
-    } });
+    // close modal handlers (click outside + X + Escape)
+    const detailModal = document.getElementById('detailModal');
+    document.getElementById('closeDetail').addEventListener('click', ()=> { detailModal.classList.remove('open'); detailModal.setAttribute('aria-hidden','true'); });
+    detailModal.addEventListener('click', (e)=> { if(e.target === detailModal){ detailModal.classList.remove('open'); detailModal.setAttribute('aria-hidden','true'); } });
+    document.addEventListener('keydown', (e)=> { if(e.key === 'Escape' && detailModal.classList.contains('open')) { detailModal.classList.remove('open'); detailModal.setAttribute('aria-hidden','true'); } });
 
-    // filtros y controles
+    // filters
     document.getElementById('searchBox').addEventListener('input', applyFilters);
-    document.getElementById('categorySelect').addEventListener('change', (e)=> {
-      const cat = e.currentTarget.value;
-      populateSubSelect(cat);
-      applyFilters();
-    });
+    document.getElementById('categorySelect').addEventListener('change', (e)=> { const cat = e.currentTarget.value; populateSubSelect(cat); applyFilters(); });
     document.getElementById('subSelect').addEventListener('change', applyFilters);
     document.getElementById('dateFilter').addEventListener('change', applyFilters);
     document.getElementById('clearFilters').addEventListener('click', ()=> {
