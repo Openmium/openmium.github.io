@@ -9,7 +9,6 @@
     { file: 'reviews.html', label: 'Reseñas' }
   ];
 
-  // wrapper
   const left = document.createElement('div');
   left.innerHTML = '<strong>Mi Sitio</strong>';
   left.style.fontWeight = 800;
@@ -18,11 +17,9 @@
   const right = document.createElement('nav');
   right.setAttribute('aria-label', 'Navegación principal');
 
-  // determine current page
   const current = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
 
   pages.forEach(p => {
-    if (!p.file) return;
     const a = document.createElement('a');
     a.href = p.file;
     a.textContent = p.label;
@@ -35,7 +32,6 @@
     right.appendChild(a);
   });
 
-  // clear previous content to avoid duplicates on hot-reload
   target.innerHTML = '';
   target.appendChild(left);
   target.appendChild(right);
