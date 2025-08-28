@@ -7,22 +7,64 @@
   <meta name="description" content="Reseñas de productos, libros y más. Filtrado y galería." />
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* --- mejoras visuales específicas para reseñas --- */
+    /* --- página reviews: fondo y tarjetas más visibles --- */
+    body { background: #f4f7fb; }                /* fondo general más suave */
+    .container { background: transparent; }     /* container transparente para que se note el fondo */
+
     .list { display:flex; flex-direction:column; gap:12px; margin-top:10px; }
-    .review-card { display:flex; gap:12px; align-items:flex-start; padding:12px; border-radius:10px; border:1px solid #eef3f8; background:#fff; box-shadow:0 6px 18px rgba(15,23,42,0.03); cursor:pointer; transition:transform .16s ease, box-shadow .16s ease; }
-    .review-card:hover { transform:translateY(-6px); box-shadow:0 18px 40px rgba(2,6,23,0.09); }
-    .review-card:focus { outline:3px solid rgba(11,116,222,0.12); }
-    .review-thumb { width:140px; height:92px; flex-shrink:0; border-radius:8px; overflow:hidden; background:#f6f8fb; display:block; }
+
+    /* tarjeta */
+    .review-card {
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding:14px;
+      border-radius:10px;
+      border:1px solid #dfe9f3;        /* línea clara que delimita cada tarjeta */
+      background:#ffffff;              /* cajas blancas (contrastan con fondo) */
+      box-shadow: 0 4px 10px rgba(10,20,30,0.04);
+      cursor:pointer;
+      transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+      margin-bottom:6px;               /* separación adicional (por si tu grid no aplica gap) */
+    }
+    .review-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 40px rgba(2,6,23,0.08);
+      border-color: #c7ddf9;
+    }
+    .review-card:focus { outline: 3px solid rgba(11,116,222,0.10); }
+
+    .review-thumb { width:140px; height:92px; flex-shrink:0; border-radius:8px; overflow:hidden; background:#eef5fb; display:block; border:1px solid #eef6fb; }
     .review-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+
     .review-body { flex:1; display:flex; flex-direction:column; gap:6px; }
     .meta { font-size:12px; color:#6b7280; }
+
+    /* precio y botón */
     .price { font-weight:800; color:#0b74de; margin-top:4px; }
-    .product-link-btn { display:inline-block; margin-top:8px; padding:8px 10px; border-radius:8px; background:#0b74de; color:#fff; text-decoration:none; font-weight:700; font-size:13px; }
+    .product-link-btn {
+      display:inline-block;
+      margin-top:8px;
+      padding:6px 10px;
+      border-radius:8px;
+      background:#0b74de;
+      color:#fff;
+      text-decoration:none;
+      font-weight:700;
+      font-size:13px;
+      max-width:150px;         /* evita que ocupe toda la fila */
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      text-align:center;
+    }
     .product-link-btn:visited{ color:#fff; }
+
+    /* estrellas */
     .stars { display:inline-flex; align-items:center; gap:4px; }
     .star { font-size:14px; line-height:1; }
     .star.full { color:#f5b301; }
-    .star.half { 
+    .star.half {
       color:transparent;
       background: linear-gradient(90deg, #f5b301 50%, #ddd 50%);
       -webkit-background-clip: text;
@@ -30,10 +72,15 @@
       display:inline-block;
     }
     .star.empty { color:#ddd; }
-    /* small responsive */
+
+    /* mejora contraste entre tarjetas: separador sutil cuando se muestre lista larga */
+    .list > .review-card + .review-card { margin-top:6px; }
+
+    /* responsive */
     @media(max-width:720px){
-      .review-card{flex-direction:row;gap:10px}
-      .review-thumb{width:110px;height:72px}
+      .review-card{ flex-direction:row; gap:10px; padding:10px; }
+      .review-thumb{ width:110px; height:72px; }
+      .product-link-btn{ max-width:130px; font-size:12px; padding:6px 8px; }
     }
   </style>
 </head>
@@ -75,7 +122,7 @@
       </div>
     </section>
 
-    <section id="reviewsList" class="list"></section>
+    <section id="reviewsList" class="list" aria-live="polite"></section>
 
     <footer class="footer">© 2025 [Tu Nombre]</footer>
   </main>
@@ -93,7 +140,6 @@
     let REVIEWS = [];
     let CATEGORIES = [];
 
-    // formatea fecha a DD-MM-YYYY
     function formatDateToDDMMYYYY(raw){
       if(!raw) return '';
       if(/^\d{2}-\d{2}-\d{4}$/.test(raw)) return raw;
@@ -112,7 +158,6 @@
 
     function escapeHtml(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 
-    // crea HTML de estrellas (full, half, empty)
     function renderStars(rating){
       if(rating == null) return '';
       const full = Math.floor(rating);
@@ -170,7 +215,6 @@
         const thumb = (r.images && r.images[0]) ? r.images[0] : 'assets/covers/placeholder.jpg';
         const priceHtml = r.price ? `<div class="price">${escapeHtml(r.price)}</div>` : '';
         const starsHtml = r.rating ? renderStars(r.rating) : '';
-        // tarjeta
         const card = document.createElement('article');
         card.className = 'review-card';
         card.tabIndex = 0;
@@ -187,7 +231,6 @@
             ${ r.link ? `<a class="product-link-btn" href="${r.link}" target="_blank" rel="noopener">Ver producto</a>` : '' }
           </div>
         `;
-        // comportamiento accesible: toda la tarjeta abre el modal
         card.addEventListener('click', ()=> openDetail(r.id));
         card.addEventListener('keydown', (e)=> { if(e.key === 'Enter' || e.key === ' ') openDetail(r.id); });
         el.appendChild(card);
@@ -217,7 +260,6 @@
         <p class="note" style="margin-top:8px">${escapeHtml(item.content || item.summary || '')}</p>
         ${linkHtml}
       `;
-      // thumbs handler
       setTimeout(()=>{
         document.querySelectorAll('#detailContent .thumb').forEach(t => t.addEventListener('click', (e)=>{
           const src = e.currentTarget.dataset.src;
