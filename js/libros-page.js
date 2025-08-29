@@ -1,21 +1,21 @@
 // js/libros-page.js
+// Manejo de libros: carga data/books.json, render grid y modal ficha.
+
 const BOOKS_PATH = 'data/books.json';
 let BOOKS = [];
 
-// formatea fecha YYYY-MM-DD -> DD-MM-YYYY
+function escapeHtml(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 function formatDateToDDMMYYYY(raw){
   if(!raw) return '';
-  if(/^\d{4}-\d{2}-\d{2}$/.test(raw)){
-    const [y,m,d] = raw.split('-'); return `${d}-${m}-${y}`;
-  }
-  // si ya está en otro formato, devolver tal cual
+  if(/^\d{4}-\d{2}-\d{2}$/.test(raw)){ const [y,m,d] = raw.split('-'); return `${d}-${m}-${y}`; }
+  const dt = new Date(raw);
+  if(!isNaN(dt)) { const d = String(dt.getDate()).padStart(2,'0'); const m = String(dt.getMonth()+1).padStart(2,'0'); const y = dt.getFullYear(); return `${d}-${m}-${y}`; }
   return raw;
 }
-function escapeHtml(s){ if(!s) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 
 async function loadBooks(){
   try{
-    const res = await fetch(BOOKS_PATH, {cache:'no-store'});
+    const res = await fetch(BOOKS_PATH, { cache: "no-store" });
     if(!res.ok) throw new Error('No se pudo cargar ' + BOOKS_PATH + ' (status ' + res.status + ')');
     const json = await res.json();
     BOOKS = json.books || [];
@@ -29,16 +29,15 @@ async function loadBooks(){
 }
 
 function renderBooks(list){
+  // Si tu libros.html usa id 'booksGrid', crea un contenedor con ese id.
   const grid = document.getElementById('booksGrid');
-  if(!grid) return;
+  if(!grid) return; // evita errores si la página no tiene contenedor
   grid.innerHTML = '';
   if(!list || list.length === 0){
-    grid.innerHTML = '<div class="card">No hay libros. Añade entradas en <code>data/books.json</code>.</div>';
+    grid.innerHTML = '<div class="card">No hay libros aún. Añade entradas en <code>data/books.json</code>.</div>';
     return;
   }
-
-  list.forEach(b => {
-    // asegúrate de usar cada campo exactamente una vez (titulo + subtitulo)
+  list.forEach((b, idx) => {
     const cover = b.cover || 'assets/covers/placeholder.jpg';
     const title = escapeHtml(b.title || '');
     const subtitle = escapeHtml(b.subtitle || '');
@@ -62,19 +61,17 @@ function renderBooks(list){
         </div>
       </div>
     `;
-    // abrir modal ficha (si tienes modal)
+    // Click en tarjeta abre modal (pero si se hace click en el enlace comprar, permite la navegación)
     article.addEventListener('click', (e) => {
-      // evita que el click en el enlace "Comprar" abra el modal — deja que vaya al href
-      const target = e.target;
-      if(target && (target.tagName === 'A' || target.closest('a'))) return;
+      if(e.target.closest('a')) return;
       openBookModal(b);
     });
-
     grid.appendChild(article);
   });
 }
 
 function openBookModal(book){
+  // Se asume que libros.html tiene un modal con id bookModal y bookModalContent y closeBookModal.
   const modal = document.getElementById('bookModal');
   const content = document.getElementById('bookModalContent');
   if(!modal || !content) return;
@@ -96,15 +93,15 @@ function openBookModal(book){
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // cerrar modal
-  const closeBookModal = document.getElementById('closeBookModal');
+  // init modal close (si existen)
   const bookModal = document.getElementById('bookModal');
+  const closeBookModal = document.getElementById('closeBookModal');
   if(closeBookModal && bookModal){
     closeBookModal.addEventListener('click', ()=> { bookModal.classList.remove('open'); bookModal.setAttribute('aria-hidden','true'); });
     bookModal.addEventListener('click', (e) => { if(e.target === bookModal) { bookModal.classList.remove('open'); bookModal.setAttribute('aria-hidden','true'); }});
   }
 
-  // filtros
+  // search and filters (if exist on the page)
   const searchInput = document.getElementById('searchBook');
   const dateInput = document.getElementById('dateInput');
   const clearBtn = document.getElementById('clearBooks');
@@ -121,5 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   if(clearBtn) clearBtn.addEventListener('click', ()=> { if(searchInput) searchInput.value=''; if(dateInput) dateInput.value=''; renderBooks(BOOKS); });
 
+  // initial load
   loadBooks();
 });
