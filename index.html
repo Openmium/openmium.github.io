@@ -13,27 +13,25 @@
   </header>
 
   <main class="container">
-    <!-- HERO unificado en un solo rectángulo -->
     <section class="hero-card card" aria-labelledby="hero-title">
       <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
-        <div class="avatar" style="flex:0 0 120px">
-          <img src="assets/avatar.jpg" alt="[Tu Nombre]" width="120" height="120" style="display:block;border-radius:10px;object-fit:cover">
+        <div style="flex:0 0 140px">
+          <img src="assets/avatar.jpg" alt="[Tu Nombre]" width="140" height="140" style="display:block;border-radius:10px;object-fit:cover">
         </div>
 
-        <div style="flex:1;min-width:200px">
-          <h1 id="hero-title" style="font-size:20px;margin-bottom:6px">[Tu Nombre]</h1>
+        <div style="flex:1;min-width:220px">
+          <h1 id="hero-title" style="font-size:22px;margin-bottom:6px">[Tu Nombre]</h1>
           <div style="font-weight:700;color:var(--muted);margin-bottom:8px">Escritor/a · Creador/a de contenido</div>
 
-          <p class="note" style="margin-bottom:10px">Trabajo en <strong>[tu área profesional]</strong> y desarrollo proyectos personales relacionados con narrativa y recursos prácticos.</p>
+          <p class="note" style="margin-bottom:12px">Trabajo en <strong>[tu área profesional]</strong> y desarrollo proyectos personales relacionados con narrativa y recursos prácticos.</p>
 
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px">
-            <!-- eliminadas las llamadas directas a Libros/Reseñas porque ya están en el header -->
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
             <a href="https://www.linkedin.com" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
             <a href="https://github.com" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
             <a href="https://pinterest.com" target="_blank" rel="noopener" class="btn btn-ghost">Pinterest</a>
           </div>
 
-          <div class="hero-row">
+          <div style="margin-top:6px; border-top:1px solid rgba(0,0,0,0.04); padding-top:12px">
             <h2 style="font-size:16px;margin-bottom:8px">Breve biografía</h2>
             <p class="note" style="margin-bottom:10px">Hola — soy <strong>[Tu Nombre]</strong>. Me dedico a escribir ficción intensa y a crear recursos prácticos (apuntes y mini-proyectos) para quienes aprenden haciendo.</p>
 
@@ -49,7 +47,6 @@
   </main>
 
   <script>
-    // Build consistent nav — mostrar solo las otras páginas (no repetir la actual)
     (function buildNav(){
       const navWrap = document.getElementById('mainNav');
       const pages = [
@@ -61,10 +58,8 @@
       const left = document.createElement('div'); left.innerHTML = '<a class="logo" href="index.html">Mi Sitio</a>';
       const right = document.createElement('nav');
       pages.forEach(p => {
-        if (p.file === current) return; // no mostrar la página actual
-        const a = document.createElement('a');
-        a.href = p.file;
-        a.textContent = p.label;
+        if (p.file === current) return;
+        const a = document.createElement('a'); a.href = p.file; a.textContent = p.label;
         right.appendChild(a);
       });
       navWrap.appendChild(left); navWrap.appendChild(right);
