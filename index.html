@@ -9,72 +9,65 @@
 </head>
 <body>
   <header class="nav" role="banner">
-    <div class="wrap" id="mainNav" role="navigation" aria-label="Principal">
-      <a class="logo" href="index.html">Mi Sitio</a>
-      <nav id="navRight"></nav>
-    </div>
+    <div class="wrap" id="mainNav" role="navigation" aria-label="Principal"></div>
   </header>
 
-  <main class="container" id="main">
-    <!-- HERO: único rectángulo con TODO el contenido, unificado -->
+  <main class="container">
+    <!-- HERO unificado en un solo rectángulo -->
     <section class="hero-card card" aria-labelledby="hero-title">
       <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
-        <div style="flex-shrink:0">
-          <div class="avatar" aria-hidden="true" style="width:120px;height:120px;border-radius:12px;overflow:hidden;background:#eee">
-            <img src="assets/avatar.jpg" alt="[Tu Nombre]" style="width:100%;height:100%;object-fit:cover;display:block">
-          </div>
+        <div class="avatar" style="flex:0 0 120px">
+          <img src="assets/avatar.jpg" alt="[Tu Nombre]" width="120" height="120" style="display:block;border-radius:10px;object-fit:cover">
         </div>
 
-        <div style="flex:1;min-width:220px">
-          <h1 id="hero-title">[Tu Nombre]</h1>
-          <div class="note" style="margin-bottom:8px">Escritor/a · Creador/a de contenido</div>
+        <div style="flex:1;min-width:200px">
+          <h1 id="hero-title" style="font-size:20px;margin-bottom:6px">[Tu Nombre]</h1>
+          <div style="font-weight:700;color:var(--muted);margin-bottom:8px">Escritor/a · Creador/a de contenido</div>
+
+          <p class="note" style="margin-bottom:10px">Trabajo en <strong>[tu área profesional]</strong> y desarrollo proyectos personales relacionados con narrativa y recursos prácticos.</p>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+            <!-- eliminadas las llamadas directas a Libros/Reseñas porque ya están en el header -->
+            <a href="https://www.linkedin.com" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
+            <a href="https://github.com" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
+            <a href="https://pinterest.com" target="_blank" rel="noopener" class="btn btn-ghost">Pinterest</a>
+          </div>
 
           <div class="hero-row">
-            <p class="note" style="margin:0">Trabajo en <strong>[tu área profesional]</strong> y desarrollo proyectos personales relacionados con narrativa y recursos prácticos.</p>
-          </div>
+            <h2 style="font-size:16px;margin-bottom:8px">Breve biografía</h2>
+            <p class="note" style="margin-bottom:10px">Hola — soy <strong>[Tu Nombre]</strong>. Me dedico a escribir ficción intensa y a crear recursos prácticos (apuntes y mini-proyectos) para quienes aprenden haciendo.</p>
 
-          <div class="hero-row" style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
-            <!-- Aquí dejamos los textos de referencia (sin duplicar enlaces activos) -->
-            <div><strong>Mis libros</strong> · <strong>Reseñas</strong></div>
-            <div>LinkedIn · GitHub · Pinterest</div>
+            <h2 style="font-size:16px;margin-bottom:8px">Experiencia</h2>
+            <p class="note">[Año–Año] — Rol en Empresa X: breve descripción.</p>
+            <p class="note">[Año–Año] — Freelance: proyectos destacados.</p>
           </div>
-
-          <div class="hero-row" style="margin-top:12px">
-            <h2 style="margin:0 0 8px 0;color:var(--title)">Breve biografía</h2>
-            <p class="note" style="margin:0">Hola — soy <strong>[Tu Nombre]</strong>. Me dedico a escribir ficción intensa y a crear recursos prácticos (apuntes y mini-proyectos) para quienes aprenden haciendo.</p>
-          </div>
-
-          <div class="hero-row" style="margin-top:12px">
-            <h2 style="margin:0 0 8px 0;color:var(--title)">Experiencia</h2>
-            <p class="note" style="margin:0">[Año–Año] — Rol en Empresa X: breve descripción.</p>
-            <p class="note" style="margin:6px 0 0 0">[Año–Año] — Freelance: proyectos destacados.</p>
-          </div>
-
         </div>
       </div>
     </section>
 
-    <!-- Si quieres más secciones, puedes añadirlas debajo -->
     <footer class="footer">© 2025 [Tu Nombre]</footer>
   </main>
 
   <script>
-    // build navigation (no link to current)
+    // Build consistent nav — mostrar solo las otras páginas (no repetir la actual)
     (function buildNav(){
-      const navRight = document.getElementById('navRight');
+      const navWrap = document.getElementById('mainNav');
       const pages = [
         { file: 'index.html', label: 'Sobre mí' },
         { file: 'libros.html', label: 'Libros' },
         { file: 'reviews.html', label: 'Reseñas' }
       ];
       const current = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+      const left = document.createElement('div'); left.innerHTML = '<a class="logo" href="index.html">Mi Sitio</a>';
+      const right = document.createElement('nav');
       pages.forEach(p => {
-        if(p.file === current) return;
+        if (p.file === current) return; // no mostrar la página actual
         const a = document.createElement('a');
         a.href = p.file;
         a.textContent = p.label;
-        navRight.appendChild(a);
+        right.appendChild(a);
       });
+      navWrap.appendChild(left); navWrap.appendChild(right);
     })();
   </script>
 </body>
