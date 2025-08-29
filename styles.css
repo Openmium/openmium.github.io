@@ -1,46 +1,41 @@
-/* styles.css — versión completa actualizada */
+/* styles.css — actualizado: búsqueda ancho completo, layout más ancho y tarjetas visibles */
 
-/* ---------------------------
-   Variables de color y diseño
-   --------------------------- */
+/* colores y variables */
 :root{
-  --header: #414254;      /* header color solicitado */
-  --search: #717088;      /* barra de búsqueda/filtros */
-  --card:   #bcc1cd;      /* color principal de cajas (reviews) */
-  --card-alt: #d6d9dd;    /* color alternativo (libros) */
-  --title:  #8e9098;      /* títulos de libros y reseñas */
+  --header: #414254;      /* header color */
+  --search: #717088;      /* barra de búsqueda / filtros */
+  --card:   #bcc1cd;      /* color principal de cajas (reviews/libros) */
+  --card-alt:#ffffff;     /* alternativa (por ejemplo hero o fondo de tarjetas internas) */
+  --title:  #8e9098;      /* títulos */
   --text:   #222831;
   --muted:  #5c6166;
   --accent: #444847;
   --radius: 12px;
-  --max-width: 1100px;
+  --max-width: 1400px;    /* aumentado para usar más lados */
   --border-soft: rgba(0,0,0,0.06);
-  --shadow-weak: 0 8px 20px rgba(68,72,71,0.04);
+  --shadow-weak: 0 10px 28px rgba(68,72,71,0.04);
 }
 
-/* ---------------------------
-   Reset y base
-   --------------------------- */
+/* reset / base */
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   color:var(--text);
-  background:#ffffff; /* fondo blanco según solicitaste */
+  background:#ffffff; /* fondo blanco */
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
-  line-height:1.4;
-  -webkit-font-feature-settings: "ss01" on;
+  line-height:1.45;
 }
 
-/* ---------------------------
-   Container / layout
-   --------------------------- */
-.container{ max-width:var(--max-width); margin:22px auto; padding:18px; }
+/* Container: más ancho y menos centrado (usa más laterales) */
+.container{
+  max-width: var(--max-width);
+  margin: 18px auto;
+  padding: 28px 56px;   /* más uso lateral */
+}
 
-/* ---------------------------
-   Header / nav
-   --------------------------- */
+/* Header */
 .nav{
   position:sticky; top:0; z-index:999;
   background: var(--header); color:#fff;
@@ -49,15 +44,13 @@ body{
 .nav .wrap{
   max-width:var(--max-width); margin:0 auto;
   display:flex; align-items:center; justify-content:space-between;
-  padding:12px 18px; gap:12px;
+  padding:12px 20px;
 }
 .logo{ font-weight:800; font-size:1.05rem; color:#fff; text-decoration:none; }
-.nav a{ color:rgba(255,255,255,0.95); text-decoration:none; font-weight:600; margin-left:12px; }
+.nav a{ color:rgba(255,255,255,0.95); text-decoration:none; font-weight:600; margin-left:14px; }
 .nav a:hover{ opacity:0.95; }
 
-/* ---------------------------
-   Tarjeta genérica
-   --------------------------- */
+/* Card genérico */
 .card{
   background: var(--card);
   border-radius: var(--radius);
@@ -65,214 +58,134 @@ body{
   border:1px solid var(--border-soft);
   box-shadow: var(--shadow-weak);
 }
-.card + .card{ margin-top:12px; }
 
-/* ---------------------------
-   HERO (sobre mí) - único rectángulo
-   --------------------------- */
+/* HERO - un único rectángulo (Sobre mí) */
 .hero-card{
-  background: var(--card);
+  background: var(--card);     /* ligera tonalidad */
   padding:18px;
   border-radius:14px;
-  box-shadow: 0 12px 28px rgba(68,72,71,0.05);
+  box-shadow: 0 12px 28px rgba(68,72,71,0.04);
   border:1px solid rgba(0,0,0,0.04);
-  margin-bottom:14px;
+  margin-bottom:18px;
 }
-.hero-row{ margin-top:12px; padding-top:12px; border-top:1px solid rgba(0,0,0,0.04); }
-.hero-row:first-of-type{ margin-top:8px; padding-top:8px; border-top:none; }
-.avatar img{ width:120px; height:120px; object-fit:cover; border-radius:12px; display:block; }
 
-/* ---------------------------
-   Filtros / search box (books + reviews)
-   --------------------------- */
+/* filtros: recuadro que contiene búsqueda y selects */
 .filters-card{
-  display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  display:flex; gap:12px; align-items:center; flex-wrap:wrap;
   background: var(--search); color:#fff;
   border-radius:14px; padding:12px; border:1px solid rgba(0,0,0,0.06);
   box-shadow:0 6px 18px rgba(0,0,0,0.04); margin-bottom:12px;
+  width:100%;
 }
+
+/* búsqueda ocupa TODO el espacio restante en la fila */
 .search-input{
   background:#fff; color:var(--text); padding:10px 12px; border-radius:10px;
-  border:1px solid rgba(0,0,0,0.06); min-width:140px;
+  border:1px solid rgba(0,0,0,0.06); min-width:120px;
+  flex:1 1 auto; width:auto; box-sizing:border-box;
 }
 .search-input::placeholder{ color:#9aa0a6; }
 
-/* Buttons */
+/* selects / date con ancho fijo */
+.filter-select{
+  background:#fff; color:var(--text); padding:9px 10px; border-radius:10px;
+  border:1px solid rgba(0,0,0,0.06); min-width:140px; flex:0 0 160px; box-sizing:border-box;
+}
+
+/* botones */
 .btn{ padding:8px 12px; border-radius:10px; border:none; cursor:pointer; font-weight:700; display:inline-flex; align-items:center; gap:8px; text-decoration:none; }
 .btn-primary{ background:var(--accent); color:#fff; }
 .btn-ghost{ background:transparent; border:1px solid rgba(0,0,0,0.06); color:var(--text); }
 
-/* ---------------------------
-   BOOKS grid — tarjetas uniformes y más rectangulares
-   - Tarjetas con altura fija para uniformidad.
-   - Descripción puede ser de cualquier tamaño: se habilita scroll interno.
-   --------------------------- */
+/* BOOKS grid: tarjetas horizontales, pero description visible (altura auto) */
 .books-grid{
   display:grid;
-  /* columnas anchas para aspecto horizontal (más anchas que altas) */
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap:16px;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); /* más anchas */
+  gap:18px;
   margin-top:12px;
   align-items:start;
 }
 
-/* Card: rectangular horizontal (width > height) */
+/* tarjeta libro: horizontal, altura automática para que se vea todo el texto */
 .book-card{
-  background: var(--card-alt);
-  display:flex;
-  gap:16px;
-  align-items:stretch;
-  padding:12px;
-  border-radius:12px;
+  background: var(--card);           /* caja con color solicitado */
+  display:flex; gap:18px; align-items:flex-start;
+  padding:14px; border-radius:12px;
   transition: transform .14s ease, box-shadow .14s ease;
-  cursor:pointer;
-  border:1px solid rgba(0,0,0,0.04);
-  /* Altura fija para uniformidad (ajusta si quieres más o menos alto) */
-  min-height:170px;
-  height:170px; /* fuerza rectangularidad: ancho variable, altura fija */
-  overflow: hidden; /* evitar que el contenido "salga" */
+  cursor:pointer; border:1px solid rgba(0,0,0,0.04);
+  overflow: visible;
 }
 
-/* imagen: izquierda, tamaño constante */
-.book-card .book-cover{
-  width:120px;
-  height:146px; /* algo menor que la altura de la tarjeta para dejar margen */
-  object-fit:cover;
-  border-radius:8px;
-  flex-shrink:0;
-  background:#eee;
-  border:1px solid rgba(0,0,0,0.03);
+/* portada */
+.book-cover{
+  width:140px; height:190px; object-fit:cover; border-radius:8px; flex-shrink:0; background:#eee;
 }
 
-/* book-info: columna con espacio para descripción scrollable */
-.book-info{
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  min-width:0;
-  gap:8px;
-  height:100%;
-}
+/* info: título, subtitle, descripción visible (sin scroll) */
+.book-info{ display:flex; flex-direction:column; gap:8px; min-width:0; }
+.book-title{ color:var(--title); font-weight:700; font-size:16px; margin:0; }
+.book-subtitle{ color:var(--muted); font-size:13px; margin:0; }
+.book-description{ color:var(--text); font-size:14px; line-height:1.4; margin-top:6px; }
 
-/* título y subtítulo */
-.book-title{
-  color:var(--title);
-  font-weight:700;
-  font-size:15px;
-  margin:0 0 4px 0;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-.book-subtitle{
-  color:var(--muted);
-  font-size:13px;
-  margin-bottom:6px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-/* DESCRIPCIÓN: ahora sin límite de líneas, pero con scroll si excede
-   para mantener la altura de la tarjeta constante */
-.book-description{
-  color:var(--text);
-  font-size:13px;
-  line-height:1.3;
-  overflow:auto;            /* scroll interno si es muy largo */
-  padding-right:6px;        /* espacio para scrollbar */
-  flex:1 1 auto;            /* ocupar el espacio disponible */
-  margin:0;
-}
-
-/* meta inferior: fecha + botón */
-.book-meta{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:8px;
-  margin-top:6px;
-}
+/* meta inferior: fecha y botón */
+.book-meta{ display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:10px; }
 .book-meta .meta{ color:var(--muted); font-size:13px; }
-.book-meta .btn{ padding:8px 12px; font-size:13px; border-radius:8px; }
 
-/* Hover sutil */
+/* hover */
 .book-card:hover{ transform:translateY(-6px); box-shadow:0 20px 40px rgba(68,72,71,0.06); }
 
-/* ---------------------------
-   REVIEWS list
-   --------------------------- */
+/* REVIEWS list: cada tarjeta con color card y botón a la derecha */
 .list{ display:flex; flex-direction:column; gap:12px; margin-top:12px; }
 .review-card{
   background: var(--card);
   display:flex; gap:12px; align-items:flex-start; padding:12px; border-radius:12px;
-  border:1px solid rgba(68,72,71,0.06);
-  transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease; cursor:pointer;
+  border:1px solid rgba(68,72,71,0.06); transition: transform .14s ease, box-shadow .14s ease; cursor:pointer;
 }
 .review-card:hover{ transform:translateY(-6px); box-shadow:0 20px 40px rgba(68,72,71,0.06); border-color:rgba(68,72,71,0.08); }
-.review-thumb{ width:120px; height:80px; flex-shrink:0; border-radius:8px; overflow:hidden; border:1px solid rgba(0,0,0,0.03); background:#eef5fb; }
+.review-thumb{ width:140px; height:92px; flex-shrink:0; border-radius:8px; overflow:hidden; border:1px solid rgba(0,0,0,0.03); background:#eef5fb; }
 .review-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
 .review-body{ flex:1; display:flex; flex-direction:column; gap:8px; min-width:0; }
-.review-right{ display:flex; align-items:center; justify-content:flex-end; min-width:120px; flex-shrink:0; }
+.review-right{ display:flex; align-items:center; justify-content:flex-end; min-width:150px; flex-shrink:0; }
 
-/* Botón de producto a la derecha dentro del recuadro */
-.product-link-btn{ display:inline-block; padding:8px 10px; border-radius:10px; background:var(--accent); color:#fff; font-weight:700; text-decoration:none; max-width:140px; text-align:center; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
+/* botón dentro del recuadro a la derecha */
+.product-link-btn{ display:inline-block; padding:8px 12px; border-radius:10px; background:var(--accent); color:#fff; font-weight:700; text-decoration:none; max-width:150px; text-align:center; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
 .no-link{ display:inline-block; padding:6px 10px; border-radius:8px; border:1px solid rgba(0,0,0,0.04); background:rgba(0,0,0,0.02); color:var(--muted); font-weight:600; }
-
-/* Price */
 .price{ font-weight:800; color:var(--text); }
 
-/* ---------------------------
-   Estrellas (media estrella implementada)
-   --------------------------- */
+/* estrellas */
 .stars{ display:inline-flex; gap:4px; align-items:center; }
 .star{ font-size:14px; line-height:1; display:inline-block; color:#ddd; position:relative; width:14px; text-align:center; }
 .star.full{ color:#f5b301; }
 .star.empty{ color:#ddd; }
 .star.half{ color:#ddd; }
-.star.half::before{
-  content:'★'; position:absolute; left:0; top:0; width:50%; overflow:hidden; color:#f5b301;
-}
+.star.half::before{ content:'★'; position:absolute; left:0; top:0; width:50%; overflow:hidden; color:#f5b301; }
 
-/* ---------------------------
-   Modal
-   --------------------------- */
+/* Modal */
 .modal{ display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); align-items:center; justify-content:center; padding:18px; z-index:150; }
 .modal.open{ display:flex; }
-.modal-card{ background:#fff; border-radius:12px; padding:18px; max-width:920px; width:100%; max-height:90vh; overflow:auto; position:relative; z-index:200; box-shadow:0 30px 60px rgba(15,23,42,0.12); }
-.modal-close{ z-index:9999; position:absolute; right:10px; top:10px; border:none; background:rgba(255,255,255,0.95); padding:6px 8px; border-radius:8px; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
+.modal-card{ background:#fff; border-radius:12px; padding:18px; max-width:1100px; width:100%; max-height:90vh; overflow:auto; position:relative; z-index:200; box-shadow:0 30px 60px rgba(15,23,42,0.12); }
+.modal-close{ position:absolute; right:12px; top:12px; border:none; background:rgba(255,255,255,0.95); padding:6px 8px; border-radius:8px; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,0.06); z-index:300; }
 
-/* Asegura que las thumbs estén por encima de la X (si fuera necesario) */
-.modal .thumb{ z-index:210; }
+/* asegura thumbs bajo la X si aplica */
+.modal .thumb{ z-index:200; }
 
-/* ---------------------------
-   Footer y utilidades
-   --------------------------- */
+/* Footer */
 .footer{ text-align:center; color:var(--muted); margin-top:18px; font-size:13px; }
 
-.hidden{ display:none !important; }
-
-/* ---------------------------
-   Scrollbars (opcionales: ligeros para .book-description)
-   --------------------------- */
-.book-description::-webkit-scrollbar{ width:8px; height:8px; }
-.book-description::-webkit-scrollbar-thumb{ background:rgba(0,0,0,0.08); border-radius:6px; }
-.book-description::-webkit-scrollbar-track{ background:transparent; }
-
-/* ---------------------------
-   Responsive tweaks
-   --------------------------- */
-@media (max-width:920px){
-  .hero-card{ padding:12px; }
-  .review-thumb{ width:100px; height:70px; }
-  .review-right{ min-width:90px; }
-  .book-card{ min-height:150px; height:150px; }
-  .book-card .book-cover{ width:96px; height:124px; }
-  .books-grid{ grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+/* responsive */
+@media (max-width:1000px){
+  .container{ padding:20px 24px; }
+  .books-grid{ grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+  .review-thumb{ width:110px; height:78px; }
+  .review-right{ min-width:110px; }
+  .book-cover{ width:120px; height:160px; }
 }
-@media (max-width:560px){
-  .book-card{ min-height:140px; height:140px; padding:10px; flex-direction:row; }
-  .book-card .book-cover{ width:72px; height:104px; }
-  .search-input{ min-width:120px; }
-  .books-grid{ grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:10px; }
+@media (max-width:640px){
+  .container{ padding:16px; }
+  .filters-card{ flex-direction:column; align-items:stretch; gap:8px; }
+  .filter-select{ width:100%; flex: 0 0 auto; }
+  .search-input{ width:100%; }
+  .book-card{ flex-direction:column; align-items:center; text-align:center; }
+  .book-cover{ width:160px; height:210px; }
+  .review-right{ display:block; width:100%; text-align:center; margin-top:8px; }
 }
