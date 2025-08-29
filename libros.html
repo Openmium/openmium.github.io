@@ -3,27 +3,24 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Libros — Mi Sitio</title>
-  <meta name="description" content="Catálogo de libros." />
+  <title>Libros — [Tu Nombre]</title>
+  <meta name="description" content="Catálogo de libros: portada, ficha, adelanto con consentimiento." />
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="nav">
-    <div class="wrap" id="mainNav">
-      <a class="logo" href="index.html">Mi Sitio</a>
-      <nav id="navRight"></nav>
-    </div>
+    <div class="wrap" id="mainNav"></div>
   </header>
 
   <main class="container">
-    <!-- filtros -->
-    <section class="filters-card" aria-label="Filtros de libros">
-      <input id="searchBook" class="search-input" placeholder="Buscar libros..." aria-label="Buscar libros">
-      <input id="dateInput" class="search-input" type="date" aria-label="Filtrar por fecha">
-      <button id="clearBooks" class="btn" style="background:#fff;color:var(--text);border:1px solid rgba(0,0,0,0.06)">Limpiar</button>
+    <h1 style="color:var(--title);margin-bottom:12px">Libros</h1>
+
+    <section class="filters-card">
+      <input id="searchBook" class="search-input" placeholder="Buscar por título..." aria-label="Buscar libros">
+      <input id="dateInput" class="filter-select" type="date" aria-label="Filtrar por fecha">
+      <button id="clearBooks" class="btn" style="background:#fff;color:var(--text);">Limpiar</button>
     </section>
 
-    <!-- grid -->
     <section id="booksSection">
       <div id="booksGrid" class="books-grid" aria-live="polite"></div>
     </section>
@@ -31,34 +28,30 @@
     <footer class="footer">© 2025 [Tu Nombre]</footer>
   </main>
 
-  <!-- Modal: ficha libro -->
+  <!-- modal ficha libro (opcional: usado por js/libros-page.js) -->
   <div id="bookModal" class="modal" role="dialog" aria-hidden="true">
-    <div class="modal-card">
+    <div class="modal-card" role="document">
       <button id="closeBookModal" class="modal-close" aria-label="Cerrar">✕</button>
       <div id="bookModalContent"></div>
     </div>
   </div>
 
+  <script src="js/libros-page.js" defer></script>
+
   <script>
-    // nav builder (no link to current)
     (function buildNav(){
-      const navRight = document.getElementById('navRight');
+      const navWrap = document.getElementById('mainNav');
       const pages = [
         { file: 'index.html', label: 'Sobre mí' },
         { file: 'libros.html', label: 'Libros' },
         { file: 'reviews.html', label: 'Reseñas' }
       ];
       const current = (location.pathname.split('/').pop() || 'libros.html').toLowerCase();
-      pages.forEach(p => {
-        if(p.file === current) return;
-        const a = document.createElement('a');
-        a.href = p.file;
-        a.textContent = p.label;
-        navRight.appendChild(a);
-      });
+      const left = document.createElement('div'); left.innerHTML = '<a class="logo" href="index.html">Mi Sitio</a>';
+      const right = document.createElement('nav');
+      pages.forEach(p => { if (p.file === current) return; const a = document.createElement('a'); a.href = p.file; a.textContent = p.label; right.appendChild(a); });
+      navWrap.appendChild(left); navWrap.appendChild(right);
     })();
   </script>
-
-  <script src="js/libros-page.js" defer></script>
 </body>
 </html>
