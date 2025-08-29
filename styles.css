@@ -1,10 +1,13 @@
-/* styles.css — versión actualizada */
-/* Variables de color */
+/* styles.css — versión completa actualizada */
+
+/* ---------------------------
+   Variables de color y diseño
+   --------------------------- */
 :root{
   --header: #414254;      /* header color solicitado */
   --search: #717088;      /* barra de búsqueda/filtros */
   --card:   #bcc1cd;      /* color principal de cajas (reviews) */
-  --card-alt: #d6d9dd;    /* color alternativo (libros) — ligeramente distinto para contraste */
+  --card-alt: #d6d9dd;    /* color alternativo (libros) */
   --title:  #8e9098;      /* títulos de libros y reseñas */
   --text:   #222831;
   --muted:  #5c6166;
@@ -15,22 +18,29 @@
   --shadow-weak: 0 8px 20px rgba(68,72,71,0.04);
 }
 
-/* Reset base */
+/* ---------------------------
+   Reset y base
+   --------------------------- */
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   color:var(--text);
-  background:#ffffff; /* blanco global */
+  background:#ffffff; /* fondo blanco según solicitaste */
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   line-height:1.4;
+  -webkit-font-feature-settings: "ss01" on;
 }
 
-/* Container */
+/* ---------------------------
+   Container / layout
+   --------------------------- */
 .container{ max-width:var(--max-width); margin:22px auto; padding:18px; }
 
-/* Header / nav */
+/* ---------------------------
+   Header / nav
+   --------------------------- */
 .nav{
   position:sticky; top:0; z-index:999;
   background: var(--header); color:#fff;
@@ -45,7 +55,9 @@ body{
 .nav a{ color:rgba(255,255,255,0.95); text-decoration:none; font-weight:600; margin-left:12px; }
 .nav a:hover{ opacity:0.95; }
 
-/* Generic card */
+/* ---------------------------
+   Tarjeta genérica
+   --------------------------- */
 .card{
   background: var(--card);
   border-radius: var(--radius);
@@ -55,7 +67,9 @@ body{
 }
 .card + .card{ margin-top:12px; }
 
-/* HERO (sobre mí) - único rectángulo con todo contenido dentro */
+/* ---------------------------
+   HERO (sobre mí) - único rectángulo
+   --------------------------- */
 .hero-card{
   background: var(--card);
   padding:18px;
@@ -68,7 +82,9 @@ body{
 .hero-row:first-of-type{ margin-top:8px; padding-top:8px; border-top:none; }
 .avatar img{ width:120px; height:120px; object-fit:cover; border-radius:12px; display:block; }
 
-/* Filters / search box (books + reviews) */
+/* ---------------------------
+   Filtros / search box (books + reviews)
+   --------------------------- */
 .filters-card{
   display:flex; gap:10px; align-items:center; flex-wrap:wrap;
   background: var(--search); color:#fff;
@@ -86,26 +102,109 @@ body{
 .btn-primary{ background:var(--accent); color:#fff; }
 .btn-ghost{ background:transparent; border:1px solid rgba(0,0,0,0.06); color:var(--text); }
 
-/* BOOKS grid */
-.books-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:12px; margin-top:12px; align-items:start; }
+/* ---------------------------
+   BOOKS grid — tarjetas uniformes y más rectangulares
+   - Tarjetas con altura fija para uniformidad.
+   - Descripción puede ser de cualquier tamaño: se habilita scroll interno.
+   --------------------------- */
+.books-grid{
+  display:grid;
+  /* columnas anchas para aspecto horizontal (más anchas que altas) */
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap:16px;
+  margin-top:12px;
+  align-items:start;
+}
+
+/* Card: rectangular horizontal (width > height) */
 .book-card{
-  background: var(--card-alt);  /* distinto color al de reviews */
-  display:flex; gap:12px; align-items:stretch;
-  padding:12px; min-height:130px; border-radius:12px;
+  background: var(--card-alt);
+  display:flex;
+  gap:16px;
+  align-items:stretch;
+  padding:12px;
+  border-radius:12px;
   transition: transform .14s ease, box-shadow .14s ease;
   cursor:pointer;
   border:1px solid rgba(0,0,0,0.04);
+  /* Altura fija para uniformidad (ajusta si quieres más o menos alto) */
+  min-height:170px;
+  height:170px; /* fuerza rectangularidad: ancho variable, altura fija */
+  overflow: hidden; /* evitar que el contenido "salga" */
 }
-.book-card:hover{ transform:translateY(-6px); box-shadow:0 20px 40px rgba(68,72,71,0.06); }
-.book-card img{ width:84px; height:120px; object-fit:cover; border-radius:8px; flex-shrink:0; }
-.book-info{ display:flex; flex-direction:column; justify-content:space-between; min-width:0; }
-.book-title{ color:var(--title); font-weight:700; font-size:14px; margin-bottom:6px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.book-subtitle{ color:var(--muted); font-size:12px; }
 
-/* REVIEWS list */
+/* imagen: izquierda, tamaño constante */
+.book-card .book-cover{
+  width:120px;
+  height:146px; /* algo menor que la altura de la tarjeta para dejar margen */
+  object-fit:cover;
+  border-radius:8px;
+  flex-shrink:0;
+  background:#eee;
+  border:1px solid rgba(0,0,0,0.03);
+}
+
+/* book-info: columna con espacio para descripción scrollable */
+.book-info{
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  min-width:0;
+  gap:8px;
+  height:100%;
+}
+
+/* título y subtítulo */
+.book-title{
+  color:var(--title);
+  font-weight:700;
+  font-size:15px;
+  margin:0 0 4px 0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.book-subtitle{
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:6px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* DESCRIPCIÓN: ahora sin límite de líneas, pero con scroll si excede
+   para mantener la altura de la tarjeta constante */
+.book-description{
+  color:var(--text);
+  font-size:13px;
+  line-height:1.3;
+  overflow:auto;            /* scroll interno si es muy largo */
+  padding-right:6px;        /* espacio para scrollbar */
+  flex:1 1 auto;            /* ocupar el espacio disponible */
+  margin:0;
+}
+
+/* meta inferior: fecha + botón */
+.book-meta{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-top:6px;
+}
+.book-meta .meta{ color:var(--muted); font-size:13px; }
+.book-meta .btn{ padding:8px 12px; font-size:13px; border-radius:8px; }
+
+/* Hover sutil */
+.book-card:hover{ transform:translateY(-6px); box-shadow:0 20px 40px rgba(68,72,71,0.06); }
+
+/* ---------------------------
+   REVIEWS list
+   --------------------------- */
 .list{ display:flex; flex-direction:column; gap:12px; margin-top:12px; }
 .review-card{
-  background: var(--card);   /* color principal de reviews (distinto de libros) */
+  background: var(--card);
   display:flex; gap:12px; align-items:flex-start; padding:12px; border-radius:12px;
   border:1px solid rgba(68,72,71,0.06);
   transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease; cursor:pointer;
@@ -116,14 +215,16 @@ body{
 .review-body{ flex:1; display:flex; flex-direction:column; gap:8px; min-width:0; }
 .review-right{ display:flex; align-items:center; justify-content:flex-end; min-width:120px; flex-shrink:0; }
 
-/* Link button or no-link */
+/* Botón de producto a la derecha dentro del recuadro */
 .product-link-btn{ display:inline-block; padding:8px 10px; border-radius:10px; background:var(--accent); color:#fff; font-weight:700; text-decoration:none; max-width:140px; text-align:center; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
 .no-link{ display:inline-block; padding:6px 10px; border-radius:8px; border:1px solid rgba(0,0,0,0.04); background:rgba(0,0,0,0.02); color:var(--muted); font-weight:600; }
 
 /* Price */
 .price{ font-weight:800; color:var(--text); }
 
-/* Stars */
+/* ---------------------------
+   Estrellas (media estrella implementada)
+   --------------------------- */
 .stars{ display:inline-flex; gap:4px; align-items:center; }
 .star{ font-size:14px; line-height:1; display:inline-block; color:#ddd; position:relative; width:14px; text-align:center; }
 .star.full{ color:#f5b301; }
@@ -133,27 +234,45 @@ body{
   content:'★'; position:absolute; left:0; top:0; width:50%; overflow:hidden; color:#f5b301;
 }
 
-/* Modal */
+/* ---------------------------
+   Modal
+   --------------------------- */
 .modal{ display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); align-items:center; justify-content:center; padding:18px; z-index:150; }
 .modal.open{ display:flex; }
 .modal-card{ background:#fff; border-radius:12px; padding:18px; max-width:920px; width:100%; max-height:90vh; overflow:auto; position:relative; z-index:200; box-shadow:0 30px 60px rgba(15,23,42,0.12); }
 .modal-close{ z-index:9999; position:absolute; right:10px; top:10px; border:none; background:rgba(255,255,255,0.95); padding:6px 8px; border-radius:8px; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
 
-/* Ensure thumbnails in modal not hidden by X */
+/* Asegura que las thumbs estén por encima de la X (si fuera necesario) */
 .modal .thumb{ z-index:210; }
 
-/* Footer */
+/* ---------------------------
+   Footer y utilidades
+   --------------------------- */
 .footer{ text-align:center; color:var(--muted); margin-top:18px; font-size:13px; }
 
-/* Responsive */
+.hidden{ display:none !important; }
+
+/* ---------------------------
+   Scrollbars (opcionales: ligeros para .book-description)
+   --------------------------- */
+.book-description::-webkit-scrollbar{ width:8px; height:8px; }
+.book-description::-webkit-scrollbar-thumb{ background:rgba(0,0,0,0.08); border-radius:6px; }
+.book-description::-webkit-scrollbar-track{ background:transparent; }
+
+/* ---------------------------
+   Responsive tweaks
+   --------------------------- */
 @media (max-width:920px){
   .hero-card{ padding:12px; }
   .review-thumb{ width:100px; height:70px; }
   .review-right{ min-width:90px; }
-  .book-card img{ width:72px; height:100px; }
-  .books-grid{ grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+  .book-card{ min-height:150px; height:150px; }
+  .book-card .book-cover{ width:96px; height:124px; }
+  .books-grid{ grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 }
 @media (max-width:560px){
-  .review-right{ min-width:70px; }
+  .book-card{ min-height:140px; height:140px; padding:10px; flex-direction:row; }
+  .book-card .book-cover{ width:72px; height:104px; }
   .search-input{ min-width:120px; }
+  .books-grid{ grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:10px; }
 }
