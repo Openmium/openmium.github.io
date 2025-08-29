@@ -15,7 +15,6 @@
   <main class="container">
     <h1 style="color:var(--title);margin-bottom:12px">Reseñas</h1>
 
-    <!-- filtros: buscar ocupa todo el espacio disponible -->
     <section class="filters-card" aria-label="Filtros de reseñas">
       <input id="searchBox" class="search-input" placeholder="Buscar por título, tag..." aria-label="Buscar reseñas">
       <select id="categorySelect" class="filter-select" aria-label="Filtrar categoría">
@@ -28,13 +27,12 @@
       <button id="clearFilters" class="btn" style="background:#fff;color:var(--text);">Limpiar</button>
     </section>
 
-    <!-- lista de reseñas -->
     <section id="reviewsList" class="list" aria-live="polite"></section>
 
     <footer class="footer">© 2025 [Tu Nombre]</footer>
   </main>
 
-  <!-- modal detalle con galería -->
+  <!-- modal detalle -->
   <div id="detailModal" class="modal" role="dialog" aria-hidden="true">
     <div class="modal-card" role="document">
       <button id="closeDetail" class="modal-close" aria-label="Cerrar">✕</button>
@@ -45,7 +43,6 @@
   <script src="js/reviews-page.js" defer></script>
 
   <script>
-    // nav builder (igual que en index) — mostrar solo links distintos de la actual
     (function buildNav(){
       const navWrap = document.getElementById('mainNav');
       const pages = [
@@ -56,11 +53,7 @@
       const current = (location.pathname.split('/').pop() || 'reviews.html').toLowerCase();
       const left = document.createElement('div'); left.innerHTML = '<a class="logo" href="index.html">Mi Sitio</a>';
       const right = document.createElement('nav');
-      pages.forEach(p => {
-        if (p.file === current) return;
-        const a = document.createElement('a'); a.href = p.file; a.textContent = p.label;
-        right.appendChild(a);
-      });
+      pages.forEach(p => { if (p.file === current) return; const a = document.createElement('a'); a.href = p.file; a.textContent = p.label; right.appendChild(a); });
       navWrap.appendChild(left); navWrap.appendChild(right);
     })();
   </script>
