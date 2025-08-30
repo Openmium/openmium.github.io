@@ -73,8 +73,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             <strong>Intereses profesionales:</strong> ${esc((p.interests?.professional||[]).join(', '))}.<br>
             <strong>Actividades extracurriculares:</strong> ${esc((p.interests?.extracurricular||[]).join(', '))}
           </div>
-
-          <footer class="mini-footer">Última actualización: ${esc(p.last_updated || '')}</footer>
         </div>
       </div>
     `;
