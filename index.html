@@ -3,9 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Sobre mí — Pablo Del Pozuelo Escalona</title>
-  <meta name="description" content="Perfil profesional y personal de Pablo Del Pozuelo Escalona." />
+  <title>Index — Pablo Del Pozuelo Escalona</title>
+  <meta name="description" content="Sobre mí — Pablo Del Pozuelo Escalona" />
   <link rel="stylesheet" href="styles.css">
+  <script src="js/nav.js" defer></script>
+  <script src="js/utils.js" defer></script>
 </head>
 <body>
   <header class="nav" role="banner">
@@ -13,126 +15,78 @@
   </header>
 
   <main class="container">
-    <!-- HERO / Resumen principal (unificado en un solo rectángulo) -->
-    <section class="hero-card card" aria-labelledby="hero-title">
-      <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
-        <div style="flex:0 0 140px">
-          <!-- Sustituye assets/avatar.jpg por tu foto real -->
-          <img src="assets/avatar.jpg" alt="Foto de Pablo Del Pozuelo Escalona" width="140" height="140" style="display:block;border-radius:10px;object-fit:cover">
+    <!-- single unified about card -->
+    <section class="about-card card">
+      <div class="about-inner">
+        <div class="about-left">
+          <img class="avatar" src="assets/avatar.jpg" alt="Pablo Del Pozuelo Escalona">
         </div>
 
-        <div style="flex:1;min-width:240px">
-          <h1 id="hero-title" style="font-size:22px;margin-bottom:6px">Pablo Del Pozuelo Escalona</h1>
-          <div style="font-weight:700;color:var(--muted);margin-bottom:8px">Escritor/a · Creador/a de contenido</div>
+        <div class="about-right">
+          <h1 class="about-name">Pablo Del Pozuelo Escalona</h1>
+          <div class="about-sub">Estudiante de ingeniería de computadores.</div>
 
-          <!-- Información personal clave -->
-          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px">
-            <div class="note"><strong>Ubicación:</strong> Fuenlabrada, Comunidad de Madrid, España</div>
-            <div class="note"><strong>Estado laboral:</strong> En busca de empleo</div>
-            <div class="note"><strong>Conexiones:</strong> 5 contactos</div>
+          <p class="about-note">Desarrollo proyectos personales relacionados con la tecnología y disfruto la lectura.</p>
+
+          <div class="links-row">
+            <a href="https://www.linkedin.com/in/pablodelpozuelo/" target="_blank" rel="noopener" class="small-link">LinkedIn</a>
+            <a href="https://github.com/Openmium" target="_blank" rel="noopener" class="small-link">GitHub</a>
+            <a href="https://es.pinterest.com/PdpOpen/" target="_blank" rel="noopener" class="small-link">Pinterest</a>
           </div>
 
-          <!-- Enlaces sociales reales -->
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
-            <a href="https://www.linkedin.com/in/pablodelpozuelo/" target="_blank" rel="noopener" class="btn btn-ghost" aria-label="LinkedIn — Pablo Del Pozuelo">LinkedIn</a>
-            <a href="https://github.com/Openmium" target="_blank" rel="noopener" class="btn btn-ghost" aria-label="GitHub — Openmium">GitHub</a>
-            <a href="https://es.pinterest.com/PdpOpen/" target="_blank" rel="noopener" class="btn btn-ghost" aria-label="Pinterest — PdpOpen">Pinterest</a>
+          <hr class="sep">
+
+          <h2 class="section-title">Información Personal</h2>
+          <div class="info-grid">
+            <div><strong>Nombre:</strong> Pablo Del Pozuelo Escalona</div>
+            <div><strong>Ubicación:</strong> Fuenlabrada, Comunidad de Madrid, España</div>
+            <div><strong>Estado laboral:</strong> En busca de empleo</div>
           </div>
 
-          <div style="margin-top:6px; border-top:1px solid rgba(0,0,0,0.04); padding-top:12px">
-            <!-- Biografía breve -->
-            <h2 style="font-size:16px;margin-bottom:8px">Breve biografía</h2>
-            <p class="note" style="margin-bottom:10px">
-              Hola — soy <strong>Pablo Del Pozuelo Escalona</strong>. Me dedico a combinar estudios técnicos con creación de contenido y escritura. Actualmente compagino mi formación en Ingeniería de Computadores con proyectos personales y voluntariado.
-            </p>
-
-            <!-- Formación -->
-            <h2 style="font-size:16px;margin-top:10px;margin-bottom:8px">Formación Académica</h2>
-
-            <div style="margin-bottom:10px">
-              <strong>Grado en Ingeniería de Computadores (Ingeniería informática)</strong>
-              <div class="note" style="margin-top:4px">
-                <strong>Institución:</strong> Universidad Politécnica de Madrid (UPM)<br>
-                <strong>Período:</strong> sept. 2023 - jul. 2027 (Cursando 2º año)<br>
-                <strong>Nota media:</strong> 6.43
-              </div>
-            </div>
-
-            <div style="margin-bottom:10px">
-              <strong>Bachillerato Tecnológico</strong>
-              <div class="note" style="margin-top:4px">
-                <strong>Institución:</strong> IES La Serna<br>
-                <strong>Período:</strong> sept. 2021 - may. 2023<br>
-                <strong>Nota media:</strong> 7.71
-              </div>
-            </div>
-
-            <!-- Experiencia -->
-            <h2 style="font-size:16px;margin-top:10px;margin-bottom:8px">Experiencia Profesional y Voluntariado</h2>
-
-            <div style="margin-bottom:8px">
-              <strong>Auxiliar administrativo (Voluntariado)</strong>
-              <div class="note" style="margin-top:4px">
-                <strong>Organización:</strong> CEIP Arcipreste de Hita<br>
-                <strong>Período:</strong> ago. 2024 - Actualidad (1 año 1 mes)<br>
-                <strong>Tareas:</strong> Tareas de administración, gestión y digitalización en la Secretaría del centro, colaborando durante el periodo de matriculación.
-              </div>
-            </div>
-
-            <!-- Habilidades -->
-            <h2 style="font-size:16px;margin-top:10px;margin-bottom:8px">Habilidades y Competencias</h2>
-            <div class="note" style="margin-bottom:8px">
-              <strong>Lenguajes de Programación:</strong> C, Java, SQL.
-            </div>
-            <ul class="note" style="margin-left:18px;margin-bottom:8px">
-              <li>Programación en C</li>
-              <li>Pensamiento crítico</li>
-              <li>Resolución de problemas</li>
-              <li>Aprendizaje autónomo (Autoaprendizaje)</li>
-              <li>Gestión de plazos de entrega</li>
-            </ul>
-            <div class="note" style="margin-bottom:8px"><strong>Sistemas Operativos:</strong> Conocimientos en sistemas operativos (mencionado en aptitudes).</div>
-
-            <!-- Idiomas -->
-            <h2 style="font-size:16px;margin-top:10px;margin-bottom:8px">Idiomas</h2>
-            <div class="note" style="margin-bottom:8px">
-              <strong>Español:</strong> Competencia bilingüe o nativa.<br>
-              <strong>Inglés:</strong> Competencia básica profesional.
-            </div>
-
-            <!-- Intereses -->
-            <h2 style="font-size:16px;margin-top:10px;margin-bottom:8px">Intereses y Actividades</h2>
-            <div class="note">
-              <strong>Intereses profesionales:</strong> Interés en empresas del sector de semiconductores y tecnología como NXP Semiconductors y Texas Instruments.<br>
-              <strong>Actividades extracurriculares:</strong> Participación en grupos de pádel, tenis, fútbol 7 y orquesta de instrumentos de cuerda durante los estudios.
-            </div>
+          <h2 class="section-title">Formación Académica</h2>
+          <div class="info-block">
+            <strong>Grado en Ingeniería de Computadores (Ingeniería informática)</strong><br>
+            Universidad Politécnica de Madrid (UPM) · sept. 2023 - jul. 2027 (Cursando 3º año) · Nota media: 6.43
           </div>
+          <div class="info-block">
+            <strong>Bachillerato Tecnológico</strong><br>
+            IES La Serna · sept. 2021 - may. 2023 · Nota media: 7.71
+          </div>
+
+          <h2 class="section-title">Experiencia Profesional y Voluntariado</h2>
+          <div class="info-block">
+            <strong>Auxiliar administrativo (Voluntariado)</strong><br>
+            CEIP Arcipreste de Hita · sep. 2024 - Actualidad<br>
+            Tareas: administración, gestión y digitalización en Secretaría (matriculación).
+          </div>
+
+          <h2 class="section-title">Habilidades y Competencias</h2>
+          <div class="info-block">
+            <strong>Lenguajes:</strong> C, Java, SQL.<br>
+            <strong>Aptitudes:</strong> Programación en C · Pensamiento crítico · Resolución de problemas · Autoaprendizaje · Gestión de plazos.<br>
+            <strong>Sistemas:</strong> Conocimientos en sistemas operativos.
+          </div>
+
+          <h2 class="section-title">Idiomas</h2>
+          <div class="info-block">
+            Español: Competencia bilingüe o nativa. · Inglés: Competencia básica profesional.
+          </div>
+
+          <h2 class="section-title">Intereses y Actividades</h2>
+          <div class="info-block">
+            Intereses: NXP Semiconductors, Texas Instruments, sector semiconductores y tecnología.<br>
+            Actividades: Pádel, Tenis, Fútbol 7, Orquesta de instrumentos de cuerda.
+          </div>
+
+          <footer class="mini-footer">Última actualización: 30-08-2025</footer>
         </div>
       </div>
     </section>
 
-    <footer class="footer">© 2025 Pablo Del Pozuelo Escalona</footer>
   </main>
 
   <script>
-    // Build nav: muestra solo las otras páginas (no repetir la actual)
-    (function buildNav(){
-      const navWrap = document.getElementById('mainNav');
-      const pages = [
-        { file: 'index.html', label: 'Sobre mí' },
-        { file: 'libros.html', label: 'Libros' },
-        { file: 'reviews.html', label: 'Reseñas' }
-      ];
-      const current = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
-      const left = document.createElement('div'); left.innerHTML = '<a class="logo" href="index.html">Mi Sitio</a>';
-      const right = document.createElement('nav');
-      pages.forEach(p => {
-        if (p.file === current) return;
-        const a = document.createElement('a'); a.href = p.file; a.textContent = p.label;
-        right.appendChild(a);
-      });
-      navWrap.appendChild(left); navWrap.appendChild(right);
-    })();
+    // nothing page-specific; nav.js will build header
   </script>
 </body>
 </html>
