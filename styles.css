@@ -1,117 +1,246 @@
-/* styles.css — GLOBAL */
+/* styles.css - Estilo completo actualizado
+   - Overlay oscuro en imágenes
+   - object-fit: contain para que no se recorten
+   - Modales con fondo claro (no puro blanco)
+   - Cards rectangulares y consistentes (aspect-ratio)
+   - Variables para ajuste rápido de paleta
+*/
+
+/* ---------- Variables de tema ---------- */
 :root{
-  --header-bg: #414254;   /* header */
-  --searchbar: #6c7792;   /* search card */
-  --card-bg: #bcc1cd;     /* cards background */
-  --title-color: #918e98; /* titles */
+  --text: #111;
   --muted: #6b6f87;
-  --text: #222;
-  --accent: #2f3a44;
-  --radius: 12px;
+  --background: #ffffff;         /* fondo general blanco, como pediste */
+  --card-bg: #bcc1cd;           /* color para cajas de libros y reseñas solicitado */
+  --card-alt: #e9ecef;          /* color alternativo para headers de tarjetas */
+  --border: #d6d9df;
+  --accent: #6c7792;           /* color para barras de búsqueda, header secundario */
+  --header-bg: #414254;        /* color del header solicitado */
+  --search-bg: #717088;        /* color para el recuadro de búsqueda y filtros */
+  --title-color: #8e9098;      /* color para títulos de libros y reseñas */
+  --modal-bg: #f3f4f6;         /* color claro para modales (no blanco puro) */
+  --overlay: rgba(6,8,12,0.44);/* overlay oscurito sobre img (ajustable) */
+  --radius: 10px;
+  --shadow: 0 8px 30px rgba(15,23,42,0.06);
+  --dot-size: 10px;
   --max-width: 1200px;
 }
 
-/* Reset */
-*{ box-sizing:border-box; margin:0; padding:0; }
-html,body{ height:100%; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color:var(--text); background:#ffffff; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
-a{ color:inherit; text-decoration:none; }
+/* ---------- Reset y base ---------- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html,body { height:100%; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; background: var(--background); color: var(--text); }
+a { color: inherit; text-decoration:none; }
+.container { max-width: var(--max-width); margin: 18px auto; padding: 18px; }
 
-/* Layout */
-.container{ max-width:var(--max-width); margin:20px auto; padding:20px; }
-.nav{ position:sticky; top:0; z-index:80; background:var(--header-bg); color:#fff; border-bottom:1px solid rgba(0,0,0,0.06); }
-.wrap{ max-width:var(--max-width); margin:0 auto; display:flex; justify-content:space-between; align-items:center; padding:12px 20px; }
-.wrap .logo{ font-weight:700; color:#fff; }
-.wrap nav a{ color:#fff; margin-left:14px; font-weight:600; }
+/* ---------- Header ---------- */
+.nav { background: var(--header-bg); color: #fff; position: sticky; top:0; z-index:120; border-bottom: 1px solid rgba(0,0,0,0.06); }
+.nav .wrap { max-width: var(--max-width); margin: 0 auto; display:flex; align-items:center; justify-content:space-between; padding:12px 18px; gap:12px; }
+.nav a { color: #fff; font-weight:600; }
+.nav strong { color:#fff; }
 
-/* Basic components */
-.page-title{ color:var(--title-color); margin:18px 0; font-size:20px; }
-.card{ background:#fff; border-radius:var(--radius); padding:14px; border:1px solid rgba(0,0,0,0.04); box-shadow:0 6px 18px rgba(15,23,42,0.03); }
-.section-title{ font-size:16px; color:var(--title-color); margin-top:14px; margin-bottom:8px; }
-
-/* About unified card */
-.about-card{ background:var(--card-bg); border-radius:14px; padding:18px; }
-.about-inner{ display:flex; gap:18px; align-items:flex-start; }
-.about-left{ flex:0 0 140px; }
-.avatar{ width:140px; height:140px; object-fit:contain; border-radius:10px; display:block; }
-.about-right{ flex:1; }
-.about-name{ font-size:20px; color:var(--title-color); margin-bottom:6px; }
-.about-sub{ color:var(--muted); font-weight:700; margin-bottom:8px; }
-.about-note{ color:var(--muted); margin-bottom:10px; }
-.links-row{ display:flex; gap:12px; margin-bottom:12px; }
-.small-link{ background:transparent; padding:6px 8px; border-radius:8px; color:var(--accent); font-weight:700; border:1px solid rgba(0,0,0,0.04); }
-.sep{ border:none; height:1px; background: rgba(0,0,0,0.06); margin:12px 0; border-radius:4px; }
-.info-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; color:var(--text); font-size:14px; }
-.info-block{ margin-bottom:10px; color:var(--text); font-size:14px; }
-.mini-footer{ margin-top:12px; color:var(--muted); font-size:13px; }
-
-/* Search card (same style for books & reviews) */
-.search-card{ background:var(--searchbar); color:#fff; padding:12px; border-radius:12px; display:flex; gap:10px; align-items:center; margin-bottom:16px; }
-.search-card input[type="text"], .search-card input[type="date"], .search-card select{ padding:10px; border-radius:8px; border:none; background: rgba(255,255,255,0.12); color:#fff; min-width:0; }
-.search-card input::placeholder{ color: rgba(255,255,255,0.8); }
-
-/* Buttons */
-.btn{ padding:8px 12px; border-radius:8px; border:none; cursor:pointer; font-weight:700; display:inline-flex; align-items:center; gap:8px; }
-.btn.small{ padding:8px 10px; }
-.btn-primary{ background:var(--accent); color:#fff; }
-.btn-ghost{ background:transparent; border:1px solid rgba(0,0,0,0.06); color:var(--text); }
-
-/* Books grid & cards */
-.books-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(480px, 1fr)); gap:16px; }
-.book-card{ background:var(--card-bg); border-radius:12px; overflow:hidden; display:flex; gap:14px; padding:14px; align-items:flex-start; border:1px solid rgba(0,0,0,0.06); transition: transform .12s ease, box-shadow .12s ease; cursor:pointer; }
-.book-card:hover{ transform: translateY(-6px); box-shadow:0 12px 30px rgba(0,0,0,0.08); }
-.book-thumb{ width:180px; height:220px; flex-shrink:0; border-radius:8px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#fff; border:1px solid rgba(0,0,0,0.04); }
-.book-thumb img{ width:100%; height:100%; object-fit:contain; object-position:center; display:block; }
-.book-info{ flex:1; display:flex; flex-direction:column; gap:8px; }
-.book-title{ color:var(--title-color); font-size:18px; margin:0; }
-.book-sub{ color:var(--muted); font-size:13px; margin:0; }
-.book-desc{ color:var(--text); font-size:14px; margin:0; line-height:1.35; }
-.book-meta{ display:flex; align-items:center; gap:8px; margin-top:8px; }
-.book-date{ font-size:13px; color:var(--muted); }
-.book-actions{ margin-left:auto; display:flex; gap:8px; align-items:center; }
-
-/* Reviews list & cards */
-.list{ display:flex; flex-direction:column; gap:12px; margin-top:10px; }
-.review-card{ display:flex; gap:12px; align-items:flex-start; padding:14px; border-radius:10px; background:var(--card-bg); border:1px solid rgba(0,0,0,0.06); cursor:pointer; transition:transform .12s ease, box-shadow .12s ease; }
-.review-card:hover{ transform: translateY(-6px); box-shadow:0 12px 30px rgba(0,0,0,0.08); }
-.review-thumb{ width:140px; height:92px; flex-shrink:0; border-radius:8px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#fff; border:1px solid rgba(0,0,0,0.04); }
-.review-thumb img{ width:100%; height:100%; object-fit:contain; object-position:center; display:block; }
-.review-body{ flex:1; display:flex; flex-direction:column; gap:6px; }
-.meta{ font-size:12px; color:var(--muted); }
-.price{ font-weight:800; color:var(--text); margin-top:4px; }
-
-/* product link in review card (right area) */
-.product-link-btn{ display:inline-block; padding:8px 10px; border-radius:8px; background:var(--accent); color:#fff; text-decoration:none; font-weight:800; font-size:13px; white-space:nowrap; }
-
-/* Modal */
-.modal{ display:none; position:fixed; inset:0; background: rgba(0,0,0,0.45); align-items:center; justify-content:center; padding:18px; z-index:120; }
-.modal.open{ display:flex; }
-.modal-card{ background:#fff; border-radius:12px; padding:18px; max-width:1000px; width:100%; max-height:90vh; overflow:auto; position:relative; box-shadow:0 12px 36px rgba(0,0,0,0.18); }
-.modal-close{ position:absolute; right:12px; top:12px; border:none; background:#f3f5f8; padding:6px 8px; border-radius:8px; cursor:pointer; z-index:9999; }
-
-/* modal gallery layout: main image left, thumbs vertical right on wide screens */
-.modal-gallery{ display:flex; gap:12px; flex-wrap:wrap; align-items:flex-start; }
-.modal-main-img{ flex:1; min-width:280px; display:flex; align-items:center; justify-content:center; background:#fafafa; border-radius:8px; padding:8px; }
-.modal-main-img img{ width:100%; max-height:70vh; object-fit:contain; display:block; }
-.modal-thumbs{ display:flex; flex-direction:column; gap:8px; min-width:110px; }
-.modal-thumbs img{ width:100px; height:70px; object-fit:contain; border-radius:6px; cursor:pointer; border:1px solid rgba(0,0,0,0.06); }
-
-/* responsive */
-@media(max-width:1100px){
-  .books-grid{ grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); }
-}
-@media(max-width:880px){
-  .about-inner{ flex-direction:column; align-items:center; text-align:center; }
-  .about-left{ flex:0 0 auto; }
-  .books-grid{ grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
-  .book-thumb{ width:140px; height:180px; }
-  .modal-thumbs{ flex-direction:row; min-width:unset; }
-  .modal-thumbs img{ width:72px; height:50px; }
-  .info-grid{ grid-template-columns: 1fr; }
+/* ---------- Hero / About container ---------- */
+.about-card { display:block; background: transparent; }
+/* unify the whole about section into one card-like block with internal separators */
+.about-inner {
+  background: var(--card-bg);
+  border-radius: calc(var(--radius) + 4px);
+  padding: 18px;
+  display:flex;
+  gap:18px;
+  align-items:flex-start;
+  box-shadow: var(--shadow);
+  border:1px solid var(--border);
 }
 
-/* utility */
-.hidden{ display:none !important; }
-.footer{ text-align:center; color:var(--muted); margin-top:26px; font-size:13px; padding:12px 0; }
+/* Avatar area */
+.avatar-wrap { width: 180px; height: 180px; flex-shrink:0; border-radius: 10px; overflow:hidden; position:relative; }
+.avatar-wrap img { width:100%; height:100%; object-fit:contain; object-position:center; display:block; }
 
-/* override: ensure search input expands inside search-card */
-.search-card input[type="text"]{ flex:1 1 auto; min-width:160px; }
+/* overlay sobre avatar */
+.avatar-wrap::before{
+  content:""; position:absolute; inset:0; background: var(--overlay); pointer-events:none;
+}
+
+/* About right column */
+.about-right { flex:1; display:flex; flex-direction:column; gap:12px; }
+.about-name { font-size:22px; font-weight:800; color:var(--title-color); }
+.about-sub { color: var(--muted); font-weight:700; }
+.links-row { display:flex; gap:10px; align-items:center; }
+.small-link { background:transparent; border:1px solid rgba(255,255,255,0.06); padding:6px 8px; border-radius:7px; color:var(--title-color); }
+
+/* separators & section titles */
+.sep { border:0; border-top:1px solid rgba(0,0,0,0.06); margin:6px 0; }
+.section-title { font-size:15px; color:var(--title-color); margin-top:8px; margin-bottom:6px; font-weight:700; }
+.info-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:8px; color:var(--muted); }
+.info-block { background: transparent; padding:6px 0; color:var(--muted); }
+
+/* footer mini */
+.mini-footer { font-size:12px; color:var(--muted); margin-top:8px; }
+
+/* ---------- Cards generales ---------- */
+.card { background:#fff; padding:14px; border-radius: calc(var(--radius)); border:1px solid var(--border); box-shadow: 0 3px 10px rgba(15,23,42,0.03); }
+
+/* ---------- Grids y layout para Libros y Reseñas ---------- */
+.books-grid, .reviews-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+  margin-top: 12px;
+}
+
+/* tarjeta unificada para libro/review */
+.book-card, .review-card {
+  background: var(--card-bg);           /* caja principal (solicitada) */
+  border-radius: 10px;
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  padding:12px;
+  border:1px solid var(--border);
+  transition: transform .14s ease, box-shadow .14s ease;
+  cursor: pointer;
+}
+
+/* hover suavito */
+.book-card:hover, .review-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(2,6,23,0.06);
+}
+
+/* mini-thumb area: hacemos rectangulares horizontales, consistentes, usando aspect-ratio */
+.book-thumb, .review-thumb {
+  width: 38%;                  /* ocupa 38% del ancho de la tarjeta para que sea horizontal */
+  min-width: 160px;
+  aspect-ratio: 16 / 9;        /* rectangular horiz. consistente */
+  border-radius: 8px;
+  overflow:hidden;
+  position:relative;
+  flex-shrink:0;
+  background: #eef2f4;
+  display:block;
+}
+
+/* imagen dentro del thumb: evita recortes (contain), centrada */
+.book-thumb img, .review-thumb img {
+  width:100%;
+  height:100%;
+  object-fit: contain;       /* muestra la imagen completa sin recortar */
+  object-position: center;
+  display:block;
+  background: transparent;
+}
+
+/* overlay oscuro sobre thumbs (oscuro pero no aplasta) */
+.book-thumb::before, .review-thumb::before {
+  content:""; position:absolute; inset:0; background: var(--overlay); pointer-events:none; transition: background .18s ease;
+}
+.book-thumb:hover::before, .review-thumb:hover::before { background: rgba(6,8,12,0.2); }
+
+/* area de contenido en la tarjeta */
+.card-body {
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  width: 62%;   /* complementa el 38% de la thumb */
+}
+
+/* meta y titulos */
+.meta { font-size:13px; color:var(--muted); }
+h3.card-title { font-size:16px; margin:0; color:var(--title-color); font-weight:700; }
+.card-desc { color:var(--muted); font-size:14px; line-height:1.3; }
+
+/* precio y estrellas */
+.price { font-weight:700; color:var(--muted); }
+.stars { display:inline-flex; gap:4px; align-items:center; }
+
+/* boton ir al producto, dentro de la tarjeta a la derecha inferior (pero ahora lo dejamos dentro del area de contenido) */
+.product-link-btn {
+  display:inline-block;
+  padding:8px 12px;
+  border-radius:8px;
+  background: transparent;
+  border:1px solid rgba(0,0,0,0.08);
+  color:var(--title-color);
+  text-decoration:none;
+  font-weight:700;
+}
+
+/* ---------- Buscadores / filtros (barra de búsqueda grande) ---------- */
+.filter-bar {
+  background: var(--search-bg);   /* color solicitado para la barra */
+  border-radius: 12px;
+  padding:12px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  border:1px solid rgba(0,0,0,0.06);
+}
+
+/* inputs del buscador ocupan todo (se pidió que fueran más largos) */
+.filter-bar input[type="text"],
+.filter-bar input[type="date"],
+.filter-bar select {
+  padding:10px 12px;
+  border-radius:8px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: transparent;
+  color: #fff;
+  min-width: 0;
+  flex:1;
+}
+
+/* placeholder en blanco suave */
+.filter-bar input::placeholder { color: rgba(255,255,255,0.7); }
+
+/* botón limpia */
+.filter-bar .btn { padding:8px 10px; border-radius:8px; background:transparent; color:#fff; border:1px solid rgba(255,255,255,0.08); }
+
+/* ---------- Modal (detalle libros / reseñas) ---------- */
+.modal { display:none; position:fixed; inset:0; background: rgba(0,0,0,0.45); align-items:center; justify-content:center; padding:18px; z-index:220; }
+.modal.open { display:flex; }
+.modal-card {
+  background: var(--modal-bg);    /* no blanco puro */
+  border-radius:12px;
+  padding:18px;
+  max-width:960px;
+  width:100%;
+  max-height:90vh;
+  overflow:auto;
+  position:relative;
+  box-shadow: 0 22px 60px rgba(0,0,0,0.12);
+  border:1px solid var(--border);
+}
+
+/* Close button encima pero con z-index elevado para que no quede detrás de thumbs */
+.modal-close {
+  position:absolute; right:12px; top:12px; border:none;
+  background: rgba(0,0,0,0.06); color:var(--text); padding:8px 10px; border-radius:8px; cursor:pointer; z-index:230;
+}
+
+/* Dentro del modal - presentacion con galería a la derecha */
+.modal-layout { display:flex; gap:14px; flex-wrap:wrap; align-items:flex-start; }
+.modal-main-img { flex:1; min-width:240px; aspect-ratio:16/9; border-radius:8px; overflow:hidden; background:#fff; display:block; }
+.modal-main-img img { width:100%; height:100%; object-fit:contain; display:block; }
+
+/* thumbs verticales a la derecha (si hay) */
+.modal-thumbs { width:110px; display:flex; flex-direction:column; gap:8px; }
+.modal-thumbs img { width:100%; height:70px; object-fit:cover; border-radius:6px; cursor:pointer; border:1px solid rgba(0,0,0,0.06); }
+
+/* contenido textual en modal */
+.modal-meta { font-size:13px; color:var(--muted); margin-top:8px; }
+.modal-title { font-size:20px; margin:6px 0; color:var(--title-color); }
+.modal-desc { color:var(--muted); }
+
+/* ---------- Footer ---------- */
+.footer { text-align:center; color:var(--muted); margin-top:22px; font-size:13px; padding:12px 0; }
+
+/* ---------- Responsiveness ---------- */
+@media (max-width: 920px){
+  .about-inner { flex-direction: column; align-items:center; text-align:center; }
+  .book-thumb, .review-thumb { width: 100%; aspect-ratio: 16/9; }
+  .card-body { width:100%; }
+  .modal-layout { flex-direction:column; }
+  .modal-thumbs { width:100%; flex-direction:row; overflow:auto; }
+  .modal-thumbs img { height:72px; width:auto; }
+  .filter-bar { flex-direction:column; align-items:stretch; }
+}
