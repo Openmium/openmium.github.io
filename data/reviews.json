@@ -8,7 +8,7 @@
     {
       "id": "salud",
       "label": "Salud",
-      "subs": ["Salud mental","Nutrición","Suplementos"]
+      "subs": ["Salud mental"]
     },
     {
       "id": "libros",
@@ -35,10 +35,10 @@
       "sub": "Hardware",
       "tags": ["blu-ray","grabador","hardware"],
       "summary": "Lector/grabador de Blu-Ray para computadora con buena relación calidad precio.",
-      "content": "El producto llegó bien embalado, reconocido al instante en Windows y Linux. La bahía tiene algo de juego, pero cumple su función.",
+      "content": "El producto llegó muy bien embalado, incluye el cable de alimentación, el cable USB 3.0 micro-B y un manual sencillo. El PC lo reconoció al instante y con ImgBurn confirmé que se trata de una grabadora Blu-ray (modelo MATSHITA UJ240AS), compatible con BD-R y BD-RE, además de leer/grabar CDs y DVDs. Aún no lo he probado con discos Blu-ray vírgenes, pero la detección y compatibilidad son correctas. Hace bastante ruido durante la lectura, lo cual es normal considerando que hay piezas móviles en su interior. No creo que el exterior sea de aluminio, aunque parece bastante sólido. La bahía en la que se desplaza el lector tiene un poco más de juego del que me gustaría, pero en general funciona correctamente.",
       "rating": 4.5,
       "price": "34,57€",
-      "link": "https://example.com/producto/blueray",
+      "link": "https://es.aliexpress.com/item/1005006034405894.html?spm=a2g0s.12269583.0.0.a216abebNgDR1F&gatewayAdapt=glo2esp",
       "images": [
         "assets/reviews/LectorBlueRay.jpg",
         "assets/reviews/LectorBlueRay1.jpg",
@@ -48,20 +48,22 @@
     },
     {
       "id": 169300001002,
-      "title": "Laptop Ultra X",
-      "date": "2025-08-12",
+      "title": "Vxe Dragonfly R1 SE ratón",
+      "date": "2025-07-15",
       "category": "informatica",
       "sub": "Hardware",
-      "tags": ["laptop","reviews","hardware"],
-      "summary": "Laptop con buena relación calidad-precio.",
-      "content": "Revisión completa... buen rendimiento por el precio.",
-      "rating": 3,
+      "tags": ["mouse","reviews","hardware"],
+      "summary": "Ratón con buena construcción y sensación",
+      "content": "Vxe Dragonfly R1 SE Llevo unos días usando este ratón para trabajo y juegos casuales. Pesa 56 g sin el dongle, muy ligero y cómodo para agarre claw o fingertip. El plástico tiene buen tacto y se desliza muy bien en alfombrilla o superficies duras. Tiene interruptor para apagar o cambiar entre dongle 2.4G / Bluetooth y un botón para cambiar DPI en caliente. Con la app ATK Hub puedes ajustar DPI, polling rate, reasignar botones y crear macros. Con el dongle el polling llega a ~1000 Hz, en Bluetooth baja mucho, así que para competitivo mejor usar dongle. Se carga por USB-C; llevo un mes usándolo y aún tiene ~40% de batería. El sensor PAW3395 es preciso, el tracking sólido, clicks firmes y rueda con pasos definidos. Excelente para su precio.",
+      "rating": 4.2,
       "price": "16,89€",
-      "link": "https://example.com/producto/laptop-ultra-x",
+      "link": "https://es.aliexpress.com/item/1005007474219781.html?spm=a2g0s.12269583.0.0.476c177cOQJcLN&gatewayAdapt=glo2esp",
       "images": [
-        "assets/reviews/laptopx-1.jpg",
-        "assets/reviews/laptopx-2.jpg",
-        "assets/reviews/laptopx-3.jpg"
+        "assets/reviews/VxeDragonfly.webp",
+        "assets/reviews/VxeDragonfly1.webp",
+        "assets/reviews/VxeDragonfly2.webp",
+        "assets/reviews/VxeDragonfly3.webp",
+        "assets/reviews/VxeDragonfly4.webp"
       ]
     },
     {
