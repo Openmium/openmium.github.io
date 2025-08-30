@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="styles.css">
   <script src="js/nav.js" defer></script>
   <script src="js/utils.js" defer></script>
+  <script src="js/index-page.js" defer></script>
 </head>
 <body>
   <header class="nav" role="banner">
@@ -15,78 +16,12 @@
   </header>
 
   <main class="container">
-    <!-- single unified about card -->
-    <section class="about-card card">
-      <div class="about-inner">
-        <div class="about-left">
-          <img class="avatar" src="assets/avatar.jpg" alt="Pablo Del Pozuelo Escalona">
-        </div>
-
-        <div class="about-right">
-          <h1 class="about-name">Pablo Del Pozuelo Escalona</h1>
-          <div class="about-sub">Estudiante de ingeniería de computadores.</div>
-
-          <p class="about-note">Desarrollo proyectos personales relacionados con la tecnología y disfruto la lectura.</p>
-
-          <div class="links-row">
-            <a href="https://www.linkedin.com/in/pablodelpozuelo/" target="_blank" rel="noopener" class="small-link">LinkedIn</a>
-            <a href="https://github.com/Openmium" target="_blank" rel="noopener" class="small-link">GitHub</a>
-            <a href="https://es.pinterest.com/PdpOpen/" target="_blank" rel="noopener" class="small-link">Pinterest</a>
-          </div>
-
-          <hr class="sep">
-
-          <h2 class="section-title">Información Personal</h2>
-          <div class="info-grid">
-            <div><strong>Nombre:</strong> Pablo Del Pozuelo Escalona</div>
-            <div><strong>Ubicación:</strong> Fuenlabrada, Comunidad de Madrid, España</div>
-            <div><strong>Estado laboral:</strong> En busca de empleo</div>
-          </div>
-
-          <h2 class="section-title">Formación Académica</h2>
-          <div class="info-block">
-            <strong>Grado en Ingeniería de Computadores (Ingeniería informática)</strong><br>
-            Universidad Politécnica de Madrid (UPM) · sept. 2023 - jul. 2027 (Cursando 3º año) · Nota media: 6.43
-          </div>
-          <div class="info-block">
-            <strong>Bachillerato Tecnológico</strong><br>
-            IES La Serna · sept. 2021 - may. 2023 · Nota media: 7.71
-          </div>
-
-          <h2 class="section-title">Experiencia Profesional y Voluntariado</h2>
-          <div class="info-block">
-            <strong>Auxiliar administrativo (Voluntariado)</strong><br>
-            CEIP Arcipreste de Hita · sep. 2024 - Actualidad<br>
-            Tareas: administración, gestión y digitalización en Secretaría (matriculación).
-          </div>
-
-          <h2 class="section-title">Habilidades y Competencias</h2>
-          <div class="info-block">
-            <strong>Lenguajes:</strong> C, Java, SQL.<br>
-            <strong>Aptitudes:</strong> Programación en C · Pensamiento crítico · Resolución de problemas · Autoaprendizaje · Gestión de plazos.<br>
-            <strong>Sistemas:</strong> Conocimientos en sistemas operativos.
-          </div>
-
-          <h2 class="section-title">Idiomas</h2>
-          <div class="info-block">
-            Español: Competencia bilingüe o nativa. · Inglés: Competencia básica profesional.
-          </div>
-
-          <h2 class="section-title">Intereses y Actividades</h2>
-          <div class="info-block">
-            Intereses: NXP Semiconductors, Texas Instruments, sector semiconductores y tecnología.<br>
-            Actividades: Pádel, Tenis, Fútbol 7, Orquesta de instrumentos de cuerda.
-          </div>
-
-          <footer class="mini-footer">Última actualización: 30-08-2025</footer>
-        </div>
-      </div>
+    <!-- contenedor vacío: lo rellena js/index-page.js desde data/profile.json -->
+    <section id="aboutContainer" class="about-card card">
+      <div class="card">Cargando perfil…</div>
     </section>
-
   </main>
 
-  <script>
-    // nothing page-specific; nav.js will build header
-  </script>
+  <footer class="footer">© 2025 Pablo Del Pozuelo Escalona</footer>
 </body>
 </html>
