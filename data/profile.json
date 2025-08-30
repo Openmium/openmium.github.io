@@ -1,0 +1,47 @@
+{
+  "name": "Pablo Del Pozuelo Escalona",
+  "location": "Fuenlabrada, Comunidad de Madrid, España",
+  "work_status": "En busca de empleo",
+  "connections": 5,
+  "education": [
+    {
+      "degree": "Grado en Ingeniería de Computadores (Ingeniería informática)",
+      "institution": "Universidad Politécnica de Madrid (UPM)",
+      "period": "sept. 2023 - jul. 2027 (Cursando 2º año)",
+      "gpa": "6.43"
+    },
+    {
+      "degree": "Bachillerato Tecnológico",
+      "institution": "IES La Serna",
+      "period": "sept. 2021 - may. 2023",
+      "gpa": "7.71"
+    }
+  ],
+  "experience": [
+    {
+      "role": "Auxiliar administrativo (Voluntariado)",
+      "organization": "CEIP Arcipreste de Hita",
+      "period": "ago. 2024 - Actualidad",
+      "notes": "Tareas de administración, gestión y digitalización en la Secretaría del centro, colaborando durante el periodo de matriculación."
+    }
+  ],
+  "skills": {
+    "languages": ["C", "Java", "SQL"],
+    "soft": ["Programación en C", "Pensamiento crítico", "Resolución de problemas", "Aprendizaje autónomo", "Gestión de plazos de entrega"],
+    "os": ["Conocimientos en sistemas operativos"]
+  },
+  "languages": {
+    "es": "Competencia bilingüe o nativa",
+    "en": "Competencia básica profesional"
+  },
+  "interests": {
+    "professional": ["NXP Semiconductors", "Texas Instruments", "Sector semiconductores y tecnología"],
+    "extracurricular": ["Pádel", "Tenis", "Fútbol 7", "Orquesta de instrumentos de cuerda"]
+  },
+  "links": {
+    "linkedin": "https://www.linkedin.com/in/pablodelpozuelo/",
+    "github": "https://github.com/Openmium",
+    "pinterest": "https://es.pinterest.com/PdpOpen/"
+  },
+  "last_updated": "2025-08-30"
+}
