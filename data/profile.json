@@ -1,7 +1,7 @@
 {
   "name": "Pablo Del Pozuelo Escalona",
   "location": "Fuenlabrada, Comunidad de Madrid, España",
-  "work_status": "En busca de empleo",
+  "work_status": "En busca de empleo"
   "education": [
     {
       "degree": "Grado en Ingeniería de Computadores (Ingeniería informática)",
@@ -20,10 +20,15 @@
     {
       "role": "Auxiliar administrativo (Voluntariado)",
       "organization": "CEIP Arcipreste de Hita",
-      "period": "sep. 2024",
+      "period": "sep. 2024 - Actualidad",
       "notes": "Tareas de administración, gestión y digitalización en la Secretaría del centro, colaborando durante el periodo de matriculación."
     }
   ],
+  "skills": {
+    "languages": ["C", "Java", "SQL"],
+    "aptitudes": ["Programación en C", "Pensamiento crítico", "Resolución de problemas", "Autoaprendizaje", "Gestión de plazos"],
+    "systems": ["Conocimientos en sistemas operativos"]
+  },
   "languages": {
     "es": "Competencia bilingüe o nativa",
     "en": "Competencia básica profesional"
@@ -37,5 +42,6 @@
     "github": "https://github.com/Openmium",
     "pinterest": "https://es.pinterest.com/PdpOpen/"
   },
+  "avatar": "assets/avatar.jpg",
   "last_updated": "2025-08-30"
 }
