@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Sobre mí — [Tu Nombre]</title>
-  <meta name="description" content="Sobre mí — información personal y profesional." />
+  <title>Sobre mí — Pablo Del Pozuelo Escalona</title>
+  <meta name="description" content="Perfil profesional y personal de Pablo Del Pozuelo Escalona." />
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,40 +13,109 @@
   </header>
 
   <main class="container">
+    <!-- HERO / Resumen principal (unificado en un solo rectángulo) -->
     <section class="hero-card card" aria-labelledby="hero-title">
       <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
         <div style="flex:0 0 140px">
-          <img src="assets/avatar.jpg" alt="[Tu Nombre]" width="140" height="140" style="display:block;border-radius:10px;object-fit:cover">
+          <!-- Sustituye assets/avatar.jpg por tu foto real -->
+          <img src="assets/avatar.jpg" alt="Foto de Pablo Del Pozuelo Escalona" width="140" height="140" style="display:block;border-radius:10px;object-fit:cover">
         </div>
 
-        <div style="flex:1;min-width:220px">
-          <h1 id="hero-title" style="font-size:22px;margin-bottom:6px">[Tu Nombre]</h1>
+        <div style="flex:1;min-width:240px">
+          <h1 id="hero-title" style="font-size:22px;margin-bottom:6px">Pablo Del Pozuelo Escalona</h1>
           <div style="font-weight:700;color:var(--muted);margin-bottom:8px">Escritor/a · Creador/a de contenido</div>
 
-          <p class="note" style="margin-bottom:12px">Trabajo en <strong>[tu área profesional]</strong> y desarrollo proyectos personales relacionados con narrativa y recursos prácticos.</p>
+          <!-- Información personal clave -->
+          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px">
+            <div class="note"><strong>Ubicación:</strong> Fuenlabrada, Comunidad de Madrid, España</div>
+            <div class="note"><strong>Estado laboral:</strong> En busca de empleo</div>
+            <div class="note"><strong>Conexiones:</strong> 5 contactos</div>
+          </div>
 
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
-            <a href="https://www.linkedin.com" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
-            <a href="https://github.com" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
-            <a href="https://pinterest.com" target="_blank" rel="noopener" class="btn btn-ghost">Pinterest</a>
+          <!-- Enlaces sociales (placeholders) -->
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+            <a href="#" class="btn btn-ghost" aria-label="LinkedIn (placeholder)">LinkedIn</a>
+            <a href="#" class="btn btn-ghost" aria-label="GitHub (placeholder)">GitHub</a>
+            <a href="#" class="btn btn-ghost" aria-label="Pinterest (placeholder)">Pinterest</a>
           </div>
 
           <div style="margin-top:6px; border-top:1px solid rgba(0,0,0,0.04); padding-top:12px">
+            <!-- Biografía breve -->
             <h2 style="font-size:16px;margin-bottom:8px">Breve biografía</h2>
-            <p class="note" style="margin-bottom:10px">Hola — soy <strong>[Tu Nombre]</strong>. Me dedico a escribir ficción intensa y a crear recursos prácticos (apuntes y mini-proyectos) para quienes aprenden haciendo.</p>
+            <p class="note" style="margin-bottom:10px">
+              Hola — soy <strong>Pablo Del Pozuelo Escalona</strong>. Me dedico a combinar estudios técnicos con creación de contenido y escritura. Actualmente compagino mi formación en Ingeniería de Computadores con proyectos personales y voluntariado.
+            </p>
 
-            <h2 style="font-size:16px;margin-bottom:8px">Experiencia</h2>
-            <p class="note">[Año–Año] — Rol en Empresa X: breve descripción.</p>
-            <p class="note">[Año–Año] — Freelance: proyectos destacados.</p>
+            <!-- Formación -->
+            <h2 style="font-size:16px;margin-top:10px;margin-bottom:8px">Formación Académica</h2>
+
+            <div style="margin-bottom:10px">
+              <strong>Grado en Ingeniería de Computadores (Ingeniería informática)</strong>
+              <div class="note" style="margin-top:4px">
+                <strong>Institución:</strong> Universidad Politécnica de Madrid (UPM)<br>
+                <strong>Período:</strong> sept. 2023 - jul. 2027 (Cursando 2º año)<br>
+                <strong>Nota media:</strong> 6.43
+              </div>
+            </div>
+
+            <div style="margin-bottom:10px">
+              <strong>Bachillerato Tecnológico</strong>
+              <div class="note" style="margin-top:4px">
+                <strong>Institución:</strong> IES La Serna<br>
+                <strong>Período:</strong> sept. 2021 - may. 2023<br>
+                <strong>Nota media:</strong> 7.71
+              </div>
+            </div>
+
+            <!-- Experiencia -->
+            <h2 style="font-size:16px;margin-top:10px;margin-bottom:8px">Experiencia Profesional y Voluntariado</h2>
+
+            <div style="margin-bottom:8px">
+              <strong>Auxiliar administrativo (Voluntariado)</strong>
+              <div class="note" style="margin-top:4px">
+                <strong>Organización:</strong> CEIP Arcipreste de Hita<br>
+                <strong>Período:</strong> ago. 2024 - Actualidad (1 año 1 mes)<br>
+                <strong>Tareas:</strong> Tareas de administración, gestión y digitalización en la Secretaría del centro, colaborando durante el periodo de matriculación.
+              </div>
+            </div>
+
+            <!-- Habilidades -->
+            <h2 style="font-size:16px;margin-top:10px;margin-bottom:8px">Habilidades y Competencias</h2>
+            <div class="note" style="margin-bottom:8px">
+              <strong>Lenguajes de Programación:</strong> C, Java, SQL.
+            </div>
+            <ul class="note" style="margin-left:18px;margin-bottom:8px">
+              <li>Programación en C</li>
+              <li>Pensamiento crítico</li>
+              <li>Resolución de problemas</li>
+              <li>Aprendizaje autónomo (Autoaprendizaje)</li>
+              <li>Gestión de plazos de entrega</li>
+            </ul>
+            <div class="note" style="margin-bottom:8px"><strong>Sistemas Operativos:</strong> Conocimientos en sistemas operativos (mencionado en aptitudes).</div>
+
+            <!-- Idiomas -->
+            <h2 style="font-size:16px;margin-top:10px;margin-bottom:8px">Idiomas</h2>
+            <div class="note" style="margin-bottom:8px">
+              <strong>Español:</strong> Competencia bilingüe o nativa.<br>
+              <strong>Inglés:</strong> Competencia básica profesional.
+            </div>
+
+            <!-- Intereses -->
+            <h2 style="font-size:16px;margin-top:10px;margin-bottom:8px">Intereses y Actividades</h2>
+            <div class="note">
+              <strong>Intereses profesionales:</strong> Interés en empresas del sector de semiconductores y tecnología como NXP Semiconductors y Texas Instruments.<br>
+              <strong>Actividades extracurriculares:</strong> Participación en grupos de pádel, tenis, fútbol 7 y orquesta de instrumentos de cuerda durante los estudios.
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <footer class="footer">© 2025 [Tu Nombre]</footer>
+    <footer class="footer">© 2025 Pablo Del Pozuelo Escalona</footer>
   </main>
 
   <script>
+    // Build nav: muestra solo las otras páginas (no repetir la actual)
     (function buildNav(){
       const navWrap = document.getElementById('mainNav');
       const pages = [
