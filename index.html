@@ -6,8 +6,8 @@
   <title>Index — Pablo Del Pozuelo Escalona</title>
   <meta name="description" content="Sobre mí — Pablo Del Pozuelo Escalona" />
   <link rel="stylesheet" href="styles.css">
-  <script src="js/nav.js" defer></script>
   <script src="js/utils.js" defer></script>
+  <script src="js/nav.js" defer></script>
   <script src="js/index-page.js" defer></script>
 </head>
 <body>
@@ -16,13 +16,12 @@
   </header>
 
   <main class="container">
-    <!-- contenedor vacío: lo rellena js/index-page.js desde data/profile.json -->
-    <section id="aboutContainer" class="about-card card">
+    <!-- contenedor que rellena js/index-page.js desde data/profile.json -->
+    <section id="aboutContainer" class="about-card card" aria-live="polite">
       <div class="card">Cargando perfil…</div>
     </section>
   </main>
 
-  <footer class="footer">© 2025 Pablo Del Pozuelo Escalona</footer>
-  <footer class="footer">Last update: 31/08/2026</footer>
+  <footer class="footer">© 2025 Pablo Del Pozuelo Escalona — Última actualización: 31/08/2025</footer>
 </body>
 </html>
