@@ -1,86 +1,173 @@
-/* styles.css - Estilos globales (reemplazo) */
+/* styles.css — estilo unificado, tarjetas rectangulares, modales contenidos */
 
-/* paleta solicitada y variables */
+/* Paleta neutral / sobria */
 :root{
   --header-bg: #414254;
   --filter-bg: #6c7792;
   --card-bg: #bcc1cd;
-  --card-alt: #e9ecef;
+  --card-alt: #ffffff;
   --title-color: #8e9098;
   --muted: #6b6f87;
   --text: #222;
   --bg: #ffffff;
   --modal-bg: #f6f7f9;
+  --about-bg: #f2f3f6;
   --radius: 12px;
   --shadow-soft: 0 8px 24px rgba(10,12,20,0.06);
   --border: rgba(0,0,0,0.06);
   --max-width: 1200px;
 }
 
-/* reset */
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;line-height:1.45}
-a{color:inherit;text-decoration:none}
-.container{max-width:var(--max-width);margin:20px auto;padding:18px}
+a{color:inherit}
+.container{max-width:var(--max-width);margin:24px auto;padding:18px}
 
-/* Header */
+/* Header: logo a la izquierda, nav a la derecha */
 .nav{background:var(--header-bg);color:#fff;position:sticky;top:0;z-index:150;border-bottom:1px solid rgba(255,255,255,0.03)}
 .nav .wrap{max-width:var(--max-width);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;gap:12px}
-.brand{font-weight:700;color:#fff}
-.nav nav a{color:rgba(255,255,255,0.95);margin-left:14px;font-weight:600}
-.nav nav a:hover{text-decoration:underline 1px rgba(255,255,255,0.06)}
+.nav .brand{font-weight:700;color:#fff}
+.nav nav a{color:rgba(255,255,255,0.92);margin-left:14px;font-weight:600}
+.nav nav a:hover{text-decoration:underline}
 
-/* Card base */
-.card{background:#fff;padding:14px;border-radius:12px;border:1px solid var(--border);box-shadow:0 4px 14px rgba(0,0,0,0.03)}
+/* Page title */
+.page-title{font-size:20px;color:var(--title-color);margin-bottom:12px}
 
-/* ABOUT main unified block */
+/* About (index) — un único bloque */
 .about-card{max-width:var(--max-width);margin:18px auto}
 .about-inner{
-  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.02));
-  border-radius:calc(var(--radius) + 2px);
+  background:var(--about-bg);
+  border-radius:calc(var(--radius)+2px);
   padding:18px;
   display:flex;
   gap:18px;
   align-items:flex-start;
   border:1px solid var(--border);
   box-shadow:var(--shadow-soft);
+  width:100%;
+}
+.avatar-wrap{width:180px;height:180px;flex-shrink:0;border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,0.04);background:#fff;display:block}
+.avatar-wrap img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+.about-right{flex:1;display:flex;flex-direction:column;gap:8px}
+.about-name{font-size:22px;font-weight:800;color:#444847} /* gris fuerte para el header */
+.about-sub{color:#444847;font-weight:700}
+.about-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.link-pill{background:transparent;border:1px solid rgba(0,0,0,0.04);padding:6px 8px;border-radius:8px;color:var(--title-color);font-weight:600}
+.sep{height:1px;background:var(--border);border-radius:2px;margin:8px 0}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.info-block{background:transparent;padding:8px;border-radius:8px}
+
+/* General card style */
+.card{background:var(--card-alt);padding:14px;border-radius:12px;border:1px solid var(--border);box-shadow:0 4px 14px rgba(0,0,0,0.03)}
+
+/* Filter bar (ancha) */
+.filter-bar{
+  background:var(--filter-bg);
+  border-radius:14px;
+  padding:12px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  border:1px solid rgba(0,0,0,0.06);
+  margin-bottom:12px;
+}
+.filter-bar input[type="text"],
+.filter-bar input[type="date"],
+.filter-bar select{
+  padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff;flex:1;min-width:0;font-weight:600
+}
+.filter-bar input::placeholder{color:rgba(255,255,255,0.85)}
+.filter-bar .btn{background:transparent;border:1px solid rgba(255,255,255,0.1);color:#fff;padding:9px 12px;border-radius:10px;cursor:pointer}
+
+/* Grid libros / reviews: tarjetas rectangulares horizontales */
+.books-grid, .reviews-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(480px,1fr));
+  gap:16px;
+  margin-top:6px;
 }
 
-/* avatar */
-.avatar-wrap{width:180px;height:180px;flex-shrink:0;border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,0.04);background:#fff;position:relative}
-.avatar-wrap img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
-/* overlay oscuro sutil para legibilidad */
-.avatar-wrap::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,0.04), rgba(0,0,0,0.06));pointer-events:none}
+/* Tarjeta: horizontal, thumb 40%, contenido 60% */
+.book-card, .review-card{
+  background:var(--card-bg);
+  border-radius:12px;
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  padding:12px;
+  border:1px solid var(--border);
+  transition: transform .12s ease, box-shadow .12s ease;
+  min-height:140px;
+}
+.book-card:hover, .review-card:hover{transform:translateY(-6px);box-shadow: 0 18px 50px rgba(0,0,0,0.06);}
 
-/* about right content */
-.about-right{flex:1;display:flex;flex-direction:column;gap:10px}
-.about-name{font-size:clamp(20px, 2.6vw, 28px);font-weight:800;color:var(--title-color)}
-.about-role{color:var(--muted);font-weight:700}
-.about-note{color:var(--muted);font-size:14px}
-.links-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
-.link-pill{background:transparent;border:1px solid rgba(0,0,0,0.04);padding:6px 8px;border-radius:8px;color:var(--title-color);font-weight:600}
+/* Thumb area: rectangular y consistente */
+.book-thumb, .review-thumb{
+  width:40%;
+  min-width:180px;
+  aspect-ratio: 16/9;
+  overflow:hidden;
+  border-radius:8px;
+  background:#fff;
+  display:block;
+  position:relative;
+  border:1px solid rgba(0,0,0,0.04);
+}
+.book-thumb img, .review-thumb img{
+  width:100%;height:100%;object-fit:cover;object-position:center;display:block;
+}
+/* overlay sutil para evitar recortes visuales */
+.book-thumb::after, .review-thumb::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.06);pointer-events:none}
 
-/* small separators and section titles (no emojis) */
-.sep{height:1px;background:var(--border);border-radius:2px;margin:8px 0}
-.section-title{font-size:clamp(16px, 2.0vw, 20px);color:var(--title-color);margin-top:6px;margin-bottom:6px}
+/* cuerpo de la tarjeta */
+.card-body{width:60%;display:flex;flex-direction:column;gap:8px}
+.card-meta{font-size:13px;color:var(--muted)}
+.card-title{font-size:18px;font-weight:800;color:var(--title-color);margin:0}
+.card-desc{font-size:14px;color:var(--muted);line-height:1.45; /* no truncamos */ }
 
-/* info grid */
-.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
-.info-block{margin-bottom:8px;color:var(--muted);font-size:14px}
+/* precio y estrellas en fila */
+.row-bottom{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-top:auto}
+.price{font-weight:800;color:var(--muted)}
+.stars{display:inline-flex;gap:6px;align-items:center}
+.star.full{color:#f5b301}
+.star.empty{color:#ddd}
+.star.half{ /* handled by JS (gradient) */ }
+
+/* boton ver/ir al producto (dentro de la tarjeta lado derecho) */
+.product-link-btn{padding:8px 12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);background:transparent;font-weight:700;color:var(--title-color)}
+
+/* modal */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);align-items:center;justify-content:center;padding:18px;z-index:260}
+.modal.open{display:flex}
+.modal-card{background:var(--modal-bg);border-radius:12px;padding:18px;max-width:1000px;width:100%;max-height:88vh;overflow:auto;border:1px solid var(--border);box-shadow:0 28px 80px rgba(0,0,0,0.12);position:relative}
+.modal-close{position:absolute;right:12px;top:12px;border:none;background:rgba(0,0,0,0.06);color:var(--text);padding:8px;border-radius:8px;cursor:pointer;z-index:9999}
+
+/* modal inner layout */
+.modal-layout{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.modal-main{flex:1;min-width:300px;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:#fff}
+.modal-main img{width:100%;height:100%;object-fit:contain;display:block}
+.modal-thumbs{width:120px;display:flex;flex-direction:column;gap:8px}
+.modal-thumbs img{width:100%;height:72px;object-fit:cover;border-radius:6px;cursor:pointer;border:1px solid rgba(0,0,0,0.06)}
+
+/* textual modal */
+.modal-meta{font-size:13px;color:var(--muted);margin-top:8px}
+.modal-title{font-size:20px;color:var(--title-color);margin:8px 0}
+.modal-desc{color:var(--muted);line-height:1.5}
 
 /* footer */
 .footer{text-align:center;color:var(--muted);margin-top:20px;padding:12px 0;font-size:13px}
 
-/* responsive: que ocupe más o menos según pantalla */
-@media (min-width: 1400px){
-  .container{max-width:1400px;padding:28px}
+/* responsive */
+@media(max-width:980px){
+  .books-grid,.reviews-grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+  .book-thumb,.review-thumb{width:45%}
+  .card-body{width:55%}
 }
-@media (max-width:1100px){
-  .container{padding:16px}
-}
-@media (max-width:720px){
-  .about-inner{flex-direction:column;align-items:center;text-align:center}
-  .avatar-wrap{width:160px;height:160px}
-  .about-right{width:100%}
-  .links-row{justify-content:center}
+@media(max-width:720px){
+  .about-inner{flex-direction:column;align-items:center}
+  .avatar-wrap{width:140px;height:140px}
+  .filter-bar{flex-direction:column;align-items:stretch}
+  .filter-bar input, .filter-bar select{width:100%}
+  .modal-layout{flex-direction:column}
+  .modal-thumbs{width:100%;flex-direction:row;overflow:auto}
 }
