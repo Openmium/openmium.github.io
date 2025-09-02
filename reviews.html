@@ -6,8 +6,8 @@
   <title>Reseñas — Pablo Del Pozuelo Escalona</title>
   <meta name="description" content="Reseñas de productos y libros" />
   <link rel="stylesheet" href="styles.css">
-  <script src="js/nav.js" defer></script>
   <script src="js/utils.js" defer></script>
+  <script src="js/nav.js" defer></script>
   <script src="js/reviews-page.js" defer></script>
 </head>
 <body>
@@ -18,7 +18,7 @@
   <main class="container">
     <h1 class="page-title">Reseñas</h1>
 
-    <section class="search-card" aria-label="Filtros de reseñas">
+    <section class="search-card filter-bar" aria-label="Filtros de reseñas">
       <input id="searchBox" placeholder="Buscar por título, tag..." type="text" aria-label="Buscar reseñas">
       <select id="categorySelect" aria-label="Categoría">
         <option value="all">Todas las categorías</option>
@@ -30,7 +30,7 @@
       <button id="clearFilters" class="btn small">Limpiar</button>
     </section>
 
-    <section id="reviewsList" class="list" aria-live="polite"></section>
+    <section id="reviewsList" class="reviews-grid" aria-live="polite"></section>
 
     <footer class="footer">© 2025 Pablo Del Pozuelo Escalona</footer>
   </main>
