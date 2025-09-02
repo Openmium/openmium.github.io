@@ -1,115 +1,96 @@
 // js/index-page.js
-// Carga data/profile.json y renderiza la sección "Sobre mí" dentro de #aboutContainer
-// Se carga con defer.
-
+// Carga data/profile.json y renderiza la sección "Sobre mí" SIN mostrar "Conexiones"
 document.addEventListener('DOMContentLoaded', async () => {
   const container = document.getElementById('aboutContainer');
   const DATA = 'data/profile.json';
-  const esc = window.utils && window.utils.escapeHtml ? window.utils.escapeHtml : (s=>String(s));
+
+  // fallback escapeHtml si no existe en utils.js
+  function escapeHtmlSafe(s){
+    if(s === undefined || s === null) return '';
+    if(typeof escapeHtml === 'function') {
+      try { return escapeHtml(s); } catch(e){ /* fallthrough */ }
+    }
+    return String(s)
+      .replaceAll('&','&amp;')
+      .replaceAll('<','&lt;')
+      .replaceAll('>','&gt;')
+      .replaceAll('"','&quot;')
+      .replaceAll("'",'&#39;');
+  }
 
   try {
-    const res = await fetch(DATA, {cache: 'no-store'});
+    const res = await fetch(DATA, { cache: 'no-store' });
     if(!res.ok) throw new Error('No se pudo cargar ' + DATA + ' (status ' + res.status + ')');
     const p = await res.json();
 
-    // construir HTML sin emoticonos, con tamaños responsivos
-    const educationHtml = (p.education || []).map(ed => `
-      <div class="info-block">
-        <strong>${esc(ed.degree)}</strong><br>
-        ${esc(ed.institution)} · ${esc(ed.period)} · Nota media: ${esc(ed.gpa || '')}
-      </div>
-    `).join('');
-
-    const experienceHtml = (p.experience || []).map(ex => `
-      <div class="info-block">
-        <strong>${esc(ex.role)}</strong><br>
-        ${esc(ex.organization)} · ${esc(ex.period)}<br>
-        ${esc(ex.notes || '')}
-      </div>
-    `).join('');
-
-    const skills = p.skills || {};
-    const links = p.links || {};
-
+    // genera HTML: OBSERVA que NO incluimos "Conexiones"
     const html = `
       <div class="about-inner">
         <div class="about-left avatar-wrap">
-          <img src="${esc(p.avatar || 'assets/avatar.jpg')}" alt="${esc(p.name || '')}">
+          <img src="${escapeHtmlSafe(p.avatar || 'assets/avatar.jpg')}" alt="${escapeHtmlSafe(p.name || '')}">
         </div>
 
         <div class="about-right">
-          <div style="display:flex;flex-direction:column;gap:6px">
-            <h1 class="about-name">${esc(p.name || '')}</h1>
-            <div class="about-role">${esc(p.work_status || '')} · ${esc(p.location || '')}</div>
-            <div class="about-note">Conexiones: ${esc(p.connections || '')}</div>
+          <h1 class="about-name">${escapeHtmlSafe(p.name || '')}</h1>
+          <div class="about-sub">${escapeHtmlSafe(p.work_status || '')} · ${escapeHtmlSafe(p.location || '')}</div>
 
-            <div class="links-row" style="margin-top:8px">
-              ${ links.linkedin ? `<a href="${esc(links.linkedin)}" target="_blank" rel="noopener" class="link-pill">LinkedIn</a>` : '' }
-              ${ links.github   ? `<a href="${esc(links.github)}"   target="_blank" rel="noopener" class="link-pill">GitHub</a>` : '' }
-              ${ links.pinterest? `<a href="${esc(links.pinterest)}" target="_blank" rel="noopener" class="link-pill">Pinterest</a>` : '' }
-            </div>
+          <div class="links-row about-links">
+            ${p.links && p.links.linkedin ? `<a href="${escapeHtmlSafe(p.links.linkedin)}" target="_blank" rel="noopener" class="link-pill">LinkedIn</a>` : ''}
+            ${p.links && p.links.github ? `<a href="${escapeHtmlSafe(p.links.github)}" target="_blank" rel="noopener" class="link-pill">GitHub</a>` : ''}
+            ${p.links && p.links.pinterest ? `<a href="${escapeHtmlSafe(p.links.pinterest)}" target="_blank" rel="noopener" class="link-pill">Pinterest</a>` : ''}
           </div>
 
-          <div class="sep" role="separator" aria-hidden="true"></div>
+          <hr class="sep">
 
           <h2 class="section-title">Información personal</h2>
           <div class="info-grid">
-            <div><strong>Nombre:</strong> ${esc(p.name || '')}</div>
-            <div><strong>Ubicación:</strong> ${esc(p.location || '')}</div>
-            <div><strong>Estado laboral:</strong> ${esc(p.work_status || '')}</div>
-            <div><strong>Conexiones:</strong> ${esc(p.connections || '')}</div>
+            <div><strong>Nombre:</strong> ${escapeHtmlSafe(p.name || '')}</div>
+            <div><strong>Ubicación:</strong> ${escapeHtmlSafe(p.location || '')}</div>
+            <div><strong>Estado laboral:</strong> ${escapeHtmlSafe(p.work_status || '')}</div>
+            <!-- Conexiones INTENCIONALMENTE OMITIDAS -->
           </div>
 
           <h2 class="section-title">Formación académica</h2>
-          ${educationHtml}
+          ${(p.education || []).map(ed => `
+            <div class="info-block">
+              <strong>${escapeHtmlSafe(ed.degree)}</strong><br>
+              ${escapeHtmlSafe(ed.institution)} · ${escapeHtmlSafe(ed.period)}${ed.gpa ? ' · Nota media: ' + escapeHtmlSafe(ed.gpa) : ''}
+            </div>
+          `).join('')}
 
           <h2 class="section-title">Experiencia</h2>
-          ${experienceHtml}
+          ${(p.experience || []).map(ex => `
+            <div class="info-block">
+              <strong>${escapeHtmlSafe(ex.role)}</strong><br>
+              ${escapeHtmlSafe(ex.organization || ex.institution || '')} · ${escapeHtmlSafe(ex.period || '')}<br>
+              ${escapeHtmlSafe(ex.notes || '')}
+            </div>
+          `).join('')}
 
-          <h2 class="section-title">Habilidades y competencias</h2>
+          <h2 class="section-title">Habilidades</h2>
           <div class="info-block">
-            <strong>Lenguajes:</strong> ${esc((skills.languages||[]).join(', '))}<br>
-            <strong>Aptitudes:</strong> ${esc((skills.aptitudes||[]).join(' · '))}<br>
-            <strong>Sistemas:</strong> ${esc((skills.systems||[]).join(', '))}
+            <strong>Lenguajes:</strong> ${escapeHtmlSafe((p.skills?.languages||[]).join(', '))}<br>
+            <strong>Aptitudes:</strong> ${escapeHtmlSafe((p.skills?.aptitudes||[]).join(' · '))}<br>
+            <strong>Sistemas:</strong> ${escapeHtmlSafe((p.skills?.systems||[]).join(', '))}
           </div>
 
           <h2 class="section-title">Idiomas</h2>
           <div class="info-block">
-            Español: ${esc(p.languages?.es || '')}. · Inglés: ${esc(p.languages?.en || '')}.
+            Español: ${escapeHtmlSafe(p.languages?.es || '')}. · Inglés: ${escapeHtmlSafe(p.languages?.en || '')}.
           </div>
 
-          <h2 class="section-title">Intereses y actividades</h2>
+          <h2 class="section-title">Intereses</h2>
           <div class="info-block">
-            <strong>Intereses profesionales:</strong> ${esc((p.interests?.professional||[]).join(', '))}.<br>
-            <strong>Actividades extracurriculares:</strong> ${esc((p.interests?.extracurricular||[]).join(', '))}
+            <strong>Profesionales:</strong> ${escapeHtmlSafe((p.interests?.professional||[]).join(', '))}.<br>
+            <strong>Extracurriculares:</strong> ${escapeHtmlSafe((p.interests?.extracurricular||[]).join(', '))}
           </div>
-
         </div>
       </div>
     `;
 
     container.innerHTML = html;
-
-    // Ajuste estético: si la imagen no tiene buena proporción, usa object-fit:contain en pantallas pequeñas
-    const avatarImg = container.querySelector('.avatar-wrap img');
-    if (avatarImg) {
-      // si la imagen es muy alta o muy estrecha, cambiar object-fit para evitar zoom recortado
-      avatarImg.addEventListener('load', () => {
-        try {
-          const ratio = avatarImg.naturalWidth / avatarImg.naturalHeight;
-          if (ratio < 0.75 || ratio > 1.6) {
-            avatarImg.style.objectFit = 'contain'; // evita recortes extremos
-            avatarImg.style.background = '#f3f4f6';
-            avatarImg.style.padding = '6px';
-          } else {
-            avatarImg.style.objectFit = 'cover';
-          }
-        } catch(e) { /* ignore */ }
-      });
-    }
-
   } catch (err) {
-    console.error(err);
+    console.error('[index-page] ', err);
     container.innerHTML = `<div class="card">No se pudo cargar el perfil. Revisa <code>data/profile.json</code> y la consola (F12).</div>`;
   }
 });
