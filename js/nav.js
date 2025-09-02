@@ -1,6 +1,6 @@
 // js/nav.js
-// Construye el header mostrando solo las páginas distintas a la actual.
-// Se carga con defer.
+// Construye header mostrando sólo páginas distintas de la actual.
+// Logo a la izquierda, enlaces a la derecha.
 
 document.addEventListener('DOMContentLoaded', () => {
   const navWrap = document.getElementById('mainNav');
@@ -12,19 +12,17 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
   const current = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
 
-  // left brand
   const left = document.createElement('div');
   left.className = 'brand';
-  left.innerHTML = `<a href="index.html" aria-label="Inicio" style="color:inherit;text-decoration:none">Pablo Del Pozuelo</a>`;
+  left.innerHTML = `<a href="index.html" style="color:#fff;text-decoration:none">Pablo Del Pozuelo</a>`;
 
-  // right nav links (omitimos la página actual)
   const right = document.createElement('nav');
   pages.forEach(p => {
-    if(p.file === current) return;
+    if(p.file === current) return; // no mostrar enlace a la página actual
     const a = document.createElement('a');
     a.href = p.file;
     a.textContent = p.label;
-    a.setAttribute('role','link');
+    a.style.marginLeft = '14px';
     right.appendChild(a);
   });
 
