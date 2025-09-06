@@ -1,104 +1,128 @@
-/* styles.css — UNIFICADO
-   - tipografía/jerarquía según el vídeo
-   - modo oscuro y paleta solicitada
-   - tarjetas rectangulares, modales contenidos y botones enriquecidos
-*/
+/* styles.css — Tema oscuro, tipografía y botones según tu pedido */
 
-/* ---------- Tipografía: escala y jerarquía inspirada en el video ---------- */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap");
-
+/* ---------- Variables ---------- */
 :root{
-  /* tipografía */
-  --fz-base: 1rem;          /* 16px */
-  --fz-sm: 0.875rem;        /* 14px */
-  --fz-lg: 1.125rem;        /* 18px */
-  --fz-xl: 1.25rem;         /* 20px */
-  --fz-2xl: 1.5rem;         /* 24px */
-  --leading-base: 1.6;
-  --leading-tight: 1.25;
-  --fw-regular: 400;
-  --fw-medium: 600;
-  --fw-bold: 700;
-  --fw-heavy: 800;
+  /* palette */
+  --bg-page: #0d0d0d;        /* fondo de la página */
+  --panel-bg: #262626;       /* cajas/ventanas con texto */
+  --panel-border: rgba(102,102,102,0.32); /* borde difuminado */
+  --img-fill: #1a1a1a;       /* fondo de los contenedores de imagen */
+  --header-bg: #434d1b;      /* fondo del header (nav) */
+  --header-text: #BDE151;    /* color letras header (nuevo) */
 
-  /* colores solicitados / modo oscuro */
-  --bg: #0d0d0d;            /* fondo global */
-  --card-bg: #262626;       /* cajas con texto (modales, tarjetas) */
-  --card-border: rgba(102,102,102,0.35); /* #666666 difuminado */
-  --search-wrap: #1a1a1a;   /* cajón que rodea las barras de búsqueda */
-  --header-bg: #434d1b;     /* header */
-  --header-text: #b4da25;   /* letras del header */
-  --text-primary: #f2f2f2;  /* textos importantes / títulos */
-  --text-secondary: #b3b3b3;/* textos secundarios */
-  --thumb-fill: #1a1a1a;    /* fondo detrás de imágenes (evita blanco) */
-  --modal-bg: #262626;      /* modal interior */
-  --muted: #8e9098;         /* color para títulos menores (ej: card titles si se quiere) */
+  /* textos */
+  --text-primary: #f2f2f2;   /* títulos / textos importantes */
+  --text-secondary: #b3b3b3; /* textos secundarios */
+
+  /* botones */
+  --btn-accent: #CEE773;     /* color específico para botones Libros/Reseñas */
+  --btn-index-start: #9ad55a; /* start color for hero index gradient (subtle) */
+  --btn-index-end: #6bb036;   /* end color for hero index gradient */
+
+  /* layout */
   --radius: 12px;
-  --shadow-strong: 0 18px 50px rgba(0,0,0,0.6);
-  --shadow-soft: 0 6px 20px rgba(0,0,0,0.45);
   --max-width: 1200px;
+
+  /* shadows / transitions */
+  --shadow-soft: 0 10px 30px rgba(0,0,0,0.45);
+  --transition-fast: 180ms cubic-bezier(.2,.9,.2,1);
+  --transition: 240ms cubic-bezier(.2,.9,.2,1);
+
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
 
-/* ---------- Reset / Base ---------- */
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:var(--bg);color:var(--text-primary);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;line-height:var(--leading-base)}
+/* ---------- Reset / base ---------- */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg-page);color:var(--text-primary);font-family:var(--font-family);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 a{color:inherit;text-decoration:none}
-.container{max-width:var(--max-width);margin:24px auto;padding:18px}
+.container{max-width:var(--max-width);margin:20px auto;padding:20px}
 
 /* ---------- Header / Nav ---------- */
 .nav{
   background:var(--header-bg);
   color:var(--header-text);
-  position:sticky; top:0; z-index:300;
-  border-bottom: 1px solid rgba(0,0,0,0.25);
+  position:sticky;
+  top:0;
+  z-index:200;
+  border-bottom:1px solid rgba(0,0,0,0.25);
 }
 .nav .wrap{
-  max-width:var(--max-width); margin:0 auto;
-  display:flex; align-items:center; justify-content:space-between;
-  padding:12px 18px; gap:12px;
+  max-width:var(--max-width);
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 20px;
+  gap:12px;
 }
-.nav .brand a{ color:var(--header-text); font-weight:800; font-size:1.05rem; }
-.nav nav a{ color:var(--header-text); margin-left:14px; font-weight:700; padding:6px 8px; border-radius:8px; }
-.nav nav a:hover{ background: rgba(180,218,37,0.06); }
+.nav .brand{
+  font-weight:800;
+  color:var(--header-text);
+  font-size:1.05rem;
+}
+.nav nav a{
+  color:var(--header-text);
+  margin-left:14px;
+  font-weight:700;
+  opacity:.95;
+  transition:opacity var(--transition);
+}
+.nav nav a:hover{ opacity:1; text-decoration:underline; text-underline-offset:6px }
+
+/* put brand left and nav right by default (fits your pages) */
+.nav .wrap > nav { display:flex; gap:8px; align-items:center; }
 
 /* ---------- Page title ---------- */
-.page-title{ font-size:var(--fz-2xl); color:var(--text-primary); font-weight:var(--fw-heavy); margin-bottom:12px }
+.page-title{
+  font-size:1.125rem;
+  color:var(--text-primary);
+  margin:12px 0 10px;
+  font-weight:700;
+}
 
-/* ---------- About / Index — único bloque ---------- */
-.about-card{ max-width:var(--max-width); margin:18px auto; width:100% }
+/* ---------- About / Index (single block) ---------- */
+.about-card{ width:100%; margin:18px auto; }
 .about-inner{
-  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));
-  border-radius:calc(var(--radius)+2px);
-  padding:18px;
-  display:flex; gap:18px; align-items:flex-start;
-  border:1px solid var(--card-border);
-  box-shadow:var(--shadow-soft);
+  background:var(--panel-bg);
+  border-radius:calc(var(--radius) + 2px);
+  padding:20px;
+  display:flex;
+  gap:20px;
+  align-items:flex-start;
+  border:1px solid var(--panel-border);
+  box-shadow: var(--shadow-soft);
   width:100%;
+  color:var(--text-secondary);
 }
 .avatar-wrap{
-  width:180px; height:180px; flex-shrink:0; border-radius:10px; overflow:hidden;
-  border:1px solid rgba(255,255,255,0.03); background:var(--thumb-fill); display:block;
+  width:180px;height:180px;flex-shrink:0;border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,0.06);background:var(--img-fill);
+  display:block;
 }
-.avatar-wrap img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; filter: none; }
+.avatar-wrap img{
+  width:100%;height:100%;object-fit:cover;object-position:center;display:block;
+}
+.about-right{flex:1;display:flex;flex-direction:column;gap:10px}
+.about-name{font-size:1.25rem;font-weight:800;color:var(--text-primary)}
+.about-sub{color:var(--text-secondary);font-weight:700}
+.about-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.link-pill{background:transparent;border:1px solid rgba(255,255,255,0.03);padding:6px 10px;border-radius:8px;color:var(--text-secondary);font-weight:600}
 
-/* contenido About */
-.about-right{ flex:1; display:flex; flex-direction:column; gap:8px }
-.about-name{ font-size:var(--fz-xl); font-weight:var(--fw-heavy); color:var(--text-primary); line-height:var(--leading-tight) }
-.about-sub{ color:var(--text-secondary); font-weight:var(--fw-medium) }
-.about-links{ display:flex; gap:8px; flex-wrap:wrap; margin-top:6px }
-.link-pill{ background:transparent; border:1px solid rgba(255,255,255,0.03); padding:6px 8px; border-radius:8px; color:var(--text-secondary); font-weight:600 }
+/* small separator */
+.sep{height:1px;background:rgba(255,255,255,0.02);border-radius:2px;margin:8px 0}
 
-/* separadores y pequeños títulos en about */
-.sep{ height:1px; background:var(--card-border); border-radius:2px; margin:8px 0 }
-.info-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px }
-.info-block{ background:transparent; padding:8px; border-radius:8px; color:var(--text-secondary) }
+/* ---------- Generic card style (white-on-dark) ---------- */
+.card{
+  background:var(--panel-bg);
+  padding:14px;
+  border-radius:12px;
+  border:1px solid var(--panel-border);
+  box-shadow:0 6px 22px rgba(0,0,0,0.45);
+  color:var(--text-secondary);
+}
 
-/* ---------- General card style ---------- */
-.card{ background:transparent; padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.02); box-shadow:none }
-
-/* ---------- Filter / search container (cajón) ---------- */
-.filter-bar, .search-card{
-  background:var(--search-wrap);
+/* ---------- Filter / Search bar (container) ---------- */
+.filter-bar{
+  background: #1a1a1a; /* requested color for search container */
   border-radius:14px;
   padding:12px;
   display:flex;
@@ -109,166 +133,213 @@ a{color:inherit;text-decoration:none}
 }
 .filter-bar input[type="text"],
 .filter-bar input[type="date"],
-.filter-bar select,
-.search-card input[type="text"],
-.search-card input[type="date"],
-.search-card select{
+.filter-bar select{
   padding:10px 12px;
   border-radius:10px;
   border:1px solid rgba(255,255,255,0.03);
-  background:transparent; color:var(--text-primary);
-  flex:1; min-width:0; font-weight:600;
+  background:transparent;
+  color:var(--text-primary);
+  flex:1;
+  min-width:0;
+  font-weight:600;
+  font-size:0.95rem;
 }
-.filter-bar input::placeholder, .search-card input::placeholder{ color: rgba(255,255,255,0.5) }
-.filter-bar .btn, .search-card .btn{ background:transparent; border:1px solid rgba(255,255,255,0.04); color:var(--text-primary); padding:9px 12px; border-radius:10px; cursor:pointer }
+.filter-bar input::placeholder{color:rgba(255,255,255,0.5)}
+.filter-bar .btn{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text-primary);padding:9px 12px;border-radius:10px;cursor:pointer;font-weight:700}
+.filter-bar .btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.45)}
 
-/* cuando el usuario necesita una barra que ocupe todo el ancho: */
-.search-card input[type="text"]{ flex-basis: 60%; } /* por defecto: amplia */
-/* css adaptativo: en mobile la entrada se hace full width */
-@media(max-width:720px){
-  .search-card{ flex-direction:column; align-items:stretch }
-  .search-card input[type="text"]{ flex-basis: auto; width:100% }
-}
-
-/* ---------- Grid libros / reviews: tarjetas rectangulares horizontales ---------- */
-.books-grid, .reviews-grid, #booksGrid, #reviewsList{
+/* ---------- Grids: books / reviews (rectangular horizontal cards) ---------- */
+.books-grid, .reviews-grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(480px,1fr));
   gap:16px;
-  margin-top:6px;
+  margin-top:8px;
 }
 
-/* Tarjeta: horizontal, thumb 40%, contenido 60% */
+/* Card structure: horizontal */
 .book-card, .review-card{
   background:var(--card-bg);
   border-radius:12px;
   display:flex;
   gap:14px;
   align-items:flex-start;
-  padding:12px;
-  border:1px solid var(--card-border);
-  transition: transform .12s ease, box-shadow .12s ease;
+  padding:14px;
+  border:1px solid var(--panel-border);
+  transition: transform var(--transition), box-shadow var(--transition);
   min-height:140px;
-  color:var(--text-primary);
+  color:var(--text-secondary);
 }
 .book-card:hover, .review-card:hover{
   transform:translateY(-6px);
-  box-shadow: var(--shadow-strong);
+  box-shadow: 0 22px 60px rgba(0,0,0,0.55);
+  color:var(--text-primary);
 }
 
-/* Thumb area: rectangular y consistente */
+/* Thumb: preserved aspect ratio, dark fill */
 .book-thumb, .review-thumb{
   width:40%;
   min-width:180px;
-  aspect-ratio: 16/9;
+  aspect-ratio: 16 / 9;
   overflow:hidden;
   border-radius:8px;
-  background:var(--thumb-fill); /* evita fondo blanco detrás de la imagen */
-  display:block;
+  background:var(--img-fill); /* requested darker fill behind images */
   position:relative;
-  border:1px solid rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.02);
 }
 .book-thumb img, .review-thumb img{
-  width:100%; height:100%; object-fit:cover; object-position:center; display:block;
-  /* for webp/jpg that looked zoomed: ensure cover but keep visible center */
+  width:100%;height:100%;object-fit:cover;object-position:center;display:block;
 }
 
-/* overlay sutil para evitar recortes visuales */
+/* overlay subtle to avoid harsh cutoffs */
 .book-thumb::after, .review-thumb::after{
-  content:""; position:absolute; inset:0; background:linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.02)); pointer-events:none;
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(rgba(0,0,0,0.06), rgba(0,0,0,0.06));
+  pointer-events:none;
 }
 
-/* cuerpo de la tarjeta */
-.card-body{ width:60%; display:flex; flex-direction:column; gap:8px; color:var(--text-secondary) }
-.card-meta{ font-size:13px; color:var(--text-secondary) }
-.card-title{ font-size:var(--fz-xl); font-weight:var(--fw-heavy); color:var(--text-primary); margin:0 }
-.card-desc{ font-size:var(--fz-base); color:var(--text-secondary); line-height:1.45; /* no truncamos */ }
+/* Card textual body */
+.card-body{width:60%;display:flex;flex-direction:column;gap:8px}
+.card-meta{font-size:0.875rem;color:var(--text-secondary)}
+.card-title{font-size:1.05rem;font-weight:800;color:var(--text-primary);margin:0}
+.card-desc{font-size:0.95rem;color:var(--text-secondary);line-height:1.45}
 
-/* precio y estrellas en fila */
-.row-bottom{ display:flex; gap:12px; align-items:center; justify-content:space-between; margin-top:auto }
-.price{ font-weight:800; color:var(--text-primary) }
-.stars{ display:inline-flex; gap:6px; align-items:center }
-.star.full{ color:#f5b301 }
-.star.empty{ color:#4b4b4b }
-.star.half{ /* handled by JS if necessary */ }
+/* bottom row: stars / price / actions */
+.row-bottom{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-top:auto}
+.price{font-weight:800;color:var(--text-secondary)}
+.stars{display:inline-flex;gap:6px;align-items:center}
+.star.full{color:#f5b301}
+.star.half{ /* fallback style; JS paints half if needed */ color:linear-gradient(90deg,#f5b301 50%, #777 50%)}
+.star.empty{color:#444}
 
-/* boton ver/ir al producto (dentro de la tarjeta lado derecho) */
+/* product button inside cards (right aligned) */
 .product-link-btn{
-  padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.03);
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  color:var(--text-primary); font-weight:700; text-align:center;
+  padding:8px 12px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.02);
+  background:transparent;
+  font-weight:700;
+  color:var(--text-primary);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.product-link-btn:hover{ transform:translateY(-3px); box-shadow:0 12px 30px rgba(0,0,0,0.45) }
+
+/* ---------- Buttons general (.btn) ---------- */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:10px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:700;
+  font-size:0.95rem;
+  transition: transform var(--transition), box-shadow var(--transition);
+  border: none;
 }
 
-/* ---------- Modal (detalle) ---------- */
+/* Index hero primary button (gradiented but subtle, high contrast) */
+.hero .btn-primary,
+.btn-index {
+  color: #081304; /* dark text on light-green gradient */
+  background: linear-gradient(180deg, var(--btn-index-start), var(--btn-index-end));
+  box-shadow: 0 8px 28px rgba(107,176,54,0.12), inset 0 -2px 0 rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+.hero .btn-primary:hover,
+.btn-index:hover{ transform:translateY(-3px); box-shadow:0 18px 40px rgba(107,176,54,0.12) }
+
+/* Buttons specifically for Libros / Reseñas (requested color #CEE773) */
+.btn-review, .btn-books {
+  background: var(--btn-accent);
+  color: #0b0b0b;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+.btn-review:hover, .btn-books:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 20px 48px rgba(0,0,0,0.32);
+}
+
+/* Ghost / secondary button */
+.btn-ghost{
+  background:transparent;
+  color:var(--text-primary);
+  border:1px solid rgba(255,255,255,0.04);
+}
+.btn-ghost:hover{ transform:translateY(-2px) }
+
+/* ---------- Modal (detail) ---------- */
 .modal{
-  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6);
-  align-items:center; justify-content:center; padding:18px; z-index:1000;
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  z-index:300;
 }
-.modal.open{ display:flex }
+.modal.open{display:flex}
 .modal-card{
-  background:var(--modal-bg); border-radius:12px; padding:18px;
-  max-width:1000px; width:100%; max-height:88vh; overflow:auto;
-  border:1px solid var(--card-border); box-shadow:0 28px 80px rgba(0,0,0,0.6); position:relative;
+  background:var(--panel-bg);
+  border-radius:12px;
+  padding:18px;
+  max-width:1000px;
+  width:100%;
+  max-height:88vh;
+  overflow:auto;
+  border:1px solid var(--panel-border);
+  box-shadow: 0 30px 90px rgba(0,0,0,0.6);
+  position:relative;
 }
-/* close con z-index superior para evitar solapamientos sobre thumbs */
 .modal-close{
-  position:absolute; right:12px; top:12px; border:none; background:rgba(255,255,255,0.03);
-  color:var(--text-primary); padding:8px; border-radius:8px; cursor:pointer; z-index:1200;
+  position:absolute; right:12px; top:12px;
+  border:none;
+  background:rgba(255,255,255,0.03);
+  color:var(--text-primary);
+  padding:8px;border-radius:8px;cursor:pointer;z-index:9999;
 }
 
-/* modal inner layout: main image a la izquierda, thumbs a la derecha */
-.modal-layout{ display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap }
-.modal-main{
-  flex:1; min-width:320px; aspect-ratio:16/9; border-radius:8px; overflow:hidden;
-  background:var(--thumb-fill); display:flex; align-items:center; justify-content:center;
-}
-.modal-main img{ width:100%; height:100%; object-fit:contain; display:block; background:var(--thumb-fill) }
-.modal-thumbs{ width:120px; display:flex; flex-direction:column; gap:8px; }
-.modal-thumbs img{ width:100%; height:72px; object-fit:cover; border-radius:6px; cursor:pointer; border:1px solid var(--card-border); }
+/* modal layout */
+.modal-layout{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.modal-main{flex:1;min-width:300px;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:var(--img-fill)}
+.modal-main img{width:100%;height:100%;object-fit:contain;display:block}
+.modal-thumbs{width:120px;display:flex;flex-direction:column;gap:8px}
+.modal-thumbs img{width:100%;height:72px;object-fit:cover;border-radius:6px;cursor:pointer;border:1px solid rgba(255,255,255,0.03)}
 
 /* textual modal */
-.modal-meta{ font-size:13px; color:var(--text-secondary); margin-top:8px }
-.modal-title{ font-size:var(--fz-xl); color:var(--text-primary); margin:8px 0 }
-.modal-desc{ color:var(--text-secondary); line-height:1.5 }
-
-/* ---------- Buttons styles (inspirado Sajid) ---------- */
-.btn{ font-size:0.95rem; padding:10px 14px; border-radius:10px; cursor:pointer; display:inline-block; text-decoration:none; }
-.btn-primary{
-  background: linear-gradient(180deg, rgba(180,218,37,0.08), rgba(180,218,37,0.06)) padding-box,
-              linear-gradient(90deg, rgba(180,218,37,0.12), rgba(180,218,37,0.02)) border-box;
-  border: solid 1px transparent; color:var(--text-primary); font-weight:700;
-  transition: box-shadow .18s ease, transform .12s ease;
-}
-.btn-primary:hover{ transform:translateY(-3px); box-shadow:0 6px 18px rgba(180,218,37,0.06) }
-
-/* moody / dashing / crispy variants (useful for product buttons) */
-.moody{ box-shadow: 0 0 12px rgba(245,179,1,0.12); color:var(--text-primary); border-radius:8px; background:transparent; padding:8px 12px; }
-.moody:hover{ box-shadow: 0 0 20px rgba(245,179,1,0.18) }
-.dashing{ background: linear-gradient(270deg, rgba(255,229,55,0.12), rgba(83,127,231,0.04)); border:2px solid transparent; }
-.dashing-fill{ color:var(--bg); background: linear-gradient(90deg,#ffe537,#537fe7); border-radius:8px; padding:10px 16px; color:var(--bg); }
-
-/* ---------- Card shadows helpers (combine shadows) ---------- */
-.sh{ min-width:100px; flex:1; padding:20px; border-radius:20px; }
-.combined{ box-shadow: 0px 4px 4px rgba(0,0,0,0.18), 0px 12px 12px rgba(0,0,0,0.08); }
-.dark{ box-shadow: 0px 4px 4px rgba(0,0,0,0.18); }
-.light{ box-shadow: 0px 12px 12px rgba(0,0,0,0.08); }
+.modal-meta{font-size:0.875rem;color:var(--text-secondary);margin-top:8px}
+.modal-title{font-size:1.125rem;color:var(--text-primary);margin:8px 0}
+.modal-desc{color:var(--text-secondary);line-height:1.5}
 
 /* ---------- Footer ---------- */
-.footer{ text-align:center; color:var(--text-secondary); margin-top:20px; padding:12px 0; font-size:13px }
+.footer{ text-align:center; color:var(--text-secondary); margin-top:20px; padding:12px 0; font-size:0.9rem }
 
-/* ---------- Responsive tweaks ---------- */
-@media(max-width:980px){
-  .books-grid,.reviews-grid{ grid-template-columns:repeat(auto-fill,minmax(320px,1fr)) }
-  .book-thumb,.review-thumb{ width:45% }
+/* ---------- Utilities / responsive ---------- */
+.row{display:flex;gap:12px;align-items:center}
+.hidden{display:none}
+
+/* responsive behavior */
+@media (max-width:980px){
+  .books-grid, .reviews-grid{ grid-template-columns:repeat(auto-fill,minmax(320px,1fr)) }
+  .book-thumb, .review-thumb{ width:45% }
   .card-body{ width:55% }
-  .modal-thumbs{ width:100%; flex-direction:row; overflow:auto }
 }
-@media(max-width:720px){
+@media (max-width:720px){
   .about-inner{ flex-direction:column; align-items:center }
   .avatar-wrap{ width:140px; height:140px }
-  .filter-bar, .search-card{ flex-direction:column; align-items:stretch }
-  .filter-bar input, .filter-bar select, .search-card input, .search-card select{ width:100% }
+  .filter-bar{ flex-direction:column; align-items:stretch }
+  .filter-bar input, .filter-bar select{ width:100% }
   .modal-layout{ flex-direction:column }
-  .modal-main{ aspect-ratio: 4/3; min-width: 60% }
-  .modal-thumbs{ width:100%; flex-direction:row; gap:8px; overflow:auto }
+  .modal-thumbs{ width:100%; flex-direction:row; overflow:auto }
+  .book-thumb, .review-thumb{ width:40% }
+  .books-grid, .reviews-grid{ grid-template-columns: 1fr }
 }
+
+/* small accessibility focus */
+a:focus, button:focus, .product-link-btn:focus { outline: 3px solid rgba(189,225,81,0.12); outline-offset:2px; border-radius:8px; }
+
+/* ---- End of stylesheet ---- */
