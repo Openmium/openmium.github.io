@@ -22,8 +22,11 @@
   --card-bg: #262626;             /* cajas con texto (modales, tarjetas) */
   --card-border: rgba(102,102,102,0.35); /* borde difuminado (#666) */
   --search-wrap: #1a1a1a;         /* cajón que rodea las barras de búsqueda */
-  --header-bg: #2b330f;           /* header (valorizado en petición anterior) */
-  --header-text: #BDE151;         /* letras del header */
+
+  /* HEADER: cambiado a #2b330f según petición */
+  --header-bg: #2b330f;           /* header (nuevo) */
+  --header-text: #BDE151;         /* letras del header (mantengo variable) */
+
   --text-primary: #f2f2f2;        /* textos importantes / títulos */
   --text-secondary: #b3b3b3;      /* textos secundarios */
   --thumb-fill: #1a1a1a;          /* fondo detrás de imágenes */
@@ -95,10 +98,9 @@ a{color:inherit;text-decoration:none}
   margin-bottom:12px;
 }
 
-/* ---------- About / Index — único bloque (fondo como te gustaba) ---------- */
+/* ---------- About / Index — único bloque (fondo sutil) ---------- */
 .about-card{ max-width:var(--max-width); margin:18px auto; width:100% }
 .about-inner{
-  /* fondo sutil tipo "panel" - copia del estilo que te gustó */
   background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
   border-radius:calc(var(--radius)+2px);
   padding:18px;
@@ -119,8 +121,20 @@ a{color:inherit;text-decoration:none}
 .about-right{ display:flex; flex-direction:column; gap:8px; flex:1 }
 .about-name{ font-size:var(--fz-xl); font-weight:var(--fw-heavy); color:var(--text-primary); line-height:var(--leading-tight) }
 .about-sub{ color:var(--text-secondary); font-weight:var(--fw-medium) }
+
+/* ABOUT: enlaces (LinkedIn, GitHub, Pinterest) en color específico pedido #b4da25 */
 .about-links{ display:flex; gap:8px; flex-wrap:wrap; margin-top:6px }
-.link-pill{ background:transparent; border:1px solid rgba(255,255,255,0.03); padding:6px 8px; border-radius:8px; color:var(--text-secondary); font-weight:600 }
+.about-links a,
+.links-row a,
+.small-link{
+  color: #b4da25;         /* <--- color solicitado para los enlaces sociales */
+  font-weight:700;
+}
+.about-links a:hover,
+.links-row a:hover,
+.small-link:hover{
+  text-decoration:underline;
+}
 
 /* separadores y pequeños títulos en about */
 .sep{ height:1px; background:var(--card-border); border-radius:2px; margin:8px 0 }
@@ -181,7 +195,6 @@ a{color:inherit;text-decoration:none}
 
 /* ---------- Select / dropdown styling (fondo oscuro y highlight solicitado) ---------- */
 
-/* visual arrow and dark appearance */
 .filter-bar select, .search-card select{
   -webkit-appearance:none;
   -moz-appearance:none;
@@ -197,9 +210,6 @@ a{color:inherit;text-decoration:none}
   cursor:pointer;
   color:var(--text-primary);
 }
-
-/* hide native arrow in IE */
-.filter-bar select::-ms-expand, .search-card select::-ms-expand { display: none; }
 
 /* options base: dark bg, light text */
 .filter-bar select option,
