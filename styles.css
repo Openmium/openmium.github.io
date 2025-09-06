@@ -1,310 +1,274 @@
-/* styles.css — Versión actualizada
-   - Modo oscuro principal
-   - cajón de búsqueda: #1a1a1a
-   - efectos para títulos (scale / float / reveal / fill)
-   - botones y tarjetas como en versión anterior
+/* styles.css — UNIFICADO
+   - tipografía/jerarquía según el vídeo
+   - modo oscuro y paleta solicitada
+   - tarjetas rectangulares, modales contenidos y botones enriquecidos
 */
 
-/* -------- Fonts & root variables -------- */
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Manrope:wght@400;600;700&display=swap");
+/* ---------- Tipografía: escala y jerarquía inspirada en el video ---------- */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap");
 
 :root{
-  /* colores base (modo oscuro solicitado) */
-  --page-bg: #0d0d0d;
-  --panel-bg: #262626;          /* paneles / cards / modales */
-  --panel-border: rgba(102,102,102,0.5);
-  --thumb-fill: #1a1a1a;        /* fondo dentro de recuadros de miniaturas */
-  --header-bg: #434d1b;         /* header */
-  --header-text: #b4da25;       /* letras header */
-  --title-text: #f2f2f2;        /* títulos principales */
-  --muted-text: #b3b3b3;        /* cuerpo secundario */
-  --accent-a: #ffe537;          /* para botones llamativos (suave) */
-  --accent-b: #537fe7;          /* degradado secundario */
-  --card-radius: 12px;
-  --shadow-dark: 0 6px 14px rgba(0,0,0,0.7);
-  --shadow-soft: 0 18px 40px rgba(0,0,0,0.55);
+  /* tipografía */
+  --fz-base: 1rem;          /* 16px */
+  --fz-sm: 0.875rem;        /* 14px */
+  --fz-lg: 1.125rem;        /* 18px */
+  --fz-xl: 1.25rem;         /* 20px */
+  --fz-2xl: 1.5rem;         /* 24px */
+  --leading-base: 1.6;
+  --leading-tight: 1.25;
+  --fw-regular: 400;
+  --fw-medium: 600;
+  --fw-bold: 700;
+  --fw-heavy: 800;
+
+  /* colores solicitados / modo oscuro */
+  --bg: #0d0d0d;            /* fondo global */
+  --card-bg: #262626;       /* cajas con texto (modales, tarjetas) */
+  --card-border: rgba(102,102,102,0.35); /* #666666 difuminado */
+  --search-wrap: #1a1a1a;   /* cajón que rodea las barras de búsqueda */
+  --header-bg: #434d1b;     /* header */
+  --header-text: #b4da25;   /* letras del header */
+  --text-primary: #f2f2f2;  /* textos importantes / títulos */
+  --text-secondary: #b3b3b3;/* textos secundarios */
+  --thumb-fill: #1a1a1a;    /* fondo detrás de imágenes (evita blanco) */
+  --modal-bg: #262626;      /* modal interior */
+  --muted: #8e9098;         /* color para títulos menores (ej: card titles si se quiere) */
+  --radius: 12px;
+  --shadow-strong: 0 18px 50px rgba(0,0,0,0.6);
+  --shadow-soft: 0 6px 20px rgba(0,0,0,0.45);
   --max-width: 1200px;
-  --gap: 16px;
-  --transition: 220ms ease;
-  --btn-font: 15px/1 "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  --filter-box: #1a1a1a;        /* <-- cajón que rodea las barras de búsqueda (pedido) */
 }
 
-/* -------- Reset y base -------- */
-* { box-sizing: border-box; margin:0; padding:0; }
-html,body { height:100%; background:var(--page-bg); color:var(--muted-text); font-family: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
-a { text-decoration:none; color:inherit; }
-.container { max-width: var(--max-width); margin: 20px auto; padding: 18px; }
+/* ---------- Reset / Base ---------- */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--text-primary);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;line-height:var(--leading-base)}
+a{color:inherit;text-decoration:none}
+.container{max-width:var(--max-width);margin:24px auto;padding:18px}
 
-/* -------- Header -------- */
-.nav {
-  background: var(--header-bg);
-  color: var(--header-text);
-  position: sticky; top:0; z-index:300;
-  border-bottom: 1px solid rgba(255,255,255,0.03);
+/* ---------- Header / Nav ---------- */
+.nav{
+  background:var(--header-bg);
+  color:var(--header-text);
+  position:sticky; top:0; z-index:300;
+  border-bottom: 1px solid rgba(0,0,0,0.25);
 }
-.nav .wrap {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 12px 18px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
+.nav .wrap{
+  max-width:var(--max-width); margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 18px; gap:12px;
 }
-.nav .brand { font-weight:900; color:var(--header-text); font-family: "Montserrat", sans-serif; font-size:18px; letter-spacing:0.2px; }
-.nav nav a { color: var(--header-text); margin-left:14px; font-weight:700; font-family: "Manrope", sans-serif; }
-.nav nav a:hover { opacity:0.95; text-decoration:underline; }
+.nav .brand a{ color:var(--header-text); font-weight:800; font-size:1.05rem; }
+.nav nav a{ color:var(--header-text); margin-left:14px; font-weight:700; padding:6px 8px; border-radius:8px; }
+.nav nav a:hover{ background: rgba(180,218,37,0.06); }
 
-/* -------- Titulos de página -------- */
-.page-title { font-family: "Montserrat", sans-serif; font-weight:800; color:var(--title-text); margin-bottom:12px; font-size:20px; }
-/* por defecto aplica un efecto float al pasar el ratón — si no quieres, quita la clase o coméntalo en el HTML */
-.page-title.float { cursor:pointer; transition: var(--transition); }
-.page-title.float:hover { transform: translateY(-8px); }
+/* ---------- Page title ---------- */
+.page-title{ font-size:var(--fz-2xl); color:var(--text-primary); font-weight:var(--fw-heavy); margin-bottom:12px }
 
-/* -------- About block (un solo bloque) -------- */
-.about-card { width:100%; margin:18px auto; }
-.about-inner {
-  background: var(--panel-bg);
-  border-radius: calc(var(--card-radius) + 2px);
-  padding: 20px;
-  display:flex;
-  gap:18px;
-  align-items:flex-start;
-  border: 1px solid var(--panel-border);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.6), 0 20px 40px rgba(0,0,0,0.45);
+/* ---------- About / Index — único bloque ---------- */
+.about-card{ max-width:var(--max-width); margin:18px auto; width:100% }
+.about-inner{
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));
+  border-radius:calc(var(--radius)+2px);
+  padding:18px;
+  display:flex; gap:18px; align-items:flex-start;
+  border:1px solid var(--card-border);
+  box-shadow:var(--shadow-soft);
   width:100%;
 }
-.avatar-wrap {
-  width:180px; height:180px; flex-shrink:0; border-radius:10px;
-  overflow:hidden; background:var(--thumb-fill); border:1px solid rgba(255,255,255,0.03);
+.avatar-wrap{
+  width:180px; height:180px; flex-shrink:0; border-radius:10px; overflow:hidden;
+  border:1px solid rgba(255,255,255,0.03); background:var(--thumb-fill); display:block;
 }
-.avatar-wrap img { width:100%; height:100%; object-fit:cover; object-position:center; display:block; filter: none; }
+.avatar-wrap img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; filter: none; }
 
-/* texto de about */
-.about-right { flex:1; display:flex; flex-direction:column; gap:10px; color:var(--muted-text); }
-.about-name { font-family: "Montserrat", sans-serif; font-weight:900; font-size:22px; color:var(--title-text); }
-.about-sub  { color:var(--muted-text); font-weight:700; }
+/* contenido About */
+.about-right{ flex:1; display:flex; flex-direction:column; gap:8px }
+.about-name{ font-size:var(--fz-xl); font-weight:var(--fw-heavy); color:var(--text-primary); line-height:var(--leading-tight) }
+.about-sub{ color:var(--text-secondary); font-weight:var(--fw-medium) }
+.about-links{ display:flex; gap:8px; flex-wrap:wrap; margin-top:6px }
+.link-pill{ background:transparent; border:1px solid rgba(255,255,255,0.03); padding:6px 8px; border-radius:8px; color:var(--text-secondary); font-weight:600 }
 
-/* pequeños elementos */
-.link-pill { padding:6px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); color:var(--muted-text); background:transparent; font-weight:600; }
-.link-pill:hover { color:var(--title-text); }
+/* separadores y pequeños títulos en about */
+.sep{ height:1px; background:var(--card-border); border-radius:2px; margin:8px 0 }
+.info-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px }
+.info-block{ background:transparent; padding:8px; border-radius:8px; color:var(--text-secondary) }
 
-/* -------- Filter bar (estilo actualizado: cajón #1a1a1a) -------- */
-.filter-bar {
-  background: var(--filter-box);           /* <-- aplicado: #1a1a1a */
+/* ---------- General card style ---------- */
+.card{ background:transparent; padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.02); box-shadow:none }
+
+/* ---------- Filter / search container (cajón) ---------- */
+.filter-bar, .search-card{
+  background:var(--search-wrap);
   border-radius:14px;
   padding:12px;
   display:flex;
   gap:12px;
   align-items:center;
-  border:1px solid rgba(255,255,255,0.04);
-  margin-bottom:14px;
+  border:1px solid rgba(255,255,255,0.03);
+  margin-bottom:12px;
 }
 .filter-bar input[type="text"],
 .filter-bar input[type="date"],
-.filter-bar select {
+.filter-bar select,
+.search-card input[type="text"],
+.search-card input[type="date"],
+.search-card select{
   padding:10px 12px;
   border-radius:10px;
   border:1px solid rgba(255,255,255,0.03);
-  background: transparent;
-  color: var(--title-text);
-  flex:1; min-width:0; font-weight:600; font-family: "Manrope", sans-serif;
+  background:transparent; color:var(--text-primary);
+  flex:1; min-width:0; font-weight:600;
 }
-.filter-bar input::placeholder { color: rgba(255,255,255,0.6); }
-.filter-bar .btn { background: transparent; border:1px solid rgba(255,255,255,0.06); color: var(--title-text); padding:9px 12px; border-radius:10px; cursor:pointer; }
+.filter-bar input::placeholder, .search-card input::placeholder{ color: rgba(255,255,255,0.5) }
+.filter-bar .btn, .search-card .btn{ background:transparent; border:1px solid rgba(255,255,255,0.04); color:var(--text-primary); padding:9px 12px; border-radius:10px; cursor:pointer }
 
-/* -------- Grid de tarjetas (horizontal, tipo polite-card) -------- */
-.books-grid, .reviews-grid {
+/* cuando el usuario necesita una barra que ocupe todo el ancho: */
+.search-card input[type="text"]{ flex-basis: 60%; } /* por defecto: amplia */
+/* css adaptativo: en mobile la entrada se hace full width */
+@media(max-width:720px){
+  .search-card{ flex-direction:column; align-items:stretch }
+  .search-card input[type="text"]{ flex-basis: auto; width:100% }
+}
+
+/* ---------- Grid libros / reviews: tarjetas rectangulares horizontales ---------- */
+.books-grid, .reviews-grid, #booksGrid, #reviewsList{
   display:grid;
-  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
-  gap: var(--gap);
-  margin-top:8px;
+  grid-template-columns:repeat(auto-fill,minmax(480px,1fr));
+  gap:16px;
+  margin-top:6px;
 }
 
-/* tarjeta base (polite-card inspired) */
-.polite-card, .book-card, .review-card {
-  display:flex;
-  flex-direction:row;
-  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));
+/* Tarjeta: horizontal, thumb 40%, contenido 60% */
+.book-card, .review-card{
+  background:var(--card-bg);
   border-radius:12px;
-  overflow:hidden;
-  border:1px solid var(--panel-border);
-  box-shadow: 0 6px 8px rgba(0,0,0,0.6), 0 18px 36px rgba(0,0,0,0.45);
-  transition: transform var(--transition), box-shadow var(--transition);
+  display:flex;
   gap:14px;
-  padding:12px;
   align-items:flex-start;
+  padding:12px;
+  border:1px solid var(--card-border);
+  transition: transform .12s ease, box-shadow .12s ease;
   min-height:140px;
-  color:var(--muted-text);
+  color:var(--text-primary);
 }
-.polite-card:hover, .book-card:hover, .review-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 18px 50px rgba(0,0,0,0.6), 0 36px 80px rgba(0,0,0,0.45);
-}
-
-/* izquierda: imagen, derecha: contenido */
-.polite-card img, .book-thumb img, .review-thumb img {
-  width:100%; height:100%; display:block; object-fit:cover; object-position:center;
-}
-.book-thumb, .review-thumb {
-  width:40%; min-width:180px; aspect-ratio: 16/9; border-radius:8px; overflow:hidden;
-  background: var(--thumb-fill); border:1px solid rgba(255,255,255,0.03); position:relative;
-}
-.book-thumb::after, .review-thumb::after { content:""; position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.06)); pointer-events:none; }
-
-/* cuerpo */
-.card-body { flex:1; display:flex; flex-direction:column; gap:8px; width:60%; min-width:0; }
-.card-meta { font-size:13px; color: var(--muted-text); }
-.card-title { font-family: "Montserrat", sans-serif; font-size:18px; font-weight:800; color:var(--title-text); margin:0; }
-.card-desc { font-size:14px; color:var(--muted-text); line-height:1.45; }
-
-/* ajustar descripciones para que no estén limitadas - permitir tamaño variable */
-.card-desc { white-space:normal; }
-
-/* fila inferior: estrellas, precio, boton */
-.row-bottom { display:flex; gap:12px; align-items:center; justify-content:space-between; margin-top:auto; }
-.price { font-weight:800; color:var(--muted-text); }
-.stars { display:inline-flex; gap:6px; align-items:center; color: #f5b301; }
-
-/* estrellas: gradiente para mitad */
-.star {
-  font-size:16px;
-  line-height:1;
-  display:inline-block;
-}
-.star.full { color:#f5b301; }
-.star.empty { color:#333; opacity:0.25; }
-.star.half {
-  color:transparent;
-  background: linear-gradient(90deg, #f5b301 50%, rgba(0,0,0,0.15) 50%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  display:inline-block;
+.book-card:hover, .review-card:hover{
+  transform:translateY(-6px);
+  box-shadow: var(--shadow-strong);
 }
 
-/* -------- Botones mejorados (moody / dashing / crispy) -------- */
-.btn {
-  display:inline-block;
-  font: var(--btn-font);
-  text-decoration:none;
-  padding:10px 14px;
-  border-radius:10px;
-  cursor:pointer;
-  transition: all 240ms ease;
-  text-align:center;
-  min-width:96px;
-  box-shadow: none;
-  border: none;
-}
-.dashing {
-  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)) padding-box,
-              linear-gradient(270deg, var(--accent-a), var(--accent-b)) border-box;
-  border: 2px solid transparent;
-  color: var(--page-bg);
-  font-weight:700;
-}
-.dashing:hover { transform: translateY(-2px); filter:brightness(1.06); }
-.dashing-fill {
-  background: linear-gradient(270deg, var(--accent-a), var(--accent-b), var(--accent-a));
-  background-size: 300% 300%;
-  animation: bg 8s ease-in-out infinite;
-  color: var(--page-bg);
-  border: 0;
-  font-weight:800;
-}
-@keyframes bg {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-.moody {
-  color: var(--accent-a);
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.03);
-  box-shadow: 0 0 12px rgba(255,229,55,0.06);
-}
-.moody:hover { box-shadow: 0 0 20px rgba(255,229,55,0.10); transform: translateY(-2px); }
-.crispy { color: var(--accent-b); border: 1px solid rgba(83,127,231,0.18); box-shadow: 0 3px 0 rgba(83,127,231,0.06); }
-.crispy:hover { box-shadow: 0 6px 0 rgba(83,127,231,0.12); transform: translateY(-1px); }
-.btn-primary { padding:10px 14px; border-radius:10px; font-weight:800; font-family:"Manrope",sans-serif; }
-.product-link-btn { padding:8px 12px; border-radius:10px; font-weight:700; font-family:"Manrope",sans-serif; }
-
-/* -------- Modal (detalle) -------- */
-.modal { display:none; position:fixed; inset:0; background: rgba(0,0,0,0.65); align-items:center; justify-content:center; padding:18px; z-index:600; }
-.modal.open { display:flex; }
-.modal-card {
-  background: var(--panel-bg);
-  border-radius:12px; padding:18px;
-  max-width:1000px; width:100%; max-height:88vh; overflow:auto;
-  border:1px solid var(--panel-border);
-  box-shadow: 0 28px 80px rgba(0,0,0,0.7);
+/* Thumb area: rectangular y consistente */
+.book-thumb, .review-thumb{
+  width:40%;
+  min-width:180px;
+  aspect-ratio: 16/9;
+  overflow:hidden;
+  border-radius:8px;
+  background:var(--thumb-fill); /* evita fondo blanco detrás de la imagen */
+  display:block;
   position:relative;
+  border:1px solid rgba(255,255,255,0.03);
 }
-.modal-close { position:absolute; right:12px; top:12px; border:none; background: rgba(255,255,255,0.03); color: var(--title-text); padding:8px; border-radius:8px; cursor:pointer; z-index:9999; }
-
-/* modal layout (imagen + thumbs) */
-.modal-layout { display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap; }
-.modal-main { flex:1; min-width:300px; aspect-ratio: 16/9; border-radius:8px; overflow:hidden; background: var(--thumb-fill); display:block; }
-.modal-main img { width:100%; height:100%; object-fit:contain; display:block; background: var(--thumb-fill); }
-.modal-thumbs { width:120px; display:flex; flex-direction:column; gap:8px; }
-.modal-thumbs img { width:100%; height:72px; object-fit:cover; border-radius:6px; cursor:pointer; border:1px solid rgba(255,255,255,0.03); }
-
-/* textos dentro modal */
-.modal-meta { font-size:13px; color:var(--muted-text); margin-top:8px; }
-.modal-title { font-family:"Montserrat",sans-serif; font-size:20px; color:var(--title-text); margin:8px 0; }
-.modal-desc { color:var(--muted-text); line-height:1.5; }
-
-/* -------- Effects for headings (scale, float, reveal, fill) -------- */
-/* Styles inspired by Sajid example — puedes aplicar estas clases a títulos (h2, .page-title, etc.) */
-h2, .h-effect { font-family: "Montserrat", sans-serif; font-weight:700; color:var(--title-text); margin:0; }
-
-/* common transition */
-.h-effect { transition: var(--transition); cursor: pointer; display:inline-block; }
-
-/* scale */
-.scale { transform-origin:center; }
-.scale:hover { transform: scale(1.04); }
-
-/* float */
-.float { transition: var(--transition); }
-.float:hover { transform: translateY(-12px); }
-
-/* reveal: oculta el span y lo muestra en hover */
-.reveal span { opacity: 0; transition: var(--transition); display:inline-block; }
-.reveal:hover span { opacity: 1; }
-
-/* fill: outline -> fill on hover */
-.fill { color: transparent; -webkit-text-stroke: 1px var(--muted-text); text-stroke: 1px var(--muted-text); transition: var(--transition); }
-.fill:hover { color: var(--title-text); -webkit-text-stroke-color: transparent; text-stroke-color: transparent; }
-
-/* svg styling example (usa donde quieras insertar SVG) */
-.svg-icon { cursor:pointer; width: 72px; height: 72px; fill: none; stroke: var(--muted-text); stroke-width: 8; transition: var(--transition); }
-.svg-icon:hover { fill: var(--muted-text); transform: scale(1.05); }
-
-/* -------- utility, layout, responsive -------- */
-.footer { text-align:center; color:var(--muted-text); margin-top:20px; padding:12px 0; font-size:13px; }
-
-@media (max-width:980px) {
-  .books-grid, .reviews-grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
-  .book-thumb, .review-thumb { width:45%; }
-  .card-body { width:55%; }
-}
-@media (max-width:720px) {
-  .about-inner { flex-direction:column; align-items:center; padding:14px; }
-  .avatar-wrap { width:140px; height:140px; }
-  .filter-bar { flex-direction:column; align-items:stretch; }
-  .filter-bar input, .filter-bar select { width:100%; }
-  .modal-layout { flex-direction:column; }
-  .modal-thumbs { width:100%; flex-direction:row; overflow:auto; gap:8px; }
-  .book-thumb, .review-thumb { width:100%; min-width:unset; aspect-ratio: 3/2; }
+.book-thumb img, .review-thumb img{
+  width:100%; height:100%; object-fit:cover; object-position:center; display:block;
+  /* for webp/jpg that looked zoomed: ensure cover but keep visible center */
 }
 
-/* -------- Small helpers for shadows on text blocks (Sajid-inspired) -------- */
-.sh { padding: 18px; border-radius: 16px; }
-.combined { box-shadow: 0px 4px 4px rgba(0,0,0,0.35), 0px 12px 12px rgba(0,0,0,0.18); }
-.dark { box-shadow: 0px 4px 6px rgba(0,0,0,0.45); }
-.light { box-shadow: 0px 12px 18px rgba(0,0,0,0.18); }
+/* overlay sutil para evitar recortes visuales */
+.book-thumb::after, .review-thumb::after{
+  content:""; position:absolute; inset:0; background:linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.02)); pointer-events:none;
+}
 
-/* small credit (optional) */
-.credit { position: fixed; bottom: 14px; right: 18px; font-family:"Manrope",sans-serif; font-size:13px; background:transparent; color:var(--muted-text); padding:6px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.02); }
+/* cuerpo de la tarjeta */
+.card-body{ width:60%; display:flex; flex-direction:column; gap:8px; color:var(--text-secondary) }
+.card-meta{ font-size:13px; color:var(--text-secondary) }
+.card-title{ font-size:var(--fz-xl); font-weight:var(--fw-heavy); color:var(--text-primary); margin:0 }
+.card-desc{ font-size:var(--fz-base); color:var(--text-secondary); line-height:1.45; /* no truncamos */ }
+
+/* precio y estrellas en fila */
+.row-bottom{ display:flex; gap:12px; align-items:center; justify-content:space-between; margin-top:auto }
+.price{ font-weight:800; color:var(--text-primary) }
+.stars{ display:inline-flex; gap:6px; align-items:center }
+.star.full{ color:#f5b301 }
+.star.empty{ color:#4b4b4b }
+.star.half{ /* handled by JS if necessary */ }
+
+/* boton ver/ir al producto (dentro de la tarjeta lado derecho) */
+.product-link-btn{
+  padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.03);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  color:var(--text-primary); font-weight:700; text-align:center;
+}
+
+/* ---------- Modal (detalle) ---------- */
+.modal{
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6);
+  align-items:center; justify-content:center; padding:18px; z-index:1000;
+}
+.modal.open{ display:flex }
+.modal-card{
+  background:var(--modal-bg); border-radius:12px; padding:18px;
+  max-width:1000px; width:100%; max-height:88vh; overflow:auto;
+  border:1px solid var(--card-border); box-shadow:0 28px 80px rgba(0,0,0,0.6); position:relative;
+}
+/* close con z-index superior para evitar solapamientos sobre thumbs */
+.modal-close{
+  position:absolute; right:12px; top:12px; border:none; background:rgba(255,255,255,0.03);
+  color:var(--text-primary); padding:8px; border-radius:8px; cursor:pointer; z-index:1200;
+}
+
+/* modal inner layout: main image a la izquierda, thumbs a la derecha */
+.modal-layout{ display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap }
+.modal-main{
+  flex:1; min-width:320px; aspect-ratio:16/9; border-radius:8px; overflow:hidden;
+  background:var(--thumb-fill); display:flex; align-items:center; justify-content:center;
+}
+.modal-main img{ width:100%; height:100%; object-fit:contain; display:block; background:var(--thumb-fill) }
+.modal-thumbs{ width:120px; display:flex; flex-direction:column; gap:8px; }
+.modal-thumbs img{ width:100%; height:72px; object-fit:cover; border-radius:6px; cursor:pointer; border:1px solid var(--card-border); }
+
+/* textual modal */
+.modal-meta{ font-size:13px; color:var(--text-secondary); margin-top:8px }
+.modal-title{ font-size:var(--fz-xl); color:var(--text-primary); margin:8px 0 }
+.modal-desc{ color:var(--text-secondary); line-height:1.5 }
+
+/* ---------- Buttons styles (inspirado Sajid) ---------- */
+.btn{ font-size:0.95rem; padding:10px 14px; border-radius:10px; cursor:pointer; display:inline-block; text-decoration:none; }
+.btn-primary{
+  background: linear-gradient(180deg, rgba(180,218,37,0.08), rgba(180,218,37,0.06)) padding-box,
+              linear-gradient(90deg, rgba(180,218,37,0.12), rgba(180,218,37,0.02)) border-box;
+  border: solid 1px transparent; color:var(--text-primary); font-weight:700;
+  transition: box-shadow .18s ease, transform .12s ease;
+}
+.btn-primary:hover{ transform:translateY(-3px); box-shadow:0 6px 18px rgba(180,218,37,0.06) }
+
+/* moody / dashing / crispy variants (useful for product buttons) */
+.moody{ box-shadow: 0 0 12px rgba(245,179,1,0.12); color:var(--text-primary); border-radius:8px; background:transparent; padding:8px 12px; }
+.moody:hover{ box-shadow: 0 0 20px rgba(245,179,1,0.18) }
+.dashing{ background: linear-gradient(270deg, rgba(255,229,55,0.12), rgba(83,127,231,0.04)); border:2px solid transparent; }
+.dashing-fill{ color:var(--bg); background: linear-gradient(90deg,#ffe537,#537fe7); border-radius:8px; padding:10px 16px; color:var(--bg); }
+
+/* ---------- Card shadows helpers (combine shadows) ---------- */
+.sh{ min-width:100px; flex:1; padding:20px; border-radius:20px; }
+.combined{ box-shadow: 0px 4px 4px rgba(0,0,0,0.18), 0px 12px 12px rgba(0,0,0,0.08); }
+.dark{ box-shadow: 0px 4px 4px rgba(0,0,0,0.18); }
+.light{ box-shadow: 0px 12px 12px rgba(0,0,0,0.08); }
+
+/* ---------- Footer ---------- */
+.footer{ text-align:center; color:var(--text-secondary); margin-top:20px; padding:12px 0; font-size:13px }
+
+/* ---------- Responsive tweaks ---------- */
+@media(max-width:980px){
+  .books-grid,.reviews-grid{ grid-template-columns:repeat(auto-fill,minmax(320px,1fr)) }
+  .book-thumb,.review-thumb{ width:45% }
+  .card-body{ width:55% }
+  .modal-thumbs{ width:100%; flex-direction:row; overflow:auto }
+}
+@media(max-width:720px){
+  .about-inner{ flex-direction:column; align-items:center }
+  .avatar-wrap{ width:140px; height:140px }
+  .filter-bar, .search-card{ flex-direction:column; align-items:stretch }
+  .filter-bar input, .filter-bar select, .search-card input, .search-card select{ width:100% }
+  .modal-layout{ flex-direction:column }
+  .modal-main{ aspect-ratio: 4/3; min-width: 60% }
+  .modal-thumbs{ width:100%; flex-direction:row; gap:8px; overflow:auto }
+}
