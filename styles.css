@@ -1,195 +1,261 @@
-/* styles.css — estilo unificado, tarjetas rectangulares, modales contenidos */
+/* styles.css — Tema oscuro solicitado
+   - fondo general: #0d0d0d
+   - cajas de contenido (cards, modales, about, book/review cards): #262626
+   - borde cajas: #666666 (difuminado en sombra)
+   - texto importante (títulos): #f2f2f2
+   - texto secundario: #b3b3b3
+   - header: #434d1b, letras del header: #b4da25
+   - fondo miniaturas/imágenes: #1a1a1a
+*/
 
-/* Paleta neutral / sobria */
 :root{
-  --header-bg: #414254;
-  --filter-bg: #6c7792;
-  --card-bg: #bcc1cd;
-  --card-alt: #ffffff;
-  --title-color: #8e9098;
-  --muted: #6b6f87;
-  --text: #222;
-  --bg: #ffffff;
-  --modal-bg: #f6f7f9;
-  --about-bg: #f2f3f6;
+  /* colores base */
+  --page-bg: #0d0d0d;
+  --card-bg: #262626;          /* cajas de contenido (cards, modales, detalles) */
+  --card-border: rgba(102,102,102,0.65); /* #666666 con algo de transparencia */
+  --thumb-fill: #1a1a1a;       /* fondo dentro de los recuadros de imagen */
+  --header-bg: #434d1b;
+  --header-text: #b4da25;
+
+  --title-text: #f2f2f2;       /* títulos principales */
+  --muted-text: #b3b3b3;       /* textos secundarios / cuerpo */
+  --shadow-strong: 0 20px 60px rgba(0,0,0,0.6);
+  --shadow-soft: 0 8px 24px rgba(0,0,0,0.45);
   --radius: 12px;
-  --shadow-soft: 0 8px 24px rgba(10,12,20,0.06);
-  --border: rgba(0,0,0,0.06);
   --max-width: 1200px;
+  --gap: 16px;
+  --filter-bg: #6c7792;       /* barra de búsqueda/filtros (excepción) */
 }
 
-/* Reset / Base */
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;line-height:1.45}
-a{color:inherit;text-decoration:none}
-.container{max-width:var(--max-width);margin:24px auto;padding:18px}
+/* Reset mínimo */
+* { box-sizing: border-box; margin:0; padding:0; }
+html,body { height:100%; background:var(--page-bg); color:var(--muted-text); font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+a { color:inherit; text-decoration:none; }
 
-/* Header: logo a la izquierda, nav a la derecha */
-.nav{background:var(--header-bg);color:#fff;position:sticky;top:0;z-index:150;border-bottom:1px solid rgba(255,255,255,0.03)}
-.nav .wrap{max-width:var(--max-width);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 18px;gap:12px}
-.nav .brand{font-weight:700;color:#fff}
-.nav nav a{color:rgba(255,255,255,0.92);margin-left:14px;font-weight:600}
-.nav nav a:hover{text-decoration:underline}
+/* Layout principal */
+.container { max-width: var(--max-width); margin: 20px auto; padding: 18px; }
+
+/* Header / nav */
+.nav {
+  background: var(--header-bg);
+  color: var(--header-text);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.nav .wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 12px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.nav .brand { font-weight:800; color: var(--header-text); font-size:18px; }
+.nav nav a {
+  color: var(--header-text);
+  margin-left:14px;
+  font-weight:700;
+  opacity:0.95;
+}
+.nav nav a:hover { opacity:1; text-decoration: underline; }
 
 /* Page title */
-.page-title{font-size:20px;color:var(--title-color);margin-bottom:12px}
-
-/* About (index) — Opción B: box y contenido estirados hasta los márgenes del container */
-.about-card{
-  width:100%;
-  margin:18px 0;
-  padding:18px; /* contiene el contenido; ocupa el ancho del container */
-  background:var(--about-bg);
-  border-radius:calc(var(--radius) + 2px);
-  border:1px solid var(--border);
-  box-shadow:var(--shadow-soft);
-  box-sizing:border-box;
+.page-title {
+  font-size:20px;
+  color: var(--title-text);
+  margin-bottom:12px;
+  font-weight:800;
 }
+
+/* ABOUT / INDEX - bloque unificado */
+.about-card { width:100%; margin:18px auto; }
 .about-inner{
-  width:100%;
-  max-width:none;
-  margin:0;
-  padding:0; /* ya hay padding en .about-card */
+  background: var(--card-bg);
+  border-radius: calc(var(--radius) + 2px);
+  padding:20px;
   display:flex;
   gap:18px;
   align-items:flex-start;
-  border-radius:calc(var(--radius));
-  box-sizing:border-box;
+  border:1px solid var(--card-border);
+  box-shadow: var(--shadow-soft);
+  width:100%;
+}
+.avatar-wrap {
+  width:180px; height:180px; flex-shrink:0; border-radius:10px;
+  overflow:hidden; border:1px solid rgba(255,255,255,0.03); background:var(--thumb-fill);
+}
+.avatar-wrap img { width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+
+.about-right { flex:1; display:flex; flex-direction:column; gap:10px; color:var(--muted-text); }
+.about-name { font-size:22px; font-weight:900; color:var(--title-text); }
+.about-sub  { color:var(--muted-text); font-weight:700; }
+
+/* Links en about */
+.link-pill {
+  display:inline-block; padding:6px 10px; border-radius:8px;
+  border:1px solid rgba(255,255,255,0.03);
+  color:var(--muted-text); background:transparent; font-weight:600;
+}
+.link-pill:hover { color: var(--title-text); border-color: rgba(255,255,255,0.06); }
+
+/* Separador y bloques */
+.sep { height:1px; background: rgba(255,255,255,0.03); margin:8px 0; border-radius:2px; }
+.info-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:12px; }
+.info-block { padding:8px; border-radius:8px; background:transparent; color:var(--muted-text); }
+
+/* Card genérica (cuando la necesites) */
+.card {
+  background: var(--card-bg);
+  padding:14px;
+  border-radius:12px;
+  border:1px solid var(--card-border);
+  box-shadow: var(--shadow-soft);
+  color: var(--muted-text);
 }
 
-/* avatar */
-.avatar-wrap{width:180px;height:180px;flex-shrink:0;border-radius:10px;overflow:hidden;border:1px solid rgba(0,0,0,0.04);background:#fff;display:block}
-.avatar-wrap img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
-
-/* contenido About */
-.about-right{flex:1;display:flex;flex-direction:column;gap:8px}
-.about-name{font-size:22px;font-weight:800;color:#444847} /* gris fuerte para el header */
-.about-sub{color:#444847;font-weight:700}
-.about-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
-.link-pill{background:transparent;border:1px solid rgba(0,0,0,0.04);padding:6px 8px;border-radius:8px;color:var(--title-color);font-weight:600}
-.sep{height:1px;background:var(--border);border-radius:2px;margin:8px 0}
-.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
-.info-block{background:transparent;padding:8px;border-radius:8px}
-
-/* General card style */
-.card{background:var(--card-alt);padding:14px;border-radius:12px;border:1px solid var(--border);box-shadow:0 4px 14px rgba(0,0,0,0.03)}
-
-/* Filter bar (ancha) */
-.filter-bar{
-  background:var(--filter-bg);
+/* Barra de filtros / búsqueda (EXCEPCIÓN: mantiene color de filtro) */
+.filter-bar {
+  background: var(--filter-bg);
   border-radius:14px;
   padding:12px;
   display:flex;
   gap:12px;
   align-items:center;
-  border:1px solid rgba(0,0,0,0.06);
-  margin-bottom:12px;
+  border:1px solid rgba(0,0,0,0.12);
+  margin-bottom:14px;
 }
 .filter-bar input[type="text"],
 .filter-bar input[type="date"],
-.filter-bar select{
-  padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff;flex:1;min-width:0;font-weight:600
+.filter-bar select {
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.06);
+  background: transparent;
+  color: var(--title-text);
+  flex:1;
+  min-width:0;
+  font-weight:600;
 }
-.filter-bar input::placeholder{color:rgba(255,255,255,0.85)}
-.filter-bar .btn{background:transparent;border:1px solid rgba(255,255,255,0.1);color:#fff;padding:9px 12px;border-radius:10px;cursor:pointer}
+.filter-bar input::placeholder { color: rgba(255,255,255,0.78); }
+.filter-bar .btn { background: transparent; border:1px solid rgba(255,255,255,0.12); color: var(--title-text); padding:9px 12px; border-radius:10px; cursor:pointer; }
 
-/* Grid libros / reviews: tarjetas rectangulares horizontales */
-.books-grid, .reviews-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(480px,1fr));
-  gap:16px;
-  margin-top:6px;
-}
+/* Grid de libros / reviews (tarjetas horizontales) */
+.books-grid, .reviews-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(480px, 1fr)); gap: var(--gap); margin-top:6px; }
 
-/* Tarjeta: horizontal, thumb 40%, contenido 60% */
-.book-card, .review-card{
-  background:var(--card-bg);
+/* Tarjeta - horizontal (libro / reseña) */
+.book-card, .review-card {
+  background: var(--card-bg);
   border-radius:12px;
   display:flex;
   gap:14px;
   align-items:flex-start;
   padding:12px;
-  border:1px solid var(--border);
+  border:1px solid var(--card-border);
   transition: transform .12s ease, box-shadow .12s ease;
   min-height:140px;
+  color: var(--muted-text);
 }
-.book-card:hover, .review-card:hover{transform:translateY(-6px);box-shadow: 0 18px 50px rgba(0,0,0,0.06);}
+.book-card:hover, .review-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-strong);
+}
 
-/* Thumb area: rectangular y consistente */
-.book-thumb, .review-thumb{
+/* Thumb (área de imagen). NOTA: fondo de las miniaturas es --thumb-fill */
+.book-thumb, .review-thumb {
   width:40%;
   min-width:180px;
   aspect-ratio: 16/9;
   overflow:hidden;
   border-radius:8px;
-  background:#fff;
+  background: var(--thumb-fill);
   display:block;
   position:relative;
-  border:1px solid rgba(0,0,0,0.04);
+  border:1px solid rgba(255,255,255,0.03);
 }
-.book-thumb img, .review-thumb img{
-  width:100%;height:100%;object-fit:cover;object-position:center;display:block;
+.book-thumb img, .review-thumb img {
+  width:100%; height:100%; object-fit:cover; object-position:center; display:block;
 }
-/* overlay sutil para evitar recortes visuales */
-.book-thumb::after, .review-thumb::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.06);pointer-events:none}
+/* sutil overlay para evitar recortes duros */
+.book-thumb::after, .review-thumb::after { content:""; position:absolute; inset:0; background: rgba(0,0,0,0.08); pointer-events:none; }
 
-/* cuerpo de la tarjeta */
-.card-body{width:60%;display:flex;flex-direction:column;gap:8px}
-.card-meta{font-size:13px;color:var(--muted)}
-.card-title{font-size:18px;font-weight:800;color:var(--title-color);margin:0}
-.card-desc{font-size:14px;color:var(--muted);line-height:1.45; /* no truncamos */ }
+/* Cuerpo de la tarjeta */
+.card-body { width:60%; display:flex; flex-direction:column; gap:8px; }
+.card-meta { font-size:13px; color: var(--muted-text); }
+.card-title { font-size:18px; font-weight:800; color: var(--title-text); margin:0; }
+.card-desc { font-size:14px; color: var(--muted-text); line-height:1.45; /* no truncamos */ }
 
-/* precio y estrellas en fila */
-.row-bottom{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-top:auto}
-.price{font-weight:800;color:var(--muted)}
-.stars{display:inline-flex;gap:6px;align-items:center}
-.star.full{color:#f5b301}
-.star.empty{color:#ddd}
-.star.half{
-  color:transparent;
-  background: linear-gradient(90deg, #f5b301 50%, #ddd 50%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  display:inline-block;
+/* fila inferior con precio / estrellas / acción */
+.row-bottom { display:flex; gap:12px; align-items:center; justify-content:space-between; margin-top:auto; }
+.price { font-weight:800; color: var(--muted-text); }
+.stars { display:inline-flex; gap:6px; align-items:center; color: #f5b301; }
+.star.full{ color:#f5b301; }
+.star.half{ /* se podrá pintar por JS con gradiente si quieres */ color:#f5b301; }
+.star.empty{ color:#333; opacity:0.25; }
+
+/* boton de producto dentro de tarjeta (lado derecho) */
+.product-link-btn { padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background:transparent; font-weight:700; color:var(--title-text); }
+
+/* Modal (detalle) — usa el mismo card-bg y borde difuminado */
+.modal {
+  display:none;
+  position:fixed;
+  inset:0;
+  background: rgba(0,0,0,0.6);
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  z-index:400;
+}
+.modal.open { display:flex; }
+.modal-card {
+  background: var(--card-bg);
+  border-radius:12px;
+  padding:18px;
+  max-width:1000px;
+  width:100%;
+  max-height:88vh;
+  overflow:auto;
+  border:1px solid var(--card-border);
+  box-shadow: 0 28px 80px rgba(0,0,0,0.6);
+  position:relative;
+}
+.modal-close {
+  position:absolute; right:12px; top:12px; border:none;
+  background: rgba(255,255,255,0.03); color: var(--title-text);
+  padding:8px; border-radius:8px; cursor:pointer; z-index:9999;
 }
 
-/* boton ver/ir al producto (dentro de la tarjeta lado derecho) */
-.product-link-btn{padding:8px 12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);background:transparent;font-weight:700;color:var(--title-color)}
+/* modal layout: main image + miniaturas */
+.modal-layout { display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap; }
+.modal-main { flex:1; min-width:300px; aspect-ratio: 16/9; border-radius:8px; overflow:hidden; background: var(--thumb-fill); display:block; }
+.modal-main img { width:100%; height:100%; object-fit:contain; display:block; }
+.modal-thumbs { width:120px; display:flex; flex-direction:column; gap:8px; }
+.modal-thumbs img { width:100%; height:72px; object-fit:cover; border-radius:6px; cursor:pointer; border:1px solid rgba(255,255,255,0.03); }
 
-/* modal */
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);align-items:center;justify-content:center;padding:18px;z-index:260}
-.modal.open{display:flex}
-.modal-card{background:var(--modal-bg);border-radius:12px;padding:18px;max-width:1000px;width:100%;max-height:88vh;overflow:auto;border:1px solid var(--border);box-shadow:0 28px 80px rgba(0,0,0,0.12);position:relative}
-.modal-close{position:absolute;right:12px;top:12px;border:none;background:rgba(0,0,0,0.06);color:var(--text);padding:8px;border-radius:8px;cursor:pointer;z-index:10000}
+/* textos modal */
+.modal-meta { font-size:13px; color: var(--muted-text); margin-top:8px; }
+.modal-title { font-size:20px; color: var(--title-text); margin:8px 0; }
+.modal-desc { color: var(--muted-text); line-height:1.5; }
 
-/* modal inner layout */
-.modal-layout{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
-.modal-main{flex:1;min-width:300px;aspect-ratio:16/9;border-radius:8px;overflow:hidden;background:#fff}
-.modal-main img{width:100%;height:100%;object-fit:contain;display:block}
-.modal-thumbs{width:120px;display:flex;flex-direction:column;gap:8px}
-.modal-thumbs img{width:100%;height:72px;object-fit:cover;border-radius:6px;cursor:pointer;border:1px solid rgba(0,0,0,0.06)}
+/* Footer */
+.footer { text-align:center; color: var(--muted-text); margin-top:20px; padding:12px 0; font-size:13px; }
 
-/* textual modal */
-.modal-meta{font-size:13px;color:var(--muted);margin-top:8px}
-.modal-title{font-size:20px;color:var(--title-color);margin:8px 0}
-.modal-desc{color:var(--muted);line-height:1.5}
-
-/* footer */
-.footer{text-align:center;color:var(--muted);margin-top:20px;padding:12px 0;font-size:13px}
-
-/* responsive */
+/* Responsive */
 @media(max-width:980px){
-  .books-grid,.reviews-grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
-  .book-thumb,.review-thumb{width:45%}
-  .card-body{width:55%}
+  .books-grid, .reviews-grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+  .book-thumb, .review-thumb { width:45%; }
+  .card-body { width:55%; }
 }
 @media(max-width:720px){
-  .about-inner{flex-direction:column;align-items:center}
-  .avatar-wrap{width:140px;height:140px}
-  .filter-bar{flex-direction:column;align-items:stretch}
-  .filter-bar input, .filter-bar select{width:100%}
-  .modal-layout{flex-direction:column}
-  .modal-thumbs{width:100%;flex-direction:row;overflow:auto}
+  .about-inner { flex-direction:column; align-items:center; padding:14px; }
+  .avatar-wrap { width:140px; height:140px; }
+  .filter-bar { flex-direction:column; align-items:stretch; }
+  .filter-bar input, .filter-bar select { width:100%; }
+  .modal-layout { flex-direction:column; }
+  .modal-thumbs { width:100%; flex-direction:row; overflow:auto; gap:8px; }
+  .book-thumb, .review-thumb { width:100%; min-width:unset; aspect-ratio: 3/2; }
 }
 
-/* End of file */
