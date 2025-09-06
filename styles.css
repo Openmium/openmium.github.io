@@ -1,41 +1,51 @@
-/* styles.css — UNIFICADO: modo oscuro, tipografía, jerarquía y select highlight */
+/* styles.css — Versión final solicitada
+   Modo oscuro, tipografía, jerarquía, botones enriquecidos,
+   selects oscuros, header #2b330f, social links #b4da25,
+   botones libros/reviews #CEE773, select highlight #686868
+*/
 
-/* ---------- Tipografía y paleta (escala inspirada en el video) ---------- */
+/* ---------- Tipografía y variables ---------- */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap");
 
 :root{
-  /* tipografía */
-  --fz-base: 1rem;          /* 16px */
-  --fz-sm: 0.875rem;        /* 14px */
-  --fz-lg: 1.125rem;        /* 18px */
-  --fz-xl: 1.25rem;         /* 20px */
-  --fz-2xl: 1.5rem;         /* 24px */
+  --fz-base: 1rem;        /* 16px */
+  --fz-sm: 0.875rem;      /* 14px */
+  --fz-lg: 1.125rem;      /* 18px */
+  --fz-xl: 1.25rem;       /* 20px */
+  --fz-2xl: 1.5rem;       /* 24px */
   --leading-base: 1.6;
-  --leading-tight: 1.25;
+  --leading-tight: 1.28;
   --fw-regular: 400;
   --fw-medium: 600;
   --fw-bold: 700;
   --fw-heavy: 800;
 
-  /* colores / modo oscuro */
-  --bg: #0d0d0d;                  /* fondo global */
-  --card-bg: #262626;             /* cajas con texto (modales, tarjetas) */
-  --card-border: rgba(102,102,102,0.35); /* borde difuminado (#666) */
-  --search-wrap: #1a1a1a;         /* cajón que rodea las barras de búsqueda */
+  /* colores principales */
+  --bg: #0d0d0d;               /* fondo global */
+  --card-bg: #262626;          /* cajas con texto y tarjetas */
+  --card-border: rgba(102,102,102,0.35); /* borde difuminado */
+  --search-wrap: #1a1a1a;      /* cajón que rodea las barras de búsqueda */
+  --thumb-fill: #1a1a1a;       /* fondo detrás de imágenes en thumbs */
+  --modal-bg: #262626;         /* fondo interior de modales */
 
-  /* HEADER: cambiado a #2b330f según petición */
-  --header-bg: #2b330f;           /* header (nuevo) */
-  --header-text: #0C1002;         /* letras del header */
-  --text-primary: #f2f2f2;        /* textos importantes / títulos */
-  --text-secondary: #b3b3b3;      /* textos secundarios */
-  --thumb-fill: #1a1a1a;          /* fondo detrás de imágenes */
-  --modal-bg: #262626;           /* modal interior */
-  --muted: #8e9098;
+  /* header y enlaces sociales */
+  --header-bg: #2b330f;        /* fondo header pedido */
+  --header-text: #BDE151;      /* color letras del header */
+  --social-link: #b4da25;      /* color para LinkedIn/GitHub/Pinterest */
 
-  /* selección / highlight para opciones (pedido) */
-  --option-highlight: #686868;    /* <--- color pedido */
+  /* textos */
+  --text-primary: #f2f2f2;     /* textos importantes (títulos) */
+  --text-secondary: #b3b3b3;   /* textos secundarios (body) */
+
+  /* highlights/accent */
+  --accent: #CEE773;           /* botones libros/reviews */
+  --accent-muted: rgba(206,231,115,0.12);
+
+  /* selects highlight pedido */
+  --option-highlight: #686868; /* highlight de option */
 
   --radius: 12px;
+  --radius-sm: 8px;
   --shadow-strong: 0 18px 50px rgba(0,0,0,0.6);
   --shadow-soft: 0 6px 20px rgba(0,0,0,0.45);
   --max-width: 1200px;
@@ -50,7 +60,7 @@ html,body{
   height:100%;
   background:var(--bg);
   color:var(--text-primary);
-  font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   line-height:var(--leading-base);
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
@@ -62,9 +72,9 @@ a{color:inherit;text-decoration:none}
 .nav{
   background:var(--header-bg);
   color:var(--header-text);
-  position:sticky;
-  top:0; z-index:300;
+  position:sticky; top:0; z-index:300;
   border-bottom: 1px solid rgba(0,0,0,0.25);
+  backdrop-filter: blur(6px);
 }
 .nav .wrap{
   max-width:var(--max-width);
@@ -87,7 +97,7 @@ a{color:inherit;text-decoration:none}
   padding:6px 8px;
   border-radius:8px;
 }
-.nav nav a:hover{ background: rgba(189,225,81,0.06); }
+.nav nav a:hover{ background: rgba(189,225,81,0.06); transform: translateY(-2px) }
 
 /* ---------- Page title ---------- */
 .page-title{
@@ -97,7 +107,7 @@ a{color:inherit;text-decoration:none}
   margin-bottom:12px;
 }
 
-/* ---------- About / Index — único bloque (fondo sutil) ---------- */
+/* ---------- About / Index (un solo bloque) ---------- */
 .about-card{ max-width:var(--max-width); margin:18px auto; width:100% }
 .about-inner{
   background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
@@ -114,36 +124,30 @@ a{color:inherit;text-decoration:none}
 .avatar-wrap{
   width:180px;height:180px;flex-shrink:0;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.03);background:var(--thumb-fill);display:block;
 }
-.avatar-wrap img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; filter:none; }
+.avatar-wrap img{ width:100%;height:100%;object-fit:cover;object-position:center;display:block; }
 
-/* contenido About */
-.about-right{ display:flex; flex-direction:column; gap:8px; flex:1 }
+/* about content */
+.about-right{ flex:1; display:flex; flex-direction:column; gap:8px }
 .about-name{ font-size:var(--fz-xl); font-weight:var(--fw-heavy); color:var(--text-primary); line-height:var(--leading-tight) }
 .about-sub{ color:var(--text-secondary); font-weight:var(--fw-medium) }
 
-/* ABOUT: enlaces (LinkedIn, GitHub, Pinterest) en color específico pedido #b4da25 */
-.about-links{ display:flex; gap:8px; flex-wrap:wrap; margin-top:6px }
-.about-links a,
-.links-row a,
-.small-link{
-  color: #b4da25;         /* <--- color solicitado para los enlaces sociales */
-  font-weight:700;
-}
-.about-links a:hover,
-.links-row a:hover,
-.small-link:hover{
-  text-decoration:underline;
-}
+/* social links color requested */
+.about-links, .links-row, .small-link { display:flex; gap:8px; flex-wrap:wrap; }
+.about-links a, .links-row a, .small-link { color: var(--social-link); font-weight:700; }
+.about-links a:hover, .links-row a:hover, .small-link:hover { text-decoration:underline }
 
-/* separadores y pequeños títulos en about */
-.sep{ height:1px; background:var(--card-border); border-radius:2px; margin:8px 0 }
+/* remove "Conexiones" display: hide if present (user asked) */
+.about-connections { display:none !important; }
+
+/* separators / info grid */
+.sep{ height:1px;background:var(--card-border);border-radius:2px;margin:8px 0 }
 .info-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px }
 .info-block{ background:transparent; padding:8px; border-radius:8px; color:var(--text-secondary) }
 
-/* ---------- General card style ---------- */
+/* ---------- Card generic ---------- */
 .card{ background:transparent; padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.02); box-shadow:none }
 
-/* ---------- Filter / search container (cajón) ---------- */
+/* ---------- Search / Filter cajón (ancho) ---------- */
 .filter-bar, .search-card{
   background:var(--search-wrap);
   border-radius:14px;
@@ -154,71 +158,45 @@ a{color:inherit;text-decoration:none}
   border:1px solid rgba(255,255,255,0.03);
   margin-bottom:12px;
 }
-
 .filter-bar input[type="text"],
 .filter-bar input[type="date"],
 .filter-bar select,
 .search-card input[type="text"],
 .search-card input[type="date"],
 .search-card select{
-  padding:10px 12px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,0.03);
-  background:transparent;
-  color:var(--text-primary);
-  flex:1;
-  min-width:0;
-  font-weight:600;
+  padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--text-primary);flex:1;min-width:0;font-weight:600
 }
-
-/* placeholder */
 .filter-bar input::placeholder, .search-card input::placeholder{ color: rgba(255,255,255,0.5) }
+.filter-bar .btn, .search-card .btn{ background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--text-primary);padding:9px 12px;border-radius:10px;cursor:pointer }
 
-.filter-bar .btn, .search-card .btn{
-  background:transparent;
-  border:1px solid rgba(255,255,255,0.04);
-  color:var(--text-primary);
-  padding:9px 12px;
-  border-radius:10px;
-  cursor:pointer;
-}
+/* make search input wider in lists (user requested full width) */
+.search-card input[type="text"]{ flex-basis: 65%; }
 
-/* cuando queremos que la entrada ocupe más: */
-.search-card input[type="text"]{ flex-basis: 60%; }
-
-/* responsive: mobile inputs full width */
+/* responsive small */
 @media(max-width:720px){
-  .search-card{ flex-direction:column; align-items:stretch }
+  .filter-bar, .search-card{ flex-direction:column; align-items:stretch }
   .search-card input[type="text"]{ flex-basis:auto; width:100% }
 }
 
-/* ---------- Select / dropdown styling (fondo oscuro y highlight solicitado) ---------- */
-
+/* ---------- Select / dropdown: dark + highlight ---------- */
 .filter-bar select, .search-card select{
-  -webkit-appearance:none;
-  -moz-appearance:none;
-  appearance:none;
+  -webkit-appearance:none; -moz-appearance:none; appearance:none;
   background-image:
     linear-gradient(45deg, transparent 50%, var(--text-primary) 50%),
     linear-gradient(135deg, var(--text-primary) 50%, transparent 50%);
   background-position: calc(100% - 18px) calc(50% - 6px), calc(100% - 13px) calc(50% - 6px);
   background-size: 6px 6px, 6px 6px;
   background-repeat: no-repeat;
-  padding-right:36px;
-  position:relative;
-  cursor:pointer;
-  color:var(--text-primary);
+  padding-right:36px; cursor:pointer; color:var(--text-primary);
+  border-radius:10px;
 }
-
-/* options base: dark bg, light text */
-.filter-bar select option,
-.search-card select option{
+/* options dark */
+.filter-bar select option, .search-card select option{
   background: var(--card-bg);
   color: var(--text-primary);
   padding:6px 10px;
 }
-
-/* HOVER and CHECKED - make the highlight the requested color */
+/* hovered / checked highlight color solicitado */
 .filter-bar select option:hover,
 .search-card select option:hover,
 .filter-bar select option:checked,
@@ -226,22 +204,18 @@ a{color:inherit;text-decoration:none}
   background: var(--option-highlight); /* #686868 */
   color: var(--text-primary);
 }
+/* focus */
+.filter-bar select:focus, .search-card select:focus{ outline:2px solid rgba(189,225,81,0.08); outline-offset:2px }
 
-/* focus on select */
-.filter-bar select:focus, .search-card select:focus{
-  outline: 2px solid rgba(189,225,81,0.10);
-  outline-offset: 2px;
-}
-
-/* ---------- Grids: books / reviews (rectangular horiz cards) ---------- */
+/* ---------- Grid libros / reviews (tarjetas rectangulares horizontales) ---------- */
 .books-grid, .reviews-grid, #booksGrid, #reviewsList{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(480px,1fr));
   gap:16px;
-  margin-top:6px;
+  margin-top:14px;
 }
 
-/* Card: horizontal layout */
+/* tarjeta horizontal */
 .book-card, .review-card{
   background:var(--card-bg);
   border-radius:12px;
@@ -250,22 +224,18 @@ a{color:inherit;text-decoration:none}
   align-items:flex-start;
   padding:12px;
   border:1px solid var(--card-border);
-  transition: transform .12s ease, box-shadow .12s ease;
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
   min-height:140px;
   color:var(--text-primary);
+  overflow:hidden;
 }
+.book-card:hover, .review-card:hover{ transform:translateY(-6px); box-shadow: var(--shadow-strong); border-color: rgba(189,225,81,0.06) }
 
-/* hover elevates and emphasizes */
-.book-card:hover, .review-card:hover{
-  transform:translateY(-6px);
-  box-shadow: var(--shadow-strong);
-}
-
-/* Thumb: preserved aspect ratio, dark fill behind images */
+/* thumb: keep aspect ratio, dark fill behind images */
 .book-thumb, .review-thumb{
   width:40%;
   min-width:180px;
-  aspect-ratio: 16/9;
+  aspect-ratio:16/9;
   overflow:hidden;
   border-radius:8px;
   background:var(--thumb-fill);
@@ -276,102 +246,84 @@ a{color:inherit;text-decoration:none}
   width:100%; height:100%; object-fit:cover; object-position:center; display:block;
 }
 /* overlay subtle */
-.book-thumb::after, .review-thumb::after{
-  content:""; position:absolute; inset:0; background:linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.02)); pointer-events:none;
-}
+.book-thumb::after, .review-thumb::after{ content:""; position:absolute; inset:0; background:linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.02)); pointer-events:none }
 
-/* textual body inside card */
+/* body contenido */
 .card-body{ width:60%; display:flex; flex-direction:column; gap:8px; color:var(--text-secondary) }
 .card-meta{ font-size:13px; color:var(--text-secondary) }
-.card-title{ font-size:var(--fz-xl); font-weight:var(--fw-heavy); color:var(--text-primary); margin:0 }
-.card-desc{ font-size:var(--fz-base); color:var(--text-secondary); line-height:1.45; /* no truncamos */ }
+.card-title{ font-size:18px; font-weight:800; color:var(--text-primary); margin:0 }
+.card-desc{ font-size:var(--fz-base); color:var(--text-secondary); line-height:1.45 }
 
-/* bottom row: stars / price / actions */
+/* fila inferior: estrellas, precio y botón */
 .row-bottom{ display:flex; gap:12px; align-items:center; justify-content:space-between; margin-top:auto }
 .price{ font-weight:800; color:var(--text-primary) }
 .stars{ display:inline-flex; gap:6px; align-items:center }
+/* estrella completa / vacía y media (JS produce markup con span.star.half) */
 .star.full{ color:#f5b301 }
 .star.empty{ color:#4b4b4b }
-.star.half{ /* JS may handle gradient */ }
-
-/* product button inside cards (right) */
-.product-link-btn{
-  padding:8px 12px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,0.03);
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  color:var(--text-primary);
-  font-weight:700;
-  text-align:center;
+.star.half{
+  /* gradient fill for half-star (works with text '★') */
+  background: linear-gradient(90deg, #f5b301 50%, #4b4b4b 50%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display:inline-block;
 }
+
+/* botón ver / ir al producto dentro de la tarjeta (lado derecho) */
+.product-link-btn{
+  padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  color:var(--text-primary); font-weight:700; text-align:center;
+  white-space:nowrap;
+}
+
+/* ---------- Botones especiales: libros / reviews ---------- */
+.btn-review, .btn-books{
+  background: var(--accent);
+  color: #0b0b0b;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  padding:10px 14px; border-radius:10px; font-weight:700; text-decoration:none;
+}
+.btn-review:hover, .btn-books:hover{ transform:translateY(-3px); box-shadow:0 20px 48px rgba(0,0,0,0.32); filter:brightness(1.03) }
 
 /* ---------- Modal (detalle) ---------- */
-.modal{ display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; padding:18px; z-index:1000; }
-.modal.open{ display:flex; }
+.modal{ display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; padding:18px; z-index:1000 }
+.modal.open{ display:flex }
 .modal-card{
-  background:var(--modal-bg);
-  border-radius:12px;
-  padding:18px;
-  max-width:1000px;
-  width:100%;
-  max-height:88vh;
-  overflow:auto;
-  border:1px solid var(--card-border);
-  box-shadow:0 28px 80px rgba(0,0,0,0.6);
-  position:relative;
+  background:var(--modal-bg); border-radius:12px; padding:18px; max-width:1000px; width:100%; max-height:88vh; overflow:auto;
+  border:1px solid var(--card-border); box-shadow:0 28px 80px rgba(0,0,0,0.6); position:relative;
 }
+/* close button with high z-index to avoid overlapping thumbs */
+.modal-close{
+  position:absolute; right:12px; top:12px; border:none; background:rgba(255,255,255,0.03); color:var(--text-primary);
+  padding:8px; border-radius:8px; cursor:pointer; z-index:1400; width:36px; height:36px; display:flex; align-items:center; justify-content:center;
+}
+.modal-close:hover{ background:rgba(255,255,255,0.06); transform:rotate(90deg) }
 
-/* ensure close button sits above thumbs */
-.modal-close{ position:absolute; right:12px; top:12px; border:none; background:rgba(255,255,255,0.03); color:var(--text-primary); padding:8px; border-radius:8px; cursor:pointer; z-index:1200; }
-
-/* modal layout: main image (left) + thumbs (right) */
-.modal-layout{ display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap }
-.modal-main{ flex:1; min-width:320px; aspect-ratio:16/9; border-radius:8px; overflow:hidden; background:var(--thumb-fill); display:flex; align-items:center; justify-content:center; }
-.modal-main img{ width:100%; height:100%; object-fit:contain; display:block; background:var(--thumb-fill); }
-.modal-thumbs{ width:120px; display:flex; flex-direction:column; gap:8px; }
-.modal-thumbs img{ width:100%; height:72px; object-fit:cover; border-radius:6px; cursor:pointer; border:1px solid var(--card-border); }
+/* modal inner layout: main image left + thumbs right */
+.modal-layout{ display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap; margin-bottom:12px }
+.modal-main{ flex:1; min-width:300px; aspect-ratio:16/9; border-radius:8px; overflow:hidden; background:var(--thumb-fill); display:flex; align-items:center; justify-content:center }
+.modal-main img{ width:100%; height:100%; object-fit:contain; display:block; background:var(--thumb-fill) }
+.modal-thumbs{ width:120px; display:flex; flex-direction:column; gap:8px }
+.modal-thumbs img{ width:100%; height:72px; object-fit:cover; border-radius:6px; cursor:pointer; border:1px solid var(--card-border) }
 
 /* textual modal */
 .modal-meta{ font-size:13px; color:var(--text-secondary); margin-top:8px }
 .modal-title{ font-size:var(--fz-xl); color:var(--text-primary); margin:8px 0 }
 .modal-desc{ color:var(--text-secondary); line-height:1.5 }
 
-/* ---------- Buttons styles (Sajid-inspired tweaks) ---------- */
-.btn{ font-size:0.95rem; padding:10px 14px; border-radius:10px; cursor:pointer; display:inline-block; text-decoration:none; }
-
-/* primary (subtle green accent for hero) */
-.btn-primary{
-  background: linear-gradient(180deg, rgba(180,218,37,0.08), rgba(180,218,37,0.06)) padding-box,
-              linear-gradient(90deg, rgba(180,218,37,0.12), rgba(180,218,37,0.02)) border-box;
-  border: solid 1px transparent;
-  color:var(--text-primary);
-  font-weight:700;
-  transition: box-shadow .18s ease, transform .12s ease;
-}
-.btn-primary:hover{ transform:translateY(-3px); box-shadow:0 6px 18px rgba(180,218,37,0.06) }
-
-/* special product buttons color (reviews / libros) */
-.btn-review, .btn-books{
-  background: #CEE773;
-  color: #0b0b0b;
-  border: 1px solid rgba(0,0,0,0.08);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-}
-.btn-review:hover, .btn-books:hover{ transform:translateY(-3px); box-shadow: 0 20px 48px rgba(0,0,0,0.32) }
-
-/* ghost */
-.btn-ghost{ background:transparent; color:var(--text-primary); border:1px solid rgba(255,255,255,0.03) }
-
-/* ---------- Card shadows helpers ---------- */
-.sh{ min-width:100px; flex:1; padding:20px; border-radius:20px; }
-.combined{ box-shadow: 0px 4px 4px rgba(0,0,0,0.18), 0px 12px 12px rgba(0,0,0,0.08); }
-.dark{ box-shadow: 0px 4px 4px rgba(0,0,0,0.18); }
-.light{ box-shadow: 0px 12px 12px rgba(0,0,0,0.08); }
+/* ---------- Shadows / card helpers ---------- */
+.sh{ min-width:100px; flex:1; padding:20px; border-radius:20px }
+.combined{ box-shadow: 0px 4px 4px rgba(0,0,0,0.18), 0px 12px 12px rgba(0,0,0,0.08) }
+.dark{ box-shadow: 0px 4px 4px rgba(0,0,0,0.18) }
+.light{ box-shadow: 0px 12px 12px rgba(0,0,0,0.08) }
 
 /* ---------- Footer ---------- */
 .footer{ text-align:center; color:var(--text-secondary); margin-top:20px; padding:12px 0; font-size:13px }
 
-/* ---------- Responsive tweaks ---------- */
+/* ---------- Responsive ---------- */
 @media(max-width:980px){
   .books-grid,.reviews-grid{ grid-template-columns:repeat(auto-fill,minmax(320px,1fr)) }
   .book-thumb,.review-thumb{ width:45% }
@@ -379,18 +331,29 @@ a{color:inherit;text-decoration:none}
   .modal-thumbs{ width:100%; flex-direction:row; overflow:auto }
 }
 @media(max-width:720px){
-  .about-inner{ flex-direction:column; align-items:center }
-  .avatar-wrap{ width:140px; height:140px }
+  .about-inner{ flex-direction:column; align-items:center; text-align:center }
+  .avatar-wrap{ width:140px;height:140px; margin-bottom:8px }
   .filter-bar, .search-card{ flex-direction:column; align-items:stretch }
   .filter-bar input, .filter-bar select, .search-card input, .search-card select{ width:100% }
   .modal-layout{ flex-direction:column }
-  .modal-main{ aspect-ratio: 4/3; min-width: 60% }
+  .modal-main{ aspect-ratio:4/3; min-width:60% }
   .modal-thumbs{ width:100%; flex-direction:row; gap:8px; overflow:auto }
   .book-thumb, .review-thumb{ width:40% }
-  .books-grid, .reviews-grid{ grid-template-columns: 1fr }
+  .books-grid, .reviews-grid{ grid-template-columns:1fr }
 }
 
-/* accessibility focus */
-a:focus, button:focus, .product-link-btn:focus { outline: 3px solid rgba(189,225,81,0.12); outline-offset:2px; border-radius:8px; }
+/* focus styles (accessibility) */
+a:focus, button:focus, .product-link-btn:focus, input:focus, select:focus{ outline:3px solid rgba(206,231,115,0.10); outline-offset:2px; border-radius:8px }
 
-/* ---- end stylesheet ---- */
+/* custom scrollbar */
+::-webkit-scrollbar{ width:10px }
+::-webkit-scrollbar-track{ background: rgba(255,255,255,0.02) }
+::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.08); border-radius:6px }
+::-webkit-scrollbar-thumb:hover{ background: rgba(255,255,255,0.12) }
+
+/* small animation for cards load */
+@keyframes fadeIn { from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none} }
+.book-card, .review-card { animation: fadeIn .36s ease-out }
+
+/* ensure images with .webp or tall/portrait are handled: use object-fit + background fill to avoid zoomed center */
+img { max-width:100%; height:auto; display:block; }
