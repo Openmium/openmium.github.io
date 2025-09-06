@@ -1,4 +1,4 @@
-/* styles.css — Tema oscuro, tipografía y botones según tu pedido */
+/* styles.css — Tema oscuro actualizado (header #2b330f + selects oscuros) */
 
 /* ---------- Variables ---------- */
 :root{
@@ -7,8 +7,8 @@
   --panel-bg: #262626;       /* cajas/ventanas con texto */
   --panel-border: rgba(102,102,102,0.32); /* borde difuminado */
   --img-fill: #1a1a1a;       /* fondo de los contenedores de imagen */
-  --header-bg: #434d1b;      /* fondo del header (nav) */
-  --header-text: #BDE151;    /* color letras header (nuevo) */
+  --header-bg: #2b330f;      /* <-- cambiado a #2b330f */
+  --header-text: #BDE151;    /* color letras header */
 
   /* textos */
   --text-primary: #f2f2f2;   /* títulos / textos importantes */
@@ -33,7 +33,7 @@
 
 /* ---------- Reset / base ---------- */
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;background:var(--bg-page);color:var(--text-primary);font-family:var(--font-family);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+html,body{height:100%;margin:0;background:var(--bg-page);color:var(--text-primary);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 a{color:inherit;text-decoration:none}
 .container{max-width:var(--max-width);margin:20px auto;padding:20px}
 
@@ -69,7 +69,7 @@ a{color:inherit;text-decoration:none}
 }
 .nav nav a:hover{ opacity:1; text-decoration:underline; text-underline-offset:6px }
 
-/* put brand left and nav right by default (fits your pages) */
+/* put brand left and nav right by default */
 .nav .wrap > nav { display:flex; gap:8px; align-items:center; }
 
 /* ---------- Page title ---------- */
@@ -110,7 +110,7 @@ a{color:inherit;text-decoration:none}
 /* small separator */
 .sep{height:1px;background:rgba(255,255,255,0.02);border-radius:2px;margin:8px 0}
 
-/* ---------- Generic card style (white-on-dark) ---------- */
+/* ---------- Generic card style (panels) ---------- */
 .card{
   background:var(--panel-bg);
   padding:14px;
@@ -122,7 +122,7 @@ a{color:inherit;text-decoration:none}
 
 /* ---------- Filter / Search bar (container) ---------- */
 .filter-bar{
-  background: #1a1a1a; /* requested color for search container */
+  background: #1a1a1a; /* color solicitado para el contenedor de búsqueda */
   border-radius:14px;
   padding:12px;
   display:flex;
@@ -131,6 +131,8 @@ a{color:inherit;text-decoration:none}
   border:1px solid rgba(255,255,255,0.03);
   margin-bottom:12px;
 }
+
+/* campos dentro de la barra de filtros */
 .filter-bar input[type="text"],
 .filter-bar input[type="date"],
 .filter-bar select{
@@ -144,9 +146,52 @@ a{color:inherit;text-decoration:none}
   font-weight:600;
   font-size:0.95rem;
 }
+
+/* placeholder visual */
 .filter-bar input::placeholder{color:rgba(255,255,255,0.5)}
+
+/* boton de limpiar en la barra */
 .filter-bar .btn{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text-primary);padding:9px 12px;border-radius:10px;cursor:pointer;font-weight:700}
 .filter-bar .btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.45)}
+
+/* ---------- Select / dropdown styling (fondo oscuro para lista) ---------- */
+/* Aplica fondo oscuro y texto claro tanto al select como a las opciones */
+.filter-bar select{
+  /* quitamos flecha nativa y añadimos una ligera flecha CSS */
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  appearance:none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-primary) 50%),
+    linear-gradient(135deg, var(--text-primary) 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(50% - 6px), calc(100% - 13px) calc(50% - 6px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right:36px; /* espacio para la flecha */
+  position:relative;
+  cursor:pointer;
+}
+
+/* MSIE/Edge: ocultar flecha nativa */
+.filter-bar select::-ms-expand { display: none; }
+
+/* opciones: fondo oscuro, texto claro */
+.filter-bar select option{
+  background: var(--panel-bg);
+  color: var(--text-primary);
+  padding:6px 10px;
+}
+
+/* hover sobre opciones (no soportado en todos los navegadores) */
+.filter-bar select option:hover{
+  background: rgba(255,255,255,0.02);
+}
+
+/* focus para accesibilidad */
+.filter-bar select:focus{
+  outline: 2px solid rgba(189,225,81,0.10);
+  outline-offset: 2px;
+}
 
 /* ---------- Grids: books / reviews (rectangular horizontal cards) ---------- */
 .books-grid, .reviews-grid{
@@ -182,7 +227,7 @@ a{color:inherit;text-decoration:none}
   aspect-ratio: 16 / 9;
   overflow:hidden;
   border-radius:8px;
-  background:var(--img-fill); /* requested darker fill behind images */
+  background:var(--img-fill); /* fondo de relleno oscuro detrás de la imagen */
   position:relative;
   border:1px solid rgba(255,255,255,0.02);
 }
@@ -190,7 +235,7 @@ a{color:inherit;text-decoration:none}
   width:100%;height:100%;object-fit:cover;object-position:center;display:block;
 }
 
-/* overlay subtle to avoid harsh cutoffs */
+/* overlay subtle para evitar cortes bruscos */
 .book-thumb::after, .review-thumb::after{
   content:"";
   position:absolute;
@@ -210,7 +255,7 @@ a{color:inherit;text-decoration:none}
 .price{font-weight:800;color:var(--text-secondary)}
 .stars{display:inline-flex;gap:6px;align-items:center}
 .star.full{color:#f5b301}
-.star.half{ /* fallback style; JS paints half if needed */ color:linear-gradient(90deg,#f5b301 50%, #777 50%)}
+.star.half{ /* JS aplicará si es necesario */ color:linear-gradient(90deg,#f5b301 50%, #777 50%)}
 .star.empty{color:#444}
 
 /* product button inside cards (right aligned) */
@@ -240,10 +285,10 @@ a{color:inherit;text-decoration:none}
   border: none;
 }
 
-/* Index hero primary button (gradiented but subtle, high contrast) */
+/* Index hero primary button (gradiented) */
 .hero .btn-primary,
 .btn-index {
-  color: #081304; /* dark text on light-green gradient */
+  color: #081304; /* texto oscuro sobre verde claro */
   background: linear-gradient(180deg, var(--btn-index-start), var(--btn-index-end));
   box-shadow: 0 8px 28px rgba(107,176,54,0.12), inset 0 -2px 0 rgba(0,0,0,0.06);
   border: 1px solid rgba(0,0,0,0.06);
@@ -251,7 +296,7 @@ a{color:inherit;text-decoration:none}
 .hero .btn-primary:hover,
 .btn-index:hover{ transform:translateY(-3px); box-shadow:0 18px 40px rgba(107,176,54,0.12) }
 
-/* Buttons specifically for Libros / Reseñas (requested color #CEE773) */
+/* Buttons specifically for Libros / Reseñas (color #CEE773) */
 .btn-review, .btn-books {
   background: var(--btn-accent);
   color: #0b0b0b;
@@ -339,7 +384,7 @@ a{color:inherit;text-decoration:none}
   .books-grid, .reviews-grid{ grid-template-columns: 1fr }
 }
 
-/* small accessibility focus */
+/* accessibility focus */
 a:focus, button:focus, .product-link-btn:focus { outline: 3px solid rgba(189,225,81,0.12); outline-offset:2px; border-radius:8px; }
 
 /* ---- End of stylesheet ---- */
