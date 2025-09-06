@@ -1,47 +1,46 @@
-/* styles.css — Tema oscuro solicitado
-   - fondo general: #0d0d0d
-   - cajas de contenido (cards, modales, about, book/review cards): #262626
-   - borde cajas: #666666 (difuminado en sombra)
-   - texto importante (títulos): #f2f2f2
-   - texto secundario: #b3b3b3
-   - header: #434d1b, letras del header: #b4da25
-   - fondo miniaturas/imágenes: #1a1a1a
+/* styles.css — Tema oscuro mejorado + ideas CSS-Tricks (tarjetas, sombras, botones)
+   - Montserrat para títulos, Manrope para cuerpo
+   - Tarjetas inspiradas en polite-card
+   - Botones "moody/dashing/crispy" aplicados a .btn, .btn-primary y .product-link-btn
+   - Sombras combinadas (dark + light) para dar profundidad
+   - Ajustes para imágenes .webp/.jpg: object-fit + overlay
 */
 
-:root{
-  /* colores base */
-  --page-bg: #0d0d0d;
-  --card-bg: #262626;          /* cajas de contenido (cards, modales, detalles) */
-  --card-border: rgba(102,102,102,0.65); /* #666666 con algo de transparencia */
-  --thumb-fill: #1a1a1a;       /* fondo dentro de los recuadros de imagen */
-  --header-bg: #434d1b;
-  --header-text: #b4da25;
+/* -------- Fonts & root variables -------- */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Manrope:wght@400;600;700&display=swap");
 
-  --title-text: #f2f2f2;       /* títulos principales */
-  --muted-text: #b3b3b3;       /* textos secundarios / cuerpo */
-  --shadow-strong: 0 20px 60px rgba(0,0,0,0.6);
-  --shadow-soft: 0 8px 24px rgba(0,0,0,0.45);
-  --radius: 12px;
+:root{
+  /* colores base (modo oscuro solicitado) */
+  --page-bg: #0d0d0d;
+  --panel-bg: #262626;          /* paneles / cards / modales */
+  --panel-border: rgba(102,102,102,0.5);
+  --thumb-fill: #1a1a1a;        /* fondo dentro de recuadros de miniaturas */
+  --header-bg: #434d1b;         /* header */
+  --header-text: #b4da25;       /* letras header */
+  --title-text: #f2f2f2;        /* títulos */
+  --muted-text: #b3b3b3;        /* cuerpo secundario */
+  --accent-a: #ffe537;          /* para botones llamativos (suave) */
+  --accent-b: #537fe7;          /* degradado secundario */
+  --card-radius: 12px;
+  --shadow-dark: 0 6px 14px rgba(0,0,0,0.7);
+  --shadow-soft: 0 18px 40px rgba(0,0,0,0.55);
   --max-width: 1200px;
   --gap: 16px;
-  --filter-bg: #6c7792;       /* barra de búsqueda/filtros (excepción) */
+  --transition: 220ms ease;
+  --btn-font: 15px/1 "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
 
-/* Reset mínimo */
+/* -------- Reset y base -------- */
 * { box-sizing: border-box; margin:0; padding:0; }
-html,body { height:100%; background:var(--page-bg); color:var(--muted-text); font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
-a { color:inherit; text-decoration:none; }
-
-/* Layout principal */
+html,body { height:100%; background:var(--page-bg); color:var(--muted-text); font-family: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+a { text-decoration:none; color:inherit; }
 .container { max-width: var(--max-width); margin: 20px auto; padding: 18px; }
 
-/* Header / nav */
+/* -------- Header -------- */
 .nav {
   background: var(--header-bg);
   color: var(--header-text);
-  position: sticky;
-  top: 0;
-  z-index: 200;
+  position: sticky; top:0; z-index:300;
   border-bottom: 1px solid rgba(255,255,255,0.03);
 }
 .nav .wrap {
@@ -53,72 +52,44 @@ a { color:inherit; text-decoration:none; }
   justify-content:space-between;
   gap:12px;
 }
-.nav .brand { font-weight:800; color: var(--header-text); font-size:18px; }
-.nav nav a {
-  color: var(--header-text);
-  margin-left:14px;
-  font-weight:700;
-  opacity:0.95;
-}
-.nav nav a:hover { opacity:1; text-decoration: underline; }
+.nav .brand { font-weight:900; color:var(--header-text); font-family: "Montserrat", sans-serif; font-size:18px; letter-spacing:0.2px; }
+.nav nav a { color: var(--header-text); margin-left:14px; font-weight:700; font-family: "Manrope", sans-serif; }
+.nav nav a:hover { opacity:0.95; text-decoration:underline; }
 
-/* Page title */
-.page-title {
-  font-size:20px;
-  color: var(--title-text);
-  margin-bottom:12px;
-  font-weight:800;
-}
+/* -------- Titulos de página -------- */
+.page-title { font-family: "Montserrat", sans-serif; font-weight:800; color:var(--title-text); margin-bottom:12px; font-size:20px; }
 
-/* ABOUT / INDEX - bloque unificado */
+/* -------- About block (un solo bloque) -------- */
 .about-card { width:100%; margin:18px auto; }
-.about-inner{
-  background: var(--card-bg);
-  border-radius: calc(var(--radius) + 2px);
-  padding:20px;
+.about-inner {
+  background: var(--panel-bg);
+  border-radius: calc(var(--card-radius) + 2px);
+  padding: 20px;
   display:flex;
   gap:18px;
   align-items:flex-start;
-  border:1px solid var(--card-border);
-  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--panel-border);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.6), 0 20px 40px rgba(0,0,0,0.45);
   width:100%;
 }
 .avatar-wrap {
   width:180px; height:180px; flex-shrink:0; border-radius:10px;
-  overflow:hidden; border:1px solid rgba(255,255,255,0.03); background:var(--thumb-fill);
+  overflow:hidden; background:var(--thumb-fill); border:1px solid rgba(255,255,255,0.03);
 }
-.avatar-wrap img { width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+.avatar-wrap img { width:100%; height:100%; object-fit:cover; object-position:center; display:block; filter: none; }
 
+/* texto de about */
 .about-right { flex:1; display:flex; flex-direction:column; gap:10px; color:var(--muted-text); }
-.about-name { font-size:22px; font-weight:900; color:var(--title-text); }
+.about-name { font-family: "Montserrat", sans-serif; font-weight:900; font-size:22px; color:var(--title-text); }
 .about-sub  { color:var(--muted-text); font-weight:700; }
 
-/* Links en about */
-.link-pill {
-  display:inline-block; padding:6px 10px; border-radius:8px;
-  border:1px solid rgba(255,255,255,0.03);
-  color:var(--muted-text); background:transparent; font-weight:600;
-}
-.link-pill:hover { color: var(--title-text); border-color: rgba(255,255,255,0.06); }
+/* pequeños elementos */
+.link-pill { padding:6px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); color:var(--muted-text); background:transparent; font-weight:600; }
+.link-pill:hover { color:var(--title-text); }
 
-/* Separador y bloques */
-.sep { height:1px; background: rgba(255,255,255,0.03); margin:8px 0; border-radius:2px; }
-.info-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:12px; }
-.info-block { padding:8px; border-radius:8px; background:transparent; color:var(--muted-text); }
-
-/* Card genérica (cuando la necesites) */
-.card {
-  background: var(--card-bg);
-  padding:14px;
-  border-radius:12px;
-  border:1px solid var(--card-border);
-  box-shadow: var(--shadow-soft);
-  color: var(--muted-text);
-}
-
-/* Barra de filtros / búsqueda (EXCEPCIÓN: mantiene color de filtro) */
+/* -------- Filter bar (estilo Sajid mejorado) -------- */
 .filter-bar {
-  background: var(--filter-bg);
+  background: linear-gradient(180deg, rgba(108,119,146,0.98), rgba(108,119,146,0.94));
   border-radius:14px;
   padding:12px;
   display:flex;
@@ -135,91 +106,160 @@ a { color:inherit; text-decoration:none; }
   border:1px solid rgba(255,255,255,0.06);
   background: transparent;
   color: var(--title-text);
-  flex:1;
-  min-width:0;
-  font-weight:600;
+  flex:1; min-width:0; font-weight:600; font-family: "Manrope", sans-serif;
 }
 .filter-bar input::placeholder { color: rgba(255,255,255,0.78); }
 .filter-bar .btn { background: transparent; border:1px solid rgba(255,255,255,0.12); color: var(--title-text); padding:9px 12px; border-radius:10px; cursor:pointer; }
 
-/* Grid de libros / reviews (tarjetas horizontales) */
-.books-grid, .reviews-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(480px, 1fr)); gap: var(--gap); margin-top:6px; }
+/* -------- Grid de tarjetas (horizontal, tipo polite-card) -------- */
+.books-grid, .reviews-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+  gap: var(--gap);
+  margin-top:8px;
+}
 
-/* Tarjeta - horizontal (libro / reseña) */
-.book-card, .review-card {
-  background: var(--card-bg);
-  border-radius:12px;
+/* tarjeta base (polite-card inspired) */
+.polite-card, .book-card, .review-card {
   display:flex;
-  gap:14px;
-  align-items:flex-start;
-  padding:12px;
-  border:1px solid var(--card-border);
-  transition: transform .12s ease, box-shadow .12s ease;
-  min-height:140px;
-  color: var(--muted-text);
-}
-.book-card:hover, .review-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-strong);
-}
-
-/* Thumb (área de imagen). NOTA: fondo de las miniaturas es --thumb-fill */
-.book-thumb, .review-thumb {
-  width:40%;
-  min-width:180px;
-  aspect-ratio: 16/9;
+  flex-direction:row;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.01));
+  border-radius:12px;
   overflow:hidden;
-  border-radius:8px;
-  background: var(--thumb-fill);
-  display:block;
-  position:relative;
-  border:1px solid rgba(255,255,255,0.03);
+  border:1px solid var(--panel-border);
+  box-shadow: 0 6px 8px rgba(0,0,0,0.6), 0 18px 36px rgba(0,0,0,0.45);
+  transition: transform var(--transition), box-shadow var(--transition);
+  gap:14px;
+  padding:12px;
+  align-items:flex-start;
+  min-height:140px;
+  color:var(--muted-text);
 }
-.book-thumb img, .review-thumb img {
-  width:100%; height:100%; object-fit:cover; object-position:center; display:block;
+.polite-card:hover, .book-card:hover, .review-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.6), 0 36px 80px rgba(0,0,0,0.45);
 }
-/* sutil overlay para evitar recortes duros */
-.book-thumb::after, .review-thumb::after { content:""; position:absolute; inset:0; background: rgba(0,0,0,0.08); pointer-events:none; }
 
-/* Cuerpo de la tarjeta */
-.card-body { width:60%; display:flex; flex-direction:column; gap:8px; }
+/* izquierda: imagen, derecha: contenido */
+.polite-card img, .book-thumb img, .review-thumb img {
+  width:100%; height:100%; display:block; object-fit:cover; object-position:center;
+}
+.book-thumb, .review-thumb {
+  width:40%; min-width:180px; aspect-ratio: 16/9; border-radius:8px; overflow:hidden;
+  background: var(--thumb-fill); border:1px solid rgba(255,255,255,0.03); position:relative;
+}
+.book-thumb::after, .review-thumb::after { content:""; position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.06)); pointer-events:none; }
+
+/* cuerpo */
+.card-body { flex:1; display:flex; flex-direction:column; gap:8px; width:60%; min-width:0; }
 .card-meta { font-size:13px; color: var(--muted-text); }
-.card-title { font-size:18px; font-weight:800; color: var(--title-text); margin:0; }
-.card-desc { font-size:14px; color: var(--muted-text); line-height:1.45; /* no truncamos */ }
+.card-title { font-family: "Montserrat", sans-serif; font-size:18px; font-weight:800; color:var(--title-text); margin:0; }
+.card-desc { font-size:14px; color:var(--muted-text); line-height:1.45; }
 
-/* fila inferior con precio / estrellas / acción */
+/* ajustar descripciones para que no estén limitadas - permitir tamaño variable */
+.card-desc { white-space:normal; }
+
+/* fila inferior: estrellas, precio, boton */
 .row-bottom { display:flex; gap:12px; align-items:center; justify-content:space-between; margin-top:auto; }
-.price { font-weight:800; color: var(--muted-text); }
+.price { font-weight:800; color:var(--muted-text); }
 .stars { display:inline-flex; gap:6px; align-items:center; color: #f5b301; }
-.star.full{ color:#f5b301; }
-.star.half{ /* se podrá pintar por JS con gradiente si quieres */ color:#f5b301; }
-.star.empty{ color:#333; opacity:0.25; }
 
-/* boton de producto dentro de tarjeta (lado derecho) */
-.product-link-btn { padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background:transparent; font-weight:700; color:var(--title-text); }
+/* estrellas: gradiente para mitad */
+.star {
+  font-size:16px;
+  line-height:1;
+  display:inline-block;
+}
+.star.full { color:#f5b301; }
+.star.empty { color:#333; opacity:0.25; }
+.star.half {
+  color:transparent;
+  background: linear-gradient(90deg, #f5b301 50%, rgba(0,0,0,0.15) 50%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  display:inline-block;
+}
 
-/* Modal (detalle) — usa el mismo card-bg y borde difuminado */
+/* -------- Botones mejorados (moody / dashing / crispy) -------- */
+/* base .btn usada en HTML (enlaces y anchors) */
+.btn {
+  display:inline-block;
+  font: var(--btn-font);
+  text-decoration:none;
+  padding:10px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  transition: all 240ms ease;
+  text-align:center;
+  min-width:96px;
+  box-shadow: none;
+  border: none;
+}
+
+/* dashing (gradiente animado) -> usar para acciones primarias (.btn-primary, .product-link-btn) */
+.dashing {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)) padding-box,
+              linear-gradient(270deg, var(--accent-a), var(--accent-b)) border-box;
+  border: 2px solid transparent;
+  color: var(--page-bg);
+  font-weight:700;
+}
+.dashing:hover { transform: translateY(-2px); filter:brightness(1.06); }
+
+/* dashing-fill (más intensa) */
+.dashing-fill {
+  background: linear-gradient(270deg, var(--accent-a), var(--accent-b), var(--accent-a));
+  background-size: 300% 300%;
+  animation: bg 8s ease-in-out infinite;
+  color: var(--page-bg);
+  border: 0;
+  font-weight:800;
+}
+@keyframes bg {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.dashing-fill:hover { transform: translateY(-2px); filter:brightness(1.04); }
+
+/* moody (sutil glow) */
+.moody {
+  color: var(--accent-a);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 0 12px rgba(255,229,55,0.06);
+}
+.moody:hover { box-shadow: 0 0 20px rgba(255,229,55,0.10); transform: translateY(-2px); }
+
+/* crispy (borde y sombra sutil) */
+.crispy { color: var(--accent-b); border: 1px solid rgba(83,127,231,0.18); box-shadow: 0 3px 0 rgba(83,127,231,0.06); }
+.crispy:hover { box-shadow: 0 6px 0 rgba(83,127,231,0.12); transform: translateY(-1px); }
+
+/* alias prácticos para tu HTML existente:
+   .btn-primary -> dashing-fill (comprar)
+   .product-link-btn -> dashing (ir al producto)
+*/
+.btn-primary { padding:10px 14px; border-radius:10px; font-weight:800; font-family:"Manrope",sans-serif; }
+.btn-primary.dashing-fill { /* keep animation */ }
+.product-link-btn { padding:8px 12px; border-radius:10px; font-weight:700; font-family:"Manrope",sans-serif; }
+
+/* Ejemplo: aplicar clases en HTML (JS puede añadir estas clases dinámicamente):
+   <a class="btn btn-primary dashing-fill" ...>Comprar</a>
+   <a class="product-link-btn dashing" ...>Ir al producto</a>
+*/
+
+/* -------- Modal (detalle) -------- */
 .modal {
-  display:none;
-  position:fixed;
-  inset:0;
-  background: rgba(0,0,0,0.6);
-  align-items:center;
-  justify-content:center;
-  padding:18px;
-  z-index:400;
+  display:none; position:fixed; inset:0; background: rgba(0,0,0,0.65);
+  align-items:center; justify-content:center; padding:18px; z-index:600;
 }
 .modal.open { display:flex; }
 .modal-card {
-  background: var(--card-bg);
-  border-radius:12px;
-  padding:18px;
-  max-width:1000px;
-  width:100%;
-  max-height:88vh;
-  overflow:auto;
-  border:1px solid var(--card-border);
-  box-shadow: 0 28px 80px rgba(0,0,0,0.6);
+  background: var(--panel-bg);
+  border-radius:12px; padding:18px;
+  max-width:1000px; width:100%; max-height:88vh; overflow:auto;
+  border:1px solid var(--panel-border);
+  box-shadow: 0 28px 80px rgba(0,0,0,0.7);
   position:relative;
 }
 .modal-close {
@@ -228,28 +268,27 @@ a { color:inherit; text-decoration:none; }
   padding:8px; border-radius:8px; cursor:pointer; z-index:9999;
 }
 
-/* modal layout: main image + miniaturas */
+/* modal layout (imagen + thumbs) */
 .modal-layout { display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap; }
 .modal-main { flex:1; min-width:300px; aspect-ratio: 16/9; border-radius:8px; overflow:hidden; background: var(--thumb-fill); display:block; }
-.modal-main img { width:100%; height:100%; object-fit:contain; display:block; }
+.modal-main img { width:100%; height:100%; object-fit:contain; display:block; background: var(--thumb-fill); }
 .modal-thumbs { width:120px; display:flex; flex-direction:column; gap:8px; }
 .modal-thumbs img { width:100%; height:72px; object-fit:cover; border-radius:6px; cursor:pointer; border:1px solid rgba(255,255,255,0.03); }
 
-/* textos modal */
-.modal-meta { font-size:13px; color: var(--muted-text); margin-top:8px; }
-.modal-title { font-size:20px; color: var(--title-text); margin:8px 0; }
-.modal-desc { color: var(--muted-text); line-height:1.5; }
+/* textos dentro modal */
+.modal-meta { font-size:13px; color:var(--muted-text); margin-top:8px; }
+.modal-title { font-family:"Montserrat",sans-serif; font-size:20px; color:var(--title-text); margin:8px 0; }
+.modal-desc { color:var(--muted-text); line-height:1.5; }
 
-/* Footer */
-.footer { text-align:center; color: var(--muted-text); margin-top:20px; padding:12px 0; font-size:13px; }
+/* -------- utility, layout, responsive -------- */
+.footer { text-align:center; color:var(--muted-text); margin-top:20px; padding:12px 0; font-size:13px; }
 
-/* Responsive */
-@media(max-width:980px){
+@media (max-width:980px) {
   .books-grid, .reviews-grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
   .book-thumb, .review-thumb { width:45%; }
   .card-body { width:55%; }
 }
-@media(max-width:720px){
+@media (max-width:720px) {
   .about-inner { flex-direction:column; align-items:center; padding:14px; }
   .avatar-wrap { width:140px; height:140px; }
   .filter-bar { flex-direction:column; align-items:stretch; }
@@ -259,3 +298,19 @@ a { color:inherit; text-decoration:none; }
   .book-thumb, .review-thumb { width:100%; min-width:unset; aspect-ratio: 3/2; }
 }
 
+/* -------- Small helpers for shadows on text blocks (Sajid-inspired) -------- */
+.sh { padding: 18px; border-radius: 16px; }
+.combined { box-shadow: 0px 4px 4px rgba(0,0,0,0.35), 0px 12px 12px rgba(0,0,0,0.18); }
+.dark { box-shadow: 0px 4px 6px rgba(0,0,0,0.45); }
+.light { box-shadow: 0px 12px 18px rgba(0,0,0,0.18); }
+
+/* small credit (if you want) */
+.credit { position: fixed; bottom: 14px; right: 18px; font-family:"Manrope",sans-serif; font-size:13px; background:transparent; color:var(--muted-text); padding:6px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.02); }
+
+/* -------- Notes:
+   - Para aplicar los estilos de botón a tus botones actuales:
+     * En HTML/JS para "Comprar" (libros) usa: class="btn btn-primary dashing-fill"
+     * Para "Ir al producto" (reviews) usa: class="btn product-link-btn dashing"
+   - He mantenido object-fit:cover y object-position:center para evitar zoom agresivo.
+   - Si alguna miniatura sigue viéndose "zoomed", sube la imagen original con tamaño suficiente o cambia object-position.
+*/ 
