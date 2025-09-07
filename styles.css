@@ -357,3 +357,49 @@ a:focus, button:focus, .product-link-btn:focus, input:focus, select:focus{ outli
 
 /* ensure images with .webp or tall/portrait are handled: use object-fit + background fill to avoid zoomed center */
 img { max-width:100%; height:auto; display:block; }
+
+/* FIX: forzar fondo oscuro #1a1a1a detrás de thumbnails y modal main
+   -> Pegar esto al final de styles.css (solo esto, no tocar nada más)
+*/
+
+.book-thumb,
+.review-thumb,
+.modal-main {
+  /* fuerza el color de relleno detrás de la imagen */
+  background-color: #1a1a1a !important;
+  background-image: none !important;
+}
+
+/* Asegura que la imagen no pinte fondo blanco por encima */
+.book-thumb img,
+.review-thumb img,
+.modal-main img {
+  background-color: transparent !important;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;    /* thumbs: cubrir el recuadro */
+  object-position: center;
+}
+
+/* En caso de placeholders o pseudo-elementos que muestren blanco */
+.book-thumb::before,
+.review-thumb::before,
+.modal-main::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #1a1a1a;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 0;
+}
+
+/* Asegura que el contenedor mantenga el stacking correcto para el overlay */
+.book-thumb img,
+.review-thumb img,
+.modal-main img {
+  position: relative;
+  z-index: 1;
+}
+
