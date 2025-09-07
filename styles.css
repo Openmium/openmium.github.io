@@ -402,3 +402,334 @@ img { max-width:100%; height:auto; display:block; }
   position: relative;
   z-index: 1;
 }
+
+
+
+
+
+/* -------------------------
+
+
+   IMAGES / THUMBS / MODAL FIX
+
+
+   Mantener thumbs con cover y modal con contain;
+
+
+   fondo oscuro #1a1a1a detrás de todo
+
+
+   -------------------------*/
+
+
+
+
+
+/* Global images (no forzar height:auto aquí para no romper el modal) */
+
+
+img {
+
+
+  max-width: 100%;
+
+
+  display: block;
+
+
+  height: auto; /* keep intrinsic height where appropriate */
+
+
+}
+
+
+
+
+
+/* Thumbnails (listas): cover para rellenar la caja */
+
+
+.book-thumb img,
+
+
+.review-thumb img {
+
+
+  width: 100%;
+
+
+  height: 100%;
+
+
+  object-fit: cover;
+
+
+  object-position: center;
+
+
+  background-color: transparent !important;
+
+
+  position: relative;
+
+
+  z-index: 1;
+
+
+}
+
+
+
+
+
+/* Forzar fondo oscuro detrás de thumbs */
+
+
+.book-thumb,
+
+
+.review-thumb {
+
+
+  background-color: #1a1a1a !important;
+
+
+  background-image: none !important;
+
+
+}
+
+
+
+
+
+/* Modal main: mostramos la imagen completa sin recortes */
+
+
+.modal-main img {
+
+
+  width: 100%;
+
+
+  height: 100%;
+
+
+  object-fit: contain;   /* <-- importante: mostrar la imagen completa */
+
+
+  object-position: center;
+
+
+  background-color: transparent !important;
+
+
+  position: relative;
+
+
+  z-index: 1;
+
+
+}
+
+
+
+
+
+/* Forzar fondo oscuro detrás del modal main (por si hay placeholders) */
+
+
+.modal-main {
+
+
+  background-color: #1a1a1a !important;
+
+
+  background-image: none !important;
+
+
+}
+
+
+
+
+
+/* Evita placeholders blancos por pseudo-elementos */
+
+
+.book-thumb::before,
+
+
+.review-thumb::before,
+
+
+.modal-main::before {
+
+
+  content: "";
+
+
+  position: absolute;
+
+
+  inset: 0;
+
+
+  background-color: #1a1a1a;
+
+
+  pointer-events: none;
+
+
+  border-radius: inherit;
+
+
+  z-index: 0;
+
+
+}
+
+/* === FIX: modal visible y contenido legible (pegar al final de styles.css) === */
+
+/* overlay: un poco menos opaco para que el modal no parezca un "negro total" */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55); /* overlay oscuro pero deja ver el modal */
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 1200;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+/* mostrar */
+.modal.open { display: flex; }
+
+/* card del modal: más contrastada contra el overlay */
+.modal-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 1000px;
+  width: 100%;
+  max-height: 88vh;
+  overflow: auto;
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 32px 90px rgba(0,0,0,0.65);
+  position: relative;
+  color: var(--text-primary); /* asegurar legibilidad del texto */
+  transform: translateZ(0);
+}
+
+/* close: siempre por encima */
+.modal-close {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  z-index: 1400;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: rgba(255,255,255,0.03);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+.modal-close:hover { background: rgba(255,255,255,0.06); transform: rotate(90deg); }
+
+/* layout interno: imagen principal + miniaturas */
+.modal-layout {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* area principal de imagen: fondo oscuro controlado (no negro total) */
+.modal-main {
+  flex: 1;
+  min-width: 320px;
+  aspect-ratio: 16/9;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #1a1a1a 0%, #262626 100%); /* relleno oscuro homogéneo */
+  border: 1px solid rgba(255,255,255,0.03);
+  position: relative;
+}
+
+/* imagen en modal: mostrar completa sin recortes */
+.modal-main img {
+  width: auto;
+  max-width: 100%;
+  max-height: 80vh;   /* evita que la imagen empuje todo el modal */
+  height: auto;
+  object-fit: contain; /* important: mostrar la imagen completa */
+  object-position: center;
+  background: transparent !important;
+  display: block;
+  position: relative;
+  z-index: 2;
+}
+
+/* miniaturas (thumbs) */
+.modal-thumbs {
+  width: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.modal-thumbs img {
+  width: 100%;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.03);
+  background: #1a1a1a; /* fondo oscuro en miniaturas */
+}
+
+/* seguridad: asegurar que no hay pseudo-elementos blancos superpuestos */
+.modal-main::before,
+.modal-main::after,
+.modal-thumbs::before,
+.modal-thumbs::after {
+  content: "";
+  display: none !important;
+}
+
+/* si había pseudo-elements que pintaban blanco detrás, forzamos el fondo oscuro */
+.book-thumb::before,
+.review-thumb::before,
+.modal-main::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #1a1a1a;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 0;
+}
+
+/* asegurar que el contenedor del modal aparece por encima y el contenido no se oculta */
+.modal-card,
+.modal-main,
+.modal-thumbs,
+.modal-close { will-change: transform, opacity; }
+
+/* pequeño ajuste responsive para que la imagen no ocupe toda la altura en pantallas pequeñas */
+@media (max-width: 720px) {
+  .modal-main { aspect-ratio: 4/3; min-width: 60%; }
+  .modal-thumbs { width: 100%; flex-direction: row; gap: 8px; overflow-x: auto; }
+  .modal-thumbs img { height: 56px; min-width: 80px; }
+}
+
