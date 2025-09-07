@@ -32,35 +32,83 @@ document.addEventListener('DOMContentLoaded', () => {
     return out;
   }
 
- function handleImageFit(img){
+ // Detecta si la imagen tiene un fondo mayoritariamente blanco.
+// Retorna true/false. Usa un canvas pequeño para muestrear píxeles.
+// Si la imagen viene de otro dominio sin CORS, la operación puede fallar y devolvemos false.
+function detectWhiteBackground(img){
+  try {
+    if(!img || !img.naturalWidth || !img.naturalHeight) return false;
+    // reduce tamaño de muestreo (más rápido)
+    const W = Math.min(64, img.naturalWidth);
+    const H = Math.min(64, img.naturalHeight);
+    const canvas = document.createElement('canvas');
+    canvas.width = W;
+    canvas.height = H;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, W, H);
+    const data = ctx.getImageData(0, 0, W, H).data;
+    let whiteCount = 0;
+    let totalCount = 0;
+    // sample en una rejilla (no todos los píxeles, para rendimiento)
+    const stepX = Math.max(1, Math.floor(W / 8));
+    const stepY = Math.max(1, Math.floor(H / 8));
+    for(let y = 0; y < H; y += stepY){
+      for(let x = 0; x < W; x += stepX){
+        const idx = (y * W + x) * 4;
+        const r = data[idx], g = data[idx+1], b = data[idx+2], a = data[idx+3];
+        // si el pixel es casi blanco y no transparente
+        if(a > 32 && r > 230 && g > 230 && b > 230) whiteCount++;
+        totalCount++;
+      }
+    }
+    // si más del 12% de los píxeles muestreados son blancos, consideramos fondo blanco
+    return (totalCount > 0) && (whiteCount / totalCount >= 0.12);
+  } catch(e){
+    // canvas tainted / error -> fallback: no asumimos blanco
+    return false;
+  }
+}
+
+function handleImageFit(img){
   if(!img) return;
-  if(!img.complete) { 
+  if(!img.complete) {
     img.addEventListener('load', ()=> handleImageFit(img));
     return;
   }
   try {
     const w = img.naturalWidth || img.width;
     const h = img.naturalHeight || img.height;
-    const ratio = w / h;
-    // si la imagen es muy alargada o muy estrecha, usamos contain para que no recorte
+    const ratio = (w && h) ? (w / h) : 1;
+    // caso de imágenes muy estrechas o muy anchas -> mostrar completas
     if(ratio < 0.6 || ratio > 1.8){
       img.style.objectFit = 'contain';
-      // fondo oscuro para evitar que el lienzo blanco del fichero destaque
       img.style.background = '#1a1a1a';
       img.style.padding = '6px';
     } else {
-      // thumbs y la mayoría: cover para rellenar el recuadro sin distorsionar
+      // por defecto thumb: cover
       img.style.objectFit = 'cover';
       img.style.background = 'transparent';
       img.style.padding = '0';
     }
-    // asegurar posición centrada
     img.style.objectPosition = 'center';
     img.style.display = 'block';
+
+    // DETECCIÓN ADICIONAL: si la imagen contiene fondo blanco en su lienzo,
+    // preferimos usar 'contain' + fondo oscuro para que no se vea el lienzo blanco.
+    // Esto cubre archivos jpg/webp que incluyen un "borde" blanco dentro del fichero.
+    const likelyWhite = detectWhiteBackground(img);
+    if(likelyWhite){
+      // forzamos comportamiento que evita mostrar el lienzo blanco
+      img.style.objectFit = 'contain';
+      img.style.background = '#1a1a1a';
+      img.style.padding = '6px';
+      img.style.boxSizing = 'border-box';
+    }
   } catch(e){
-    // fail safe: no hacemos nada si algo sale mal
+    // no hacemos nada si algo falla
   }
 }
+
 
 
   async function loadData(){
