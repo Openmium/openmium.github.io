@@ -733,3 +733,59 @@ img {
   .modal-thumbs img { height: 56px; min-width: 80px; }
 }
 
+
+/* ==== PATCH: prevenir fondo blanco y recortes en preview/modal ==== */
+
+/* aseguramos fondo oscuro detrás de todas las imágenes de thumbs y modal main */
+.book-thumb, .review-thumb, .modal-main {
+  background-color: #1a1a1a !important;
+  background-image: none !important;
+}
+
+/* thumbs: cover, tamaño fijo en altura, no deformar */
+.book-thumb img,
+.review-thumb img,
+.modal-thumbs img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  background: transparent !important;
+  display: block !important;
+}
+
+/* miniaturas del modal mantienen una altura consistente */
+.modal-thumbs img {
+  height: 72px !important;
+  min-height: 72px !important;
+  max-height: 72px !important;
+}
+
+/* imagen principal del modal: mostrar entera sin recortes */
+.modal-main img, #mainImg {
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 80vh !important;
+  object-fit: contain !important;    /* <-- importante: mostrar imagen completa */
+  object-position: center !important;
+  background: transparent !important;
+  display: block !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* si algún pseudo-elemento pintaba blanco, lo anulamos */
+.book-thumb::before,
+.review-thumb::before,
+.modal-main::before,
+.modal-main::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #1a1a1a !important;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 0;
+}
+
