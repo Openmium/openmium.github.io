@@ -338,3 +338,63 @@ function handleImageFit(img){
 
   loadData();
 });
+
+// ===== Parche: aplicar estilos seguros a la imagen principal y thumbs =====
+setTimeout(()=> {
+  const main = document.getElementById('mainImg');
+
+  // función util para aplicar los estilos "contain" y límites a la imagen principal
+  const applyMainStyles = () => {
+    if(!main) return;
+    main.style.objectFit = 'contain';
+    main.style.objectPosition = 'center';
+    main.style.width = 'auto';
+    main.style.maxWidth = '100%';
+    main.style.height = 'auto';
+    main.style.maxHeight = '80vh';
+    main.style.background = 'transparent';
+    main.style.padding = '0';
+    main.style.display = 'block';
+    // remover attributes de tamaño si existen en el markup
+    try { main.removeAttribute('width'); main.removeAttribute('height'); } catch(e){}
+  };
+
+  // aplicar inmediatamente si existe la imagen
+  if(main){
+    applyMainStyles();
+    // si aún no ha cargado, volver a aplicar en load
+    if(!main.complete) main.addEventListener('load', applyMainStyles);
+  }
+
+  // thumbs behavior
+  detailContent.querySelectorAll('.thumb').forEach(t => {
+    // asegurar miniatura como thumb
+    t.style.width = '100%';
+    t.style.height = '72px';
+    t.style.objectFit = 'cover';
+    t.style.objectPosition = 'center';
+    t.style.background = '#1a1a1a';
+    t.style.display = 'block';
+
+    // al hacer click en miniatura, intercambiamos la main y forzamos estilos en load
+    t.addEventListener('click', (e) => {
+      const src = e.currentTarget.dataset.src;
+      const m = document.getElementById('mainImg');
+      if(!m) return;
+      // cambiar src
+      m.src = src;
+      // asegurar que al cargar la nueva imagen aplicamos estilos y evitamos recortes
+      const onloadHandler = () => {
+        applyMainStyles();
+        // pequeño retardo para reflow si fuera necesario
+        setTimeout(()=> {
+          try { m.style.maxHeight = '80vh'; } catch(e){}
+        }, 20);
+        // limpiar listener para evitar duplicados
+        m.removeEventListener('load', onloadHandler);
+      };
+      m.addEventListener('load', onloadHandler);
+    });
+  });
+}, 20);
+
