@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return out;
   }
 
- // Detecta si la imagen tiene un fondo mayoritariamente blanco.
+// Detecta si la imagen tiene un fondo mayoritariamente blanco.
 // Retorna true/false. Usa un canvas pequeño para muestrear píxeles.
 // Si la imagen viene de otro dominio sin CORS, la operación puede fallar y devolvemos false.
 function detectWhiteBackground(img){
@@ -68,6 +68,47 @@ function detectWhiteBackground(img){
     return false;
   }
 }
+
+function handleImageFit(img){
+  if(!img) return;
+  if(!img.complete) {
+    img.addEventListener('load', ()=> handleImageFit(img));
+    return;
+  }
+  try {
+    const w = img.naturalWidth || img.width;
+    const h = img.naturalHeight || img.height;
+    const ratio = (w && h) ? (w / h) : 1;
+    // caso de imágenes muy estrechas o muy anchas -> mostrar completas
+    if(ratio < 0.6 || ratio > 1.8){
+      img.style.objectFit = 'contain';
+      img.style.background = '#1a1a1a';
+      img.style.padding = '6px';
+    } else {
+      // por defecto thumb: cover
+      img.style.objectFit = 'cover';
+      img.style.background = 'transparent';
+      img.style.padding = '0';
+    }
+    img.style.objectPosition = 'center';
+    img.style.display = 'block';
+
+    // DETECCIÓN ADICIONAL: si la imagen contiene fondo blanco en su lienzo,
+    // preferimos usar 'contain' + fondo oscuro para que no se vea el lienzo blanco.
+    // Esto cubre archivos jpg/webp que incluyen un "borde" blanco dentro del fichero.
+    const likelyWhite = detectWhiteBackground(img);
+    if(likelyWhite){
+      // forzamos comportamiento que evita mostrar el lienzo blanco
+      img.style.objectFit = 'contain';
+      img.style.background = '#1a1a1a';
+      img.style.padding = '6px';
+      img.style.boxSizing = 'border-box';
+    }
+  } catch(e){
+    // no hacemos nada si algo falla
+  }
+}
+
 
 function handleImageFit(img){
   if(!img) return;
