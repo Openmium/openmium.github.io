@@ -283,3 +283,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   loadData();
 });
+
+// Parche opcional: normaliza object-fit según proporción natural
+(function normalizeCardImages(){
+  const sel = '.book-thumb img, .review-thumb img, .modal-thumbs img, .review-card img, .book-card img';
+  document.querySelectorAll(sel).forEach(img => {
+    const apply = (i) => {
+      try {
+        const w = i.naturalWidth || i.width;
+        const h = i.naturalHeight || i.height;
+        if(!w || !h) return;
+        const r = w / h;
+        if(r < 0.6 || r > 1.8) {
+          i.style.objectFit = 'contain';
+          i.style.background = '#1a1a1a';
+          i.style.padding = '6px';
+        } else {
+          i.style.objectFit = 'cover';
+          i.style.background = 'transparent';
+          i.style.padding = '0';
+        }
+      } catch(e){}
+    };
+    if(!img.complete) img.addEventListener('load', () => apply(img), { once: true });
+    else apply(img);
+  });
+})();
+
