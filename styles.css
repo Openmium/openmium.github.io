@@ -789,3 +789,19 @@ img {
   z-index: 0;
 }
 
+/* Modal main image: mostrar la imagen completa sin recortes */
+.modal-main img {
+  display: block;
+  margin: 0 auto;
+  object-fit: contain !important;        /* mostrar imagen completa */
+  object-position: center center !important;
+  width: auto !important;                /* que no estire a 100% cuando no convenga */
+  max-width: 100% !important;            /* no salirse del contenedor */
+  height: auto !important;               /* mantener proporción real */
+  max-height: 80vh !important;           /* no empujar el modal verticalmente */
+  background: transparent !important;
+  padding: 0 !important;
+  position: relative;
+  z-index: 2;
+}
+
