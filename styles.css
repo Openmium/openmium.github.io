@@ -805,3 +805,66 @@ img {
   z-index: 2;
 }
 
+/* ----------------------------
+   REGLAS GENERALES DE IMÁGENES
+   Thumbs = cover (rellena),
+   Modal main = contain (mostrar entero)
+   ----------------------------*/
+
+/* Regla general para miniaturas / thumbs / imágenes en tarjetas:
+   Rellena el contenedor con cover y fondo oscuro para evitar lienzos blancos. */
+.book-thumb img,
+.review-thumb img,
+.modal-thumbs img,
+.review-card img,
+.book-card img,
+.article-thumb img,
+.review-thumb .thumb,
+.book-thumb .thumb {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  background-color: #1a1a1a !important;
+  padding: 0 !important;
+}
+
+/* Asegura que las miniaturas del modal tengan altura consistente */
+.modal-thumbs img {
+  height: 72px !important;
+  min-height: 72px !important;
+  max-height: 72px !important;
+}
+
+/* OVERRIDE: imagen principal del modal -> mostrar completa sin recortar */
+.modal-main img,
+#mainImg {
+  display: block !important;
+  margin: 0 auto !important;
+  width: auto !important;        /* no forzar a 100% */
+  max-width: 100% !important;    /* limitar al contenedor */
+  height: auto !important;       /* mantener proporción real */
+  max-height: 80vh !important;   /* evitar que empuje el modal */
+  object-fit: contain !important;/* mostrar toda la imagen */
+  object-position: center center !important;
+  background-color: #1a1a1a !important;
+  padding: 0 !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* En caso de que algún pseudo-elemento pintara blanco: anularlo */
+.book-thumb::before,
+.review-thumb::before,
+.modal-main::before,
+.modal-main::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background-color: #1a1a1a !important;
+  pointer-events: none !important;
+  border-radius: inherit !important;
+  z-index: 0 !important;
+}
+
