@@ -99,6 +99,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Normaliza object-fit según proporción natural — se llamará tras renderizar
+  function normalizeCardImages(){
+    const sel = '.book-thumb img, .review-thumb img, .modal-thumbs img, .review-card img, .book-card img';
+    document.querySelectorAll(sel).forEach(img => {
+      const apply = (i) => {
+        try {
+          const w = i.naturalWidth || i.width;
+          const h = i.naturalHeight || i.height;
+          if(!w || !h) return;
+          const r = w / h;
+          if(r < 0.6 || r > 1.8) {
+            i.style.objectFit = 'contain';
+            i.style.background = '#1a1a1a';
+            i.style.padding = '6px';
+          } else {
+            i.style.objectFit = 'cover';
+            i.style.background = 'transparent';
+            i.style.padding = '0';
+          }
+        } catch(e){}
+      };
+      if(!img.complete) img.addEventListener('load', () => apply(img), { once: true });
+      else apply(img);
+    });
+  }
+
   async function loadData() {
     try {
       const res = await fetch(DATA, { cache: 'no-store' });
@@ -112,6 +138,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     populateCategoryFilters();
     renderList(REVIEWS);
+    // Normalizar thumbs justo después de renderizar la lista
+    normalizeCardImages();
   }
 
   function populateCategoryFilters() {
@@ -241,8 +269,11 @@ document.addEventListener('DOMContentLoaded', () => {
           };
           m.addEventListener('load', onloadHandler);
           m.src = src;
-        });
+        }, { once: false });
       });
+
+      // Normalizar thumbs/imagenes del modal tras generarlas
+      normalizeCardImages();
     }, 20);
 
     detailModal.classList.add('open'); detailModal.setAttribute('aria-hidden', 'false');
@@ -262,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (subSelect) subSelect.addEventListener('change', applyFilters);
   if (dateFilter) dateFilter.addEventListener('change', applyFilters);
   if (clearFilters) clearFilters.addEventListener('click', () => {
-    if (searchBox) searchBox.value = ''; if (categorySelect) categorySelect.value = 'all'; if (subSelect) subSelect.innerHTML = '<option value="all">Todas las subcategorías</option>'; if (dateFilter) dateFilter.value = ''; renderList(REVIEWS);
+    if (searchBox) searchBox.value = ''; if (categorySelect) categorySelect.value = 'all'; if (subSelect) subSelect.innerHTML = '<option value="all">Todas las subcategorías</option>'; if (dateFilter) dateFilter.value = ''; renderList(REVIEWS); normalizeCardImages();
   });
 
   function applyFilters() {
@@ -279,34 +310,9 @@ document.addEventListener('DOMContentLoaded', () => {
       filtered = filtered.filter(r => fmt(r.date || '') === target);
     }
     renderList(filtered);
+    // volver a normalizar las imágenes de la lista filtrada
+    normalizeCardImages();
   }
 
   loadData();
-});
-
-// Parche opcional: normaliza object-fit según proporción natural
-(function normalizeCardImages(){
-  const sel = '.book-thumb img, .review-thumb img, .modal-thumbs img, .review-card img, .book-card img';
-  document.querySelectorAll(sel).forEach(img => {
-    const apply = (i) => {
-      try {
-        const w = i.naturalWidth || i.width;
-        const h = i.naturalHeight || i.height;
-        if(!w || !h) return;
-        const r = w / h;
-        if(r < 0.6 || r > 1.8) {
-          i.style.objectFit = 'contain';
-          i.style.background = '#1a1a1a';
-          i.style.padding = '6px';
-        } else {
-          i.style.objectFit = 'cover';
-          i.style.background = 'transparent';
-          i.style.padding = '0';
-        }
-      } catch(e){}
-    };
-    if(!img.complete) img.addEventListener('load', () => apply(img), { once: true });
-    else apply(img);
-  });
-})();
-
+}); // end DOMContentLoaded
