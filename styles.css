@@ -987,3 +987,83 @@ img {
   content: "" !important;
   display: none !important;
 }
+
+/* Scoped adjustments para la página de reseñas */
+.reviews-page .search-card {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+/* Reducir ancho del input de búsqueda solo en reviews */
+.reviews-page .search-card #searchBox {
+  flex: 0 1 45%;     /* ocupa 45% del ancho del contenedor */
+  max-width: 45%;
+  min-width: 150px;  /* evita que desaparezca en pantallas medias */
+}
+
+/* Selecciones y date: anchos concretos para dejar espacio a metadatos */
+.reviews-page .search-card #categorySelect,
+.reviews-page .search-card #subSelect {
+  flex: 0 0 14%;     /* aprox 14% cada una */
+  min-width: 120px;
+  max-width: 16%;
+}
+
+.reviews-page .search-card #dateFilter {
+  flex: 0 0 12%;
+  min-width: 110px;
+  max-width: 14%;
+}
+
+/* Botón limpiar toma el ancho restante / auto */
+.reviews-page .search-card #clearFilters {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* Si necesitas que los selects estén más grandes, sube los % anteriores */
+
+/* --- Card meta: fecha / categoría más anchas y truncado elegante --- */
+.reviews-page .card-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  overflow: hidden;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+/* Fecha: más visible */
+.reviews-page .card-meta .meta-date {
+  min-width: 120px;
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* Categoria / subcategoria: ocupar más espacio */
+.reviews-page .card-meta .meta-cat {
+  min-width: 180px;
+  max-width: 360px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* responsive: en móvil la barra se apila */
+@media (max-width: 720px) {
+  .reviews-page .search-card { flex-direction: column; align-items: stretch; gap: 8px; }
+  .reviews-page .search-card #searchBox { flex-basis: 100%; max-width: 100%; }
+  .reviews-page .search-card #categorySelect,
+  .reviews-page .search-card #subSelect,
+  .reviews-page .search-card #dateFilter { flex-basis: 100%; max-width: 100%; min-width: 0; }
+  .reviews-page .card-meta .meta-date,
+  .reviews-page .card-meta .meta-cat { min-width: 0; max-width: 45vw; }
+}
