@@ -868,3 +868,74 @@ img {
   z-index: 0 !important;
 }
 
+/* ========== PATCH FINAL: reglas generales para evitar recortes ========= */
+
+/* Contenedores thumbs: centrar la imagen y mantener fondo oscuro */
+.book-thumb, .review-thumb {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: #1a1a1a !important;
+  overflow: hidden !important;
+}
+
+/* Regla general: miniaturas y tarjetas muestran la imagen completa (no recortada).
+   Usamos object-fit: contain !important para que CASES como la reseña "ratón" no se recorten.
+*/
+.book-thumb img,
+.review-thumb img,
+.review-card img,
+.book-card img,
+.article-thumb img {
+  display: block !important;
+  width: auto !important;         /* que no fuerce ancho 100% */
+  height: 100% !important;        /* llenar la altura del contenedor */
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important; /* mostrar la imagen completa, evitar recortes */
+  object-position: center center !important;
+  background-color: #1a1a1a !important;
+  padding: 0 !important;
+}
+
+/* Miniaturas del modal: siguen siendo cover para que llenen su cajita pequeña */
+.modal-thumbs img {
+  width: 100% !important;
+  height: 72px !important;
+  min-height: 72px !important;
+  max-height: 72px !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  background-color: #1a1a1a !important;
+}
+
+/* Imagen principal del modal: mostrar completa sin recortes */
+.modal-main img,
+#mainImg {
+  display: block !important;
+  margin: 0 auto !important;
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 80vh !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  background-color: #1a1a1a !important;
+  padding: 0 !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* Asegurarnos de anular cualquier pseudo-elemento blanco superpuesto */
+.book-thumb::before,
+.review-thumb::before,
+.modal-main::before,
+.modal-main::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background-color: #1a1a1a !important;
+  pointer-events: none !important;
+  border-radius: inherit !important;
+  z-index: 0 !important;
+}
