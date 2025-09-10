@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Detecta si el lienzo de la imagen contiene mucho blanco (sampling).
-  // Si la imagen proviene de otro dominio sin CORS el canvas puede taint y devolvemos false.
   function detectWhiteBackground(img) {
     try {
       if (!img || !img.naturalWidth || !img.naturalHeight) return false;
@@ -63,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Aplica object-fit correcto según proporción / fondo blanco detectado.
+  // Nueva versión: no fuerza 'cover' en thumbs. Sólo aplica background/padding cuando detecta lienzo blanco.
   function handleImageFit(img) {
     if (!img) return;
     if (!img.complete) {
@@ -74,26 +73,41 @@ document.addEventListener('DOMContentLoaded', () => {
       const w = img.naturalWidth || img.width;
       const h = img.naturalHeight || img.height;
       const ratio = (w && h) ? (w / h) : 1;
-      if (ratio < 0.6 || ratio > 1.8) {
-        img.style.objectFit = 'contain';
-        img.style.background = '#1a1a1a';
-        img.style.padding = '6px';
+      const parent = img.closest('.book-thumb, .review-thumb, .modal-thumbs, .modal-main');
+
+      const likelyWhite = detectWhiteBackground(img);
+
+      // Si la imagen está dentro de una miniatura (lista), dejamos que CSS controle object-fit,
+      // y sólo aplicamos fondo/padding si detectamos lienzo blanco.
+      if (parent && (parent.classList.contains('book-thumb') || parent.classList.contains('review-thumb'))) {
+        if (likelyWhite || ratio < 0.35 || ratio > 3) {
+          img.style.padding = '6px';
+          img.style.background = '#1a1a1a';
+          img.style.boxSizing = 'border-box';
+        } else {
+          img.style.padding = '0';
+          img.style.background = 'transparent';
+        }
+        // no forzamos objectFit aquí (CSS general con !important lo tratará)
       } else {
-        img.style.objectFit = 'cover';
-        img.style.background = 'transparent';
-        img.style.padding = '0';
+        // Modal / imagen grande: nos aseguramos de mostrar la imagen completa (contain).
+        if (ratio < 0.6 || ratio > 1.8 || likelyWhite) {
+          img.style.objectFit = 'contain';
+          img.style.background = '#1a1a1a';
+          img.style.padding = '6px';
+        } else {
+          img.style.objectFit = 'contain'; // preferimos contain para modal principales (evita recorte)
+          img.style.background = 'transparent';
+          img.style.padding = '0';
+        }
+        img.style.width = 'auto';
+        img.style.maxWidth = '100%';
+        img.style.height = 'auto';
+        img.style.maxHeight = '80vh';
       }
+
       img.style.objectPosition = 'center';
       img.style.display = 'block';
-
-      // comprobación adicional sobre fondo blanco dentro del fichero
-      const likelyWhite = detectWhiteBackground(img);
-      if (likelyWhite) {
-        img.style.objectFit = 'contain';
-        img.style.background = '#1a1a1a';
-        img.style.padding = '6px';
-        img.style.boxSizing = 'border-box';
-      }
     } catch (e) {
       // silent fail
     }
@@ -109,19 +123,39 @@ document.addEventListener('DOMContentLoaded', () => {
           const h = i.naturalHeight || i.height;
           if(!w || !h) return;
           const r = w / h;
-          if(r < 0.6 || r > 1.8) {
+          // para miniaturas: preferimos contain (mostrar entero)
+          if (i.closest('.book-thumb') || i.closest('.review-thumb')) {
+            i.style.width = 'auto';
+            i.style.height = '100%';
+            i.style.maxWidth = '100%';
             i.style.objectFit = 'contain';
+            i.style.objectPosition = 'center';
             i.style.background = '#1a1a1a';
-            i.style.padding = '6px';
-          } else {
+            i.style.display = 'block';
+          } else if (i.closest('.modal-thumbs')) {
+            // modal miniaturas: cover
+            i.style.width = '100%';
+            i.style.height = '72px';
             i.style.objectFit = 'cover';
-            i.style.background = 'transparent';
-            i.style.padding = '0';
+            i.style.objectPosition = 'center';
+            i.style.background = '#1a1a1a';
+            i.style.display = 'block';
+          } else {
+            // fallback
+            if(r < 0.6 || r > 1.8) {
+              i.style.objectFit = 'contain';
+              i.style.background = '#1a1a1a';
+              i.style.padding = '6px';
+            } else {
+              i.style.objectFit = 'cover';
+              i.style.background = 'transparent';
+            }
+            i.style.display = 'block';
           }
         } catch(e){}
       };
-      if(!img.complete) img.addEventListener('load', () => apply(img), { once: true });
-      else apply(img);
+      if(!img.complete) img.addEventListener('load', () => { apply(img); handleImageFit(img); }, { once: true });
+      else { apply(img); handleImageFit(img); }
     });
   }
 
@@ -138,7 +172,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     populateCategoryFilters();
     renderList(REVIEWS);
-    // Normalizar thumbs justo después de renderizar la lista
     normalizeCardImages();
   }
 
@@ -244,7 +277,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (main) {
         applyMainStyles(main);
         if (!main.complete) main.addEventListener('load', () => applyMainStyles(main), { once: true });
-        // fallback: handleImageFit para ver si hay lienzo blanco
         handleImageFit(main);
       }
 
@@ -261,7 +293,6 @@ document.addEventListener('DOMContentLoaded', () => {
           const src = e.currentTarget.dataset.src;
           const m = document.getElementById('mainImg');
           if (!m) return;
-          // cambiar src y aplicar estilos en load
           const onloadHandler = () => {
             applyMainStyles(m);
             handleImageFit(m);
@@ -310,7 +341,6 @@ document.addEventListener('DOMContentLoaded', () => {
       filtered = filtered.filter(r => fmt(r.date || '') === target);
     }
     renderList(filtered);
-    // volver a normalizar las imágenes de la lista filtrada
     normalizeCardImages();
   }
 
