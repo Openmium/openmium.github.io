@@ -939,3 +939,51 @@ img {
   border-radius: inherit !important;
   z-index: 0 !important;
 }
+
+/* === PATCH: evitar recorte de imagen en modal === */
+/* Quitamos aspect-ratio/overflow que recortan la imagen y forzamos contain */
+.modal-main {
+  /* permitir que la imagen determine el tamaño visible */
+  aspect-ratio: auto !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 8px !important;
+}
+
+/* Imagen principal: mostrar siempre ENTERA, escalar según viewport */
+.modal-main img,
+#mainImg {
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: calc(100% - 16px) !important;   /* dejar algo de espacio/padding */
+  max-height: calc(80vh - 32px) !important;  /* no empujar el modal */
+  object-fit: contain !important;            /* <-- mostrar la imagen completa */
+  object-position: center center !important;
+  background-color: #1a1a1a !important;
+  box-sizing: border-box !important;
+  padding: 0 !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* thumbs del modal siguen siendo cover */
+.modal-thumbs img {
+  width: 100% !important;
+  height: 72px !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  background-color: #1a1a1a !important;
+}
+
+/* anular pseudo-elementos que pudieran pintar blanco */
+.modal-main::before,
+.modal-main::after,
+.book-thumb::before,
+.review-thumb::before {
+  content: "" !important;
+  display: none !important;
+}
