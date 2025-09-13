@@ -86,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
           img.style.background = 'transparent';
         }
       } else {
+        // Modal / image grande: ensure contain
         img.style.objectFit = 'contain';
         img.style.objectPosition = 'center';
         img.style.width = 'auto';
@@ -98,11 +99,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       img.style.display = 'block';
     } catch (e) {
-      // silent fail
+      // noop
     }
   }
 
-  // Normaliza imágenes tras renderizar (se usa al renderizar lista y modal)
+  // Normaliza imágenes tras renderizar
   function normalizeCardImages() {
     const sel = '.book-thumb img, .review-thumb img, .modal-thumbs img, .review-card img, .book-card img';
     document.querySelectorAll(sel).forEach(img => {
@@ -201,9 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
               ${renderStars(r.rating)}
               ${r.price ? `<div class="price">${esc(r.price)}</div>` : ''}
             </div>
-            <div>
-              ${ r.link ? `<a class="product-btn" href="${esc(r.link)}" target="_blank" rel="noopener">Producto</a>` : '' }
-            </div>
+            <div>${ r.link ? `<a class="product-btn" href="${esc(r.link)}" target="_blank" rel="noopener">Producto</a>` : '' }</div>
           </div>
         </div>
       `;
@@ -211,7 +210,6 @@ document.addEventListener('DOMContentLoaded', () => {
       handleImageFit(img);
 
       article.addEventListener('click', (e) => {
-        // ignore if user clicked the product link or other link
         if (e.target.closest('a')) return;
         openDetail(r.id);
       });
@@ -345,6 +343,10 @@ document.addEventListener('DOMContentLoaded', () => {
     renderList(filtered);
     normalizeCardImages();
   }
+
+  // Safety: migrar elementos viejos si existen (no es obligatorio, pero evita inconsistencias)
+  // convierte elementos con clase antigua `.product-link-btn` para que reciban el nuevo estilo
+  document.querySelectorAll('.product-link-btn').forEach(el => el.classList.add('product-btn'));
 
   loadData();
 }); // end DOMContentLoaded
