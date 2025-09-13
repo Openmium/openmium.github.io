@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchBox = document.getElementById('searchBox');
   const categorySelect = document.getElementById('categorySelect');
   const subSelect = document.getElementById('subSelect');
+  const dateFilter = document.getElementById('dateFilter');
   const clearFilters = document.getElementById('clearFilters');
   const detailModal = document.getElementById('detailModal');
   const detailContent = document.getElementById('detailContent');
@@ -31,24 +32,26 @@ document.addEventListener('DOMContentLoaded', () => {
     return out;
   }
 
-  // Detecta fondo blanco (muestreo), fallback seguro si cross-origin.
+  // Detecta si el lienzo de la imagen contiene mucho blanco (sampling).
   function detectWhiteBackground(img) {
     try {
       if (!img || !img.naturalWidth || !img.naturalHeight) return false;
       const W = Math.min(64, img.naturalWidth);
       const H = Math.min(64, img.naturalHeight);
       const canvas = document.createElement('canvas');
-      canvas.width = W; canvas.height = H;
+      canvas.width = W;
+      canvas.height = H;
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, W, H);
       const data = ctx.getImageData(0, 0, W, H).data;
-      let whiteCount = 0, totalCount = 0;
+      let whiteCount = 0;
+      let totalCount = 0;
       const stepX = Math.max(1, Math.floor(W / 8));
       const stepY = Math.max(1, Math.floor(H / 8));
       for (let y = 0; y < H; y += stepY) {
         for (let x = 0; x < W; x += stepX) {
           const idx = (y * W + x) * 4;
-          const r = data[idx], g = data[idx+1], b = data[idx+2], a = data[idx+3];
+          const r = data[idx], g = data[idx + 1], b = data[idx + 2], a = data[idx + 3];
           if (a > 32 && r > 230 && g > 230 && b > 230) whiteCount++;
           totalCount++;
         }
@@ -59,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Ajusta estilos mínimos según proporciones / posible fondo blanco.
   function handleImageFit(img) {
     if (!img) return;
     if (!img.complete) {
@@ -82,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
           img.style.background = 'transparent';
         }
       } else {
-        // modal/main image -> show whole image
         img.style.objectFit = 'contain';
         img.style.objectPosition = 'center';
         img.style.width = 'auto';
@@ -94,9 +97,12 @@ document.addEventListener('DOMContentLoaded', () => {
         img.style.boxSizing = 'border-box';
       }
       img.style.display = 'block';
-    } catch (e) { /* noop */ }
+    } catch (e) {
+      // silent fail
+    }
   }
 
+  // Normaliza imágenes tras renderizar (se usa al renderizar lista y modal)
   function normalizeCardImages() {
     const sel = '.book-thumb img, .review-thumb img, .modal-thumbs img, .review-card img, .book-card img';
     document.querySelectorAll(sel).forEach(img => {
@@ -132,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             i.style.display = 'block';
           }
-        } catch (e) {}
+        } catch (e) { /* noop */ }
       };
       if (!img.complete) img.addEventListener('load', () => { apply(img); handleImageFit(img); }, { once: true });
       else { apply(img); handleImageFit(img); }
@@ -187,10 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
       article.innerHTML = `
         <div class="review-thumb"><img src="${esc(thumb)}" alt="${esc(r.title || '')}"></div>
         <div class="card-body">
-          <div class="card-meta">
-            <span class="meta-date">${fmt(r.date || '')}</span>
-            <span class="meta-cat">${esc(r.category || '')} › ${esc(r.sub || '')}</span>
-          </div>
+          <div class="card-meta">${fmt(r.date || '')} · ${esc(r.category || '')} › ${esc(r.sub || '')}</div>
           <h3 class="card-title">${esc(r.title)}</h3>
           <div class="card-desc">${esc(r.summary || '')}</div>
           <div class="row-bottom">
@@ -198,7 +201,9 @@ document.addEventListener('DOMContentLoaded', () => {
               ${renderStars(r.rating)}
               ${r.price ? `<div class="price">${esc(r.price)}</div>` : ''}
             </div>
-            <div>${r.link ? `<a class="product-link-btn" href="${esc(r.link)}" target="_blank" rel="noopener">Ir al producto</a>` : ''}</div>
+            <div>
+              ${ r.link ? `<a class="product-btn" href="${esc(r.link)}" target="_blank" rel="noopener">Producto</a>` : '' }
+            </div>
           </div>
         </div>
       `;
@@ -206,6 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
       handleImageFit(img);
 
       article.addEventListener('click', (e) => {
+        // ignore if user clicked the product link or other link
         if (e.target.closest('a')) return;
         openDetail(r.id);
       });
@@ -229,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const starsHtml = item.rating ? renderStars(item.rating) : '';
     const priceHtml = item.price ? `<div class="price">${esc(item.price)}</div>` : '';
-    const linkHtml = item.link ? `<div style="margin-top:12px"><a class="btn btn-primary" href="${esc(item.link)}" target="_blank" rel="noopener">Ver producto</a></div>` : '';
+    const linkHtml = item.link ? `<div style="margin-top:12px"><a class="product-btn" href="${esc(item.link)}" target="_blank" rel="noopener">Producto</a></div>` : '';
     detailContent.innerHTML = `
       ${galleryHtml}
       <div class="modal-meta">${fmt(item.date || '')} · ${esc(item.category || '')} / ${esc(item.sub || '')}</div>
@@ -240,11 +246,14 @@ document.addEventListener('DOMContentLoaded', () => {
       ${linkHtml}
     `;
 
+    // aplicar estilos y behavior a imagen principal y thumbs
     setTimeout(() => {
       const main = document.getElementById('mainImg');
+
       const applyMainStyles = (m) => {
         if (!m) return;
         try { m.removeAttribute('width'); m.removeAttribute('height'); } catch (e) {}
+        // Mostrar ENTERA la imagen: contain + límites de tamaño
         m.style.objectFit = 'contain';
         m.style.objectPosition = 'center';
         m.style.width = 'auto';
@@ -255,6 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
         m.style.padding = '0';
         m.style.display = 'block';
         m.style.boxSizing = 'border-box';
+        // Asegura que su contenedor no imponga aspect-ratio rígido que recorte la imagen
         const container = m.closest('.modal-main');
         if (container) {
           container.style.aspectRatio = 'auto';
@@ -284,6 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const src = e.currentTarget.dataset.src;
           const m = document.getElementById('mainImg');
           if (!m) return;
+          // Cuando cambiamos src, aplicar estilos al cargar la nueva imagen
           const onloadHandler = () => {
             applyMainStyles(m);
             handleImageFit(m);
@@ -294,12 +305,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { once: false });
       });
 
+      // Normalizar thumbs/imagenes del modal tras generarlas
       normalizeCardImages();
     }, 20);
 
     detailModal.classList.add('open'); detailModal.setAttribute('aria-hidden', 'false');
   }
 
+  // close handlers
   if (closeDetail) closeDetail.addEventListener('click', () => { detailModal.classList.remove('open'); detailModal.setAttribute('aria-hidden', 'true'); });
   if (detailModal) detailModal.addEventListener('click', (e) => {
     const mc = detailModal.querySelector('.modal-card');
@@ -311,22 +324,24 @@ document.addEventListener('DOMContentLoaded', () => {
   if (searchBox) searchBox.addEventListener('input', applyFilters);
   if (categorySelect) categorySelect.addEventListener('change', (e) => { populateSubSelect(e.target.value); applyFilters(); });
   if (subSelect) subSelect.addEventListener('change', applyFilters);
+  if (dateFilter) dateFilter.addEventListener('change', applyFilters);
   if (clearFilters) clearFilters.addEventListener('click', () => {
-    if (searchBox) searchBox.value = '';
-    if (categorySelect) categorySelect.value = 'all';
-    if (subSelect) subSelect.innerHTML = '<option value="all">Todas las subcategorías</option>';
-    renderList(REVIEWS);
-    normalizeCardImages();
+    if (searchBox) searchBox.value = ''; if (categorySelect) categorySelect.value = 'all'; if (subSelect) subSelect.innerHTML = '<option value="all">Todas las subcategorías</option>'; if (dateFilter) dateFilter.value = ''; renderList(REVIEWS); normalizeCardImages();
   });
 
   function applyFilters() {
     const q = (searchBox?.value || '').trim().toLowerCase();
     const cat = categorySelect?.value;
     const sub = subSelect?.value;
+    const date = dateFilter?.value;
     let filtered = REVIEWS.slice();
     if (cat && cat !== 'all') filtered = filtered.filter(r => r.category === cat);
     if (sub && sub !== 'all') filtered = filtered.filter(r => r.sub === sub);
     if (q) filtered = filtered.filter(r => ((r.title || '') + ' ' + (r.summary || '') + ' ' + (r.tags || []).join(' ')).toLowerCase().includes(q));
+    if (date) {
+      const target = fmt(date);
+      filtered = filtered.filter(r => fmt(r.date || '') === target);
+    }
     renderList(filtered);
     normalizeCardImages();
   }
