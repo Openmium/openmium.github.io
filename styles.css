@@ -1,44 +1,659 @@
-* styles.css — Versión final solicitada Modo oscuro, tipografía, jerarquía, botones enriquecidos, selects oscuros, header #2b330f, social links #b4da25, botones libros/reviews #CEE773, select highlight #686868 */ /* ---------- Tipografía y variables ---------- */ @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap"); :root{ --fz-base: 1rem; /* 16px */ --fz-sm: 0.875rem; /* 14px */ --fz-lg: 1.125rem; /* 18px */ --fz-xl: 1.25rem; /* 20px */ --fz-2xl: 1.5rem; /* 24px */ --leading-base: 1.6; --leading-tight: 1.28; --fw-regular: 400; --fw-medium: 600; --fw-bold: 700; --fw-heavy: 800; /* colores principales */ --bg: #0d0d0d; /* fondo global */ --card-bg: #262626; /* cajas con texto y tarjetas */ --card-border: rgba(102,102,102,0.35); /* borde difuminado */ --search-wrap: #1a1a1a; /* cajón que rodea las barras de búsqueda */ --thumb-fill: #1a1a1a; /* fondo detrás de imágenes en thumbs */ --modal-bg: #262626; /* fondo interior de modales */ /* header y enlaces sociales */ --header-bg: #2b330f; /* fondo header pedido */ --header-text: #BDE151; /* color letras del header */ --social-link: #b4da25; /* color para LinkedIn/GitHub/Pinterest */ /* textos */ --text-primary: #f2f2f2; /* textos importantes (títulos) */ --text-secondary: #b3b3b3; /* textos secundarios (body) */ /* highlights/accent */ --accent: #CEE773; /* botones libros/reviews */ --accent-muted: rgba(206,231,115,0.12); /* selects highlight pedido */ --option-highlight: #686868; /* highlight de option */ --radius: 12px; --radius-sm: 8px; --shadow-strong: 0 18px 50px rgba(0,0,0,0.6); --shadow-soft: 0 6px 20px rgba(0,0,0,0.45); --max-width: 1200px; --transition: 180ms cubic-bezier(.2,.9,.2,1); --transition-slow: 260ms cubic-bezier(.2,.9,.2,1); } /* ---------- Reset / Base ---------- */ *{box-sizing:border-box;margin:0;padding:0} html,body{ height:100%; background:var(--bg); color:var(--text-primary); font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; line-height:var(--leading-base); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; } a{color:inherit;text-decoration:none} .container{max-width:var(--max-width);margin:24px auto;padding:18px} /* ---------- Header / Nav ---------- */ .nav{ background:var(--header-bg); color:var(--header-text); position:sticky; top:0; z-index:300; border-bottom: 1px solid rgba(0,0,0,0.25); backdrop-filter: blur(6px); } .nav .wrap{ max-width:var(--max-width); margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:12px 18px; gap:12px; } .nav .brand a{ color:var(--header-text); font-weight:800; font-size:1.05rem; } .nav nav a{ color:var(--header-text); margin-left:14px; font-weight:700; padding:6px 8px; border-radius:8px; } .nav nav a:hover{ background: rgba(189,225,81,0.06); transform: translateY(-2px) } /* ---------- Page title ---------- */ .page-title{ font-size:var(--fz-2xl); color:var(--text-primary); font-weight:var(--fw-heavy); margin-bottom:12px; } /* ---------- About / Index (un solo bloque) ---------- */ .about-card{ max-width:var(--max-width); margin:18px auto; width:100% } .about-inner{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:calc(var(--radius)+2px); padding:18px; display:flex; gap:18px; align-items:flex-start; border:1px solid var(--card-border); box-shadow:var(--shadow-soft); width:100%; color:var(--text-secondary); } .avatar-wrap{ width:180px;height:180px;flex-shrink:0;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.03);background:var(--thumb-fill);display:block; } .avatar-wrap img{ width:100%;height:100%;object-fit:cover;object-position:center;display:block; } /* about content */ .about-right{ flex:1; display:flex; flex-direction:column; gap:8px } .about-name{ font-size:var(--fz-xl); font-weight:var(--fw-heavy); color:var(--text-primary); line-height:var(--leading-tight) } .about-sub{ color:var(--text-secondary); font-weight:var(--fw-medium) } /* social links color requested */ .about-links, .links-row, .small-link { display:flex; gap:8px; flex-wrap:wrap; } .about-links a, .links-row a, .small-link { color: var(--social-link); font-weight:700; } .about-links a:hover, .links-row a:hover, .small-link:hover { text-decoration:underline } /* remove "Conexiones" display: hide if present (user asked) */ .about-connections { display:none !important; } /* separators / info grid */ .sep{ height:1px;background:var(--card-border);border-radius:2px;margin:8px 0 } .info-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px } .info-block{ background:transparent; padding:8px; border-radius:8px; color:var(--text-secondary) } /* ---------- Card generic ---------- */ .card{ background:transparent; padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.02); box-shadow:none } /* ---------- Search / Filter cajón (ancho) ---------- */ .filter-bar, .search-card{ background:var(--search-wrap); border-radius:14px; padding:12px; display:flex; gap:12px; align-items:center; border:1px solid rgba(255,255,255,0.03); margin-bottom:12px; } .filter-bar input[type="text"], .filter-bar input[type="date"], .filter-bar select, .search-card input[type="text"], .search-card input[type="date"], .search-card select{ padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--text-primary);flex:1;min-width:0;font-weight:600 } .filter-bar input::placeholder, .search-card input::placeholder{ color: rgba(255,255,255,0.5) } .filter-bar .btn, .search-card .btn{ background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--text-primary);padding:9px 12px;border-radius:10px;cursor:pointer } /* make search input wider in lists (user requested full width) */ .search-card input[type="text"]{ flex-basis: 65%; } /* responsive small */ @media(max-width:720px){ .filter-bar, .search-card{ flex-direction:column; align-items:stretch } .search-card input[type="text"]{ flex-basis:auto; width:100% } } /* ---------- Select / dropdown: dark + highlight ---------- */ .filter-bar select, .search-card select{ -webkit-appearance:none; -moz-appearance:none; appearance:none; background-image: linear-gradient(45deg, transparent 50%, var(--text-primary) 50%), linear-gradient(135deg, var(--text-primary) 50%, transparent 50%); background-position: calc(100% - 18px) calc(50% - 6px), calc(100% - 13px) calc(50% - 6px); background-size: 6px 6px, 6px 6px; background-repeat: no-repeat; padding-right:36px; cursor:pointer; color:var(--text-primary); border-radius:10px; } /* options dark */ .filter-bar select option, .search-card select option{ background: var(--card-bg); color: var(--text-primary); padding:6px 10px; } /* hovered / checked highlight color solicitado */ .filter-bar select option:hover, .search-card select option:hover, .filter-bar select option:checked, .search-card select option:checked{ background: var(--option-highlight); /* #686868 */ color: var(--text-primary); } /* focus */ .filter-bar select:focus, .search-card select:focus{ outline:2px solid rgba(189,225,81,0.08); outline-offset:2px } /* ---------- Grid libros / reviews (tarjetas rectangulares horizontales) ---------- */ .books-grid, .reviews-grid, #booksGrid, #reviewsList{ display:grid; grid-template-columns:repeat(auto-fill,minmax(480px,1fr)); gap:16px; margin-top:14px; } /* tarjeta horizontal */ .book-card, .review-card{ background:var(--card-bg); border-radius:12px; display:flex; gap:14px; align-items:flex-start; padding:12px; border:1px solid var(--card-border); transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease; min-height:140px; color:var(--text-primary); overflow:hidden; } .book-card:hover, .review-card:hover{ transform:translateY(-6px); box-shadow: var(--shadow-strong); border-color: rgba(189,225,81,0.06) } /* thumb: keep aspect ratio, dark fill behind images */ .book-thumb, .review-thumb{ width:40%; min-width:180px; aspect-ratio:16/9; overflow:hidden; border-radius:8px; background:var(--thumb-fill); position:relative; border:1px solid rgba(255,255,255,0.03); } .book-thumb img, .review-thumb img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; } /* overlay subtle */ .book-thumb::after, .review-thumb::after{ content:""; position:absolute; inset:0; background:linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.02)); pointer-events:none } /* body contenido */ .card-body{ width:60%; display:flex; flex-direction:column; gap:8px; color:var(--text-secondary) } .card-meta{ font-size:13px; color:var(--text-secondary) } .card-title{ font-size:18px; font-weight:800; color:var(--text-primary); margin:0 } .card-desc{ font-size:var(--fz-base); color:var(--text-secondary); line-height:1.45 } /* fila inferior: estrellas, precio y botón */ .row-bottom{ display:flex; gap:12px; align-items:center; justify-content:space-between; margin-top:auto } .price{ font-weight:800; color:var(--text-primary) } .stars{ display:inline-flex; gap:6px; align-items:center } /* estrella completa / vacía y media (JS produce markup con span.star.half) */ .star.full{ color:#f5b301 } .star.empty{ color:#4b4b4b } .star.half{ /* gradient fill for half-star (works with text '★') */ background: linear-gradient(90deg, #f5b301 50%, #4b4b4b 50%); -webkit-background-clip: text; background-clip: text; color: transparent; display:inline-block; } /* botón ver / ir al producto dentro de la tarjeta (lado derecho) */ .product-link-btn{ padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); color:var(--text-primary); font-weight:700; text-align:center; white-space:nowrap; } /* ---------- Botones especiales: libros / reviews ---------- */ .btn-review, .btn-books{ background: var(--accent); color: #0b0b0b; border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 10px 30px rgba(0,0,0,0.25); padding:10px 14px; border-radius:10px; font-weight:700; text-decoration:none; } .btn-review:hover, .btn-books:hover{ transform:translateY(-3px); box-shadow:0 20px 48px rgba(0,0,0,0.32); filter:brightness(1.03) } /* ---------- Modal (detalle) ---------- */ .modal{ display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; padding:18px; z-index:1000 } .modal.open{ display:flex } .modal-card{ background:var(--modal-bg); border-radius:12px; padding:18px; max-width:1000px; width:100%; max-height:88vh; overflow:auto; border:1px solid var(--card-border); box-shadow:0 28px 80px rgba(0,0,0,0.6); position:relative; } /* close button with high z-index to avoid overlapping thumbs */ .modal-close{ position:absolute; right:12px; top:12px; border:none; background:rgba(255,255,255,0.03); color:var(--text-primary); padding:8px; border-radius:8px; cursor:pointer; z-index:1400; width:36px; height:36px; display:flex; align-items:center; justify-content:center; } .modal-close:hover{ background:rgba(255,255,255,0.06); transform:rotate(90deg) } /* modal inner layout: main image left + thumbs right */ .modal-layout{ display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap; margin-bottom:12px } .modal-main{ flex:1; min-width:300px; aspect-ratio:16/9; border-radius:8px; overflow:hidden; background:var(--thumb-fill); display:flex; align-items:center; justify-content:center } .modal-main img{ width:100%; height:100%; object-fit:contain; display:block; background:var(--thumb-fill) } .modal-thumbs{ width:120px; display:flex; flex-direction:column; gap:8px } .modal-thumbs img{ width:100%; height:72px; object-fit:cover; border-radius:6px; cursor:pointer; border:1px solid var(--card-border) } /* textual modal */ .modal-meta{ font-size:13px; color:var(--text-secondary); margin-top:8px } .modal-title{ font-size:var(--fz-xl); color:var(--text-primary); margin:8px 0 } .modal-desc{ color:var(--text-secondary); line-height:1.5 } /* ---------- Shadows / card helpers ---------- */ .sh{ min-width:100px; flex:1; padding:20px; border-radius:20px } .combined{ box-shadow: 0px 4px 4px rgba(0,0,0,0.18), 0px 12px 12px rgba(0,0,0,0.08) } .dark{ box-shadow: 0px 4px 4px rgba(0,0,0,0.18) } .light{ box-shadow: 0px 12px 12px rgba(0,0,0,0.08) } /* ---------- Footer ---------- */ .footer{ text-align:center; color:var(--text-secondary); margin-top:20px; padding:12px 0; font-size:13px } /* ---------- Responsive ---------- */ @media(max-width:980px){ .books-grid,.reviews-grid{ grid-template-columns:repeat(auto-fill,minmax(320px,1fr)) } .book-thumb,.review-thumb{ width:45% } .card-body{ width:55% } .modal-thumbs{ width:100%; flex-direction:row; overflow:auto } } @media(max-width:720px){ .about-inner{ flex-direction:column; align-items:center; text-align:center } .avatar-wrap{ width:140px;height:140px; margin-bottom:8px } .filter-bar, .search-card{ flex-direction:column; align-items:stretch } .filter-bar input, .filter-bar select, .search-card input, .search-card select{ width:100% } .modal-layout{ flex-direction:column } .modal-main{ aspect-ratio:4/3; min-width:60% } .modal-thumbs{ width:100%; flex-direction:row; gap:8px; overflow:auto } .book-thumb, .review-thumb{ width:40% } .books-grid, .reviews-grid{ grid-template-columns:1fr } } /* focus styles (accessibility) */ a:focus, button:focus, .product-link-btn:focus, input:focus, select:focus{ outline:3px solid rgba(206,231,115,0.10); outline-offset:2px; border-radius:8px } /* custom scrollbar */ ::-webkit-scrollbar{ width:10px } ::-webkit-scrollbar-track{ background: rgba(255,255,255,0.02) } ::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.08); border-radius:6px } ::-webkit-scrollbar-thumb:hover{ background: rgba(255,255,255,0.12) } /* small animation for cards load */ @keyframes fadeIn { from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none} } .book-card, .review-card { animation: fadeIn .36s ease-out } /* ensure images with .webp or tall/portrait are handled: use object-fit + background fill to avoid zoomed center */ img { max-width:100%; height:auto; display:block; } /* FIX: forzar fondo oscuro #1a1a1a detrás de thumbnails y modal main -> Pegar esto al final de styles.css (solo esto, no tocar nada más) */ .book-thumb, .review-thumb, .modal-main { /* fuerza el color de relleno detrás de la imagen */ background-color: #1a1a1a !important; background-image: none !important; } /* Asegura que la imagen no pinte fondo blanco por encima */ .book-thumb img, .review-thumb img, .modal-main img { background-color: transparent !important; display: block; width: 100%; height: 100%; object-fit: cover; /* thumbs: cubrir el recuadro */ object-position: center; } /* En caso de placeholders o pseudo-elementos que muestren blanco */ .book-thumb::before, .review-thumb::before, .modal-main::before { content: ""; position: absolute; inset: 0; background-color: #1a1a1a; pointer-events: none; border-radius: inherit; z-index: 0; } /* Asegura que el contenedor mantenga el stacking correcto para el overlay */ .book-thumb img, .review-thumb img, .modal-main img { position: relative; z-index: 1; } /* ------------------------- IMAGES / THUMBS / MODAL FIX Mantener thumbs con cover y modal con contain; fondo oscuro #1a1a1a detrás de todo -------------------------*/ /* Global images (no forzar height:auto aquí para no romper el modal) */ img { max-width: 100%; display: block; height: auto; /* keep intrinsic height where appropriate */ } /* Thumbnails (listas): cover para rellenar la caja */ .book-thumb img, .review-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: center; background-color: transparent !important; position: relative; z-index: 1; } /* Forzar fondo oscuro detrás de thumbs */ .book-thumb, .review-thumb { background-color: #1a1a1a !important; background-image: none !important; } /* Modal main: mostramos la imagen completa sin recortes */ .modal-main img { width: 100%; height: 100%; object-fit: contain; /* <-- importante: mostrar la imagen completa */ object-position: center; background-color: transparent !important; position: relative; z-index: 1; } /* Forzar fondo oscuro detrás del modal main (por si hay placeholders) */ .modal-main { background-color: #1a1a1a !important; background-image: none !important; } /* Evita placeholders blancos por pseudo-elementos */ .book-thumb::before, .review-thumb::before, .modal-main::before { content: ""; position: absolute; inset: 0; background-color: #1a1a1a; pointer-events: none; border-radius: inherit; z-index: 0; } /* === FIX: modal visible y contenido legible (pegar al final de styles.css) === */ /* overlay: un poco menos opaco para que el modal no parezca un "negro total" */ .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); /* overlay oscuro pero deja ver el modal */ align-items: center; justify-content: center; padding: 24px; z-index: 1200; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); } /* mostrar */ .modal.open { display: flex; } /* card del modal: más contrastada contra el overlay */ .modal-card { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius: 12px; padding: 20px; max-width: 1000px; width: 100%; max-height: 88vh; overflow: auto; border: 1px solid rgba(255,255,255,0.04); box-shadow: 0 32px 90px rgba(0,0,0,0.65); position: relative; color: var(--text-primary); /* asegurar legibilidad del texto */ transform: translateZ(0); } /* close: siempre por encima */ .modal-close { position: absolute; right: 14px; top: 14px; z-index: 1400; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; background: rgba(255,255,255,0.03); color: var(--text-primary); cursor: pointer; } .modal-close:hover { background: rgba(255,255,255,0.06); transform: rotate(90deg); } /* layout interno: imagen principal + miniaturas */ .modal-layout { display: flex; gap: 18px; align-items: flex-start; flex-wrap: wrap; } /* area principal de imagen: fondo oscuro controlado (no negro total) */ .modal-main { flex: 1; min-width: 320px; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: linear-gradient(180deg, #1a1a1a 0%, #262626 100%); /* relleno oscuro homogéneo */ border: 1px solid rgba(255,255,255,0.03); position: relative; } /* imagen en modal: mostrar completa sin recortes */ .modal-main img { width: auto; max-width: 100%; max-height: 80vh; /* evita que la imagen empuje todo el modal */ height: auto; object-fit: contain; /* important: mostrar la imagen completa */ object-position: center; background: transparent !important; display: block; position: relative; z-index: 2; } /* miniaturas (thumbs) */ .modal-thumbs { width: 120px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; } .modal-thumbs img { width: 100%; height: 72px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 1px solid rgba(255,255,255,0.03); background: #1a1a1a; /* fondo oscuro en miniaturas */ } /* seguridad: asegurar que no hay pseudo-elementos blancos superpuestos */ .modal-main::before, .modal-main::after, .modal-thumbs::before, .modal-thumbs::after { content: ""; display: none !important; } /* si había pseudo-elements que pintaban blanco detrás, forzamos el fondo oscuro */ .book-thumb::before, .review-thumb::before, .modal-main::before { content: ""; position: absolute; inset: 0; background-color: #1a1a1a; pointer-events: none; border-radius: inherit; z-index: 0; } /* asegurar que el contenedor del modal aparece por encima y el contenido no se oculta */ .modal-card, .modal-main, .modal-thumbs, .modal-close { will-change: transform, opacity; } /* pequeño ajuste responsive para que la imagen no ocupe toda la altura en pantallas pequeñas */ @media (max-width: 720px) { .modal-main { aspect-ratio: 4/3; min-width: 60%; } .modal-thumbs { width: 100%; flex-direction: row; gap: 8px; overflow-x: auto; } .modal-thumbs img { height: 56px; min-width: 80px; } } /* ==== PATCH: prevenir fondo blanco y recortes en preview/modal ==== */ /* aseguramos fondo oscuro detrás de todas las imágenes de thumbs y modal main */ .book-thumb, .review-thumb, .modal-main { background-color: #1a1a1a !important; background-image: none !important; } /* thumbs: cover, tamaño fijo en altura, no deformar */ .book-thumb img, .review-thumb img, .modal-thumbs img { width: 100% !important; height: 100% !important; object-fit: cover !important; object-position: center !important; background: transparent !important; display: block !important; } /* miniaturas del modal mantienen una altura consistente */ .modal-thumbs img { height: 72px !important; min-height: 72px !important; max-height: 72px !important; } /* imagen principal del modal: mostrar entera sin recortes */ .modal-main img, #mainImg { width: auto !important; max-width: 100% !important; height: auto !important; max-height: 80vh !important; object-fit: contain !important; /* <-- importante: mostrar imagen completa */ object-position: center !important; background: transparent !important; display: block !important; position: relative !important; z-index: 2 !important; } /* si algún pseudo-elemento pintaba blanco, lo anulamos */ .book-thumb::before, .review-thumb::before, .modal-main::before, .modal-main::after { content: ""; position: absolute; inset: 0; background-color: #1a1a1a !important; pointer-events: none; border-radius: inherit; z-index: 0; } /* Modal main image: mostrar la imagen completa sin recortes */ .modal-main img { display: block; margin: 0 auto; object-fit: contain !important; /* mostrar imagen completa */ object-position: center center !important; width: auto !important; /* que no estire a 100% cuando no convenga */ max-width: 100% !important; /* no salirse del contenedor */ height: auto !important; /* mantener proporción real */ max-height: 80vh !important; /* no empujar el modal verticalmente */ background: transparent !important; padding: 0 !important; position: relative; z-index: 2; } /* ---------------------------- REGLAS GENERALES DE IMÁGENES Thumbs = cover (rellena), Modal main = contain (mostrar entero) ----------------------------*/ /* Regla general para miniaturas / thumbs / imágenes en tarjetas: Rellena el contenedor con cover y fondo oscuro para evitar lienzos blancos. */ .book-thumb img, .review-thumb img, .modal-thumbs img, .review-card img, .book-card img, .article-thumb img, .review-thumb .thumb, .book-thumb .thumb { display: block !important; width: 100% !important; height: 100% !important; object-fit: cover !important; object-position: center center !important; background-color: #1a1a1a !important; padding: 0 !important; } /* Asegura que las miniaturas del modal tengan altura consistente */ .modal-thumbs img { height: 72px !important; min-height: 72px !important; max-height: 72px !important; } /* OVERRIDE: imagen principal del modal -> mostrar completa sin recortar */ .modal-main img, #mainImg { display: block !important; margin: 0 auto !important; width: auto !important; /* no forzar a 100% */ max-width: 100% !important; /* limitar al contenedor */ height: auto !important; /* mantener proporción real */ max-height: 80vh !important; /* evitar que empuje el modal */ object-fit: contain !important;/* mostrar toda la imagen */ object-position: center center !important; background-color: #1a1a1a !important; padding: 0 !important; position: relative !important; z-index: 2 !important; } /* En caso de que algún pseudo-elemento pintara blanco: anularlo */ .book-thumb::before, .review-thumb::before, .modal-main::before, .modal-main::after { content: "" !important; position: absolute !important; inset: 0 !important; background-color: #1a1a1a !important; pointer-events: none !important; border-radius: inherit !important; z-index: 0 !important; } /* ========== PATCH FINAL: reglas generales para evitar recortes ========= */ /* Contenedores thumbs: centrar la imagen y mantener fondo oscuro */ .book-thumb, .review-thumb { display: flex !important; align-items: center !important; justify-content: center !important; background-color: #1a1a1a !important; overflow: hidden !important; } /* Regla general: miniaturas y tarjetas muestran la imagen completa (no recortada). Usamos object-fit: contain !important para que CASES como la reseña "ratón" no se recorten. */ .book-thumb img, .review-thumb img, .review-card img, .book-card img, .article-thumb img { display: block !important; width: auto !important; /* que no fuerce ancho 100% */ height: 100% !important; /* llenar la altura del contenedor */ max-width: 100% !important; max-height: 100% !important; object-fit: contain !important; /* mostrar la imagen completa, evitar recortes */ object-position: center center !important; background-color: #1a1a1a !important; padding: 0 !important; } /* Miniaturas del modal: siguen siendo cover para que llenen su cajita pequeña */ .modal-thumbs img { width: 100% !important; height: 72px !important; min-height: 72px !important; max-height: 72px !important; object-fit: cover !important; object-position: center center !important; background-color: #1a1a1a !important; } /* Imagen principal del modal: mostrar completa sin recortes */ .modal-main img, #mainImg { display: block !important; margin: 0 auto !important; width: auto !important; max-width: 100% !important; height: auto !important; max-height: 80vh !important; object-fit: contain !important; object-position: center center !important; background-color: #1a1a1a !important; padding: 0 !important; position: relative !important; z-index: 2 !important; } /* Asegurarnos de anular cualquier pseudo-elemento blanco superpuesto */ .book-thumb::before, .review-thumb::before, .modal-main::before, .modal-main::after { content: "" !important; position: absolute !important; inset: 0 !important; background-color: #1a1a1a !important; pointer-events: none !important; border-radius: inherit !important; z-index: 0 !important; } /* === PATCH: evitar recorte de imagen en modal === */ /* Quitamos aspect-ratio/overflow que recortan la imagen y forzamos contain */ .modal-main { /* permitir que la imagen determine el tamaño visible */ aspect-ratio: auto !important; min-height: 0 !important; overflow: visible !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 8px !important; } /* Imagen principal: mostrar siempre ENTERA, escalar según viewport */ .modal-main img, #mainImg { display: block !important; width: auto !important; height: auto !important; max-width: calc(100% - 16px) !important; /* dejar algo de espacio/padding */ max-height: calc(80vh - 32px) !important; /* no empujar el modal */ object-fit: contain !important; /* <-- mostrar la imagen completa */ object-position: center center !important; background-color: #1a1a1a !important; box-sizing: border-box !important; padding: 0 !important; position: relative !important; z-index: 2 !important; } /* thumbs del modal siguen siendo cover */ .modal-thumbs img { width: 100% !important; height: 72px !important; object-fit: cover !important; object-position: center !important; background-color: #1a1a1a !important; } /* anular pseudo-elementos que pudieran pintar blanco */ .modal-main::before, .modal-main::after, .book-thumb::before, .review-thumb::before { content: "" !important; display: none !important; } /* Scoped adjustments para la página de reseñas */ .reviews-page .search-card { display: flex; gap: 10px; align-items: center; flex-wrap: nowrap; } /* Reducir ancho del input de búsqueda solo en reviews */ .reviews-page .search-card #searchBox { flex: 0 1 45%; /* ocupa 45% del ancho del contenedor */ max-width: 45%; min-width: 150px; /* evita que desaparezca en pantallas medias */ } /* Selecciones y date: anchos concretos para dejar espacio a metadatos */ .reviews-page .search-card #categorySelect, .reviews-page .search-card #subSelect { flex: 0 0 14%; /* aprox 14% cada una */ min-width: 120px; max-width: 16%; } .reviews-page .search-card #dateFilter { flex: 0 0 12%; min-width: 110px; max-width: 14%; } /* Botón limpiar toma el ancho restante / auto */ .reviews-page .search-card #clearFilters { flex: 0 0 auto; white-space: nowrap; } /* Si necesitas que los selects estén más grandes, sube los % anteriores */ /* --- Card meta: fecha / categoría más anchas y truncado elegante --- */ .reviews-page .card-meta { display: flex; gap: 12px; align-items: center; overflow: hidden; font-size: 0.95rem; color: var(--text-secondary); } /* Fecha: más visible */ .reviews-page .card-meta .meta-date { min-width: 120px; max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; color: var(--text-secondary); } /* Categoria / subcategoria: ocupar más espacio */ .reviews-page .card-meta .meta-cat { min-width: 180px; max-width: 360px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; color: var(--text-secondary); } /* responsive: en móvil la barra se apila */ @media (max-width: 720px) { .reviews-page .search-card { flex-direction: column; align-items: stretch; gap: 8px; } .reviews-page .search-card #searchBox { flex-basis: 100%; max-width: 100%; } .reviews-page .search-card #categorySelect, .reviews-page .search-card #subSelect, .reviews-page .search-card #dateFilter { flex-basis: 100%; max-width: 100%; min-width: 0; } .reviews-page .card-meta .meta-date, .reviews-page .card-meta .meta-cat { min-width: 0; max-width: 45vw; } } /* Ajustes para la barra de filtros en Reviews: más espacio a selects (categoria/sub) */ .filter-bar { display: flex; gap: 10px; align-items: center; flex-wrap: nowrap; } /* Por defecto: búsqueda más compacta, selects más anchos */ .filter-bar > #searchBox { flex: 0 0 32%; /* caja de búsqueda más pequeña */ min-width: 160px; } .filter-bar > select#categorySelect, .filter-bar > select#subSelect { flex: 0 0 28%; /* selects más anchos para leer contenido */ min-width: 160px; max-width: 42%; padding: 10px 12px; } /* Botón limpiar pequeño y estable */ .filter-bar > button#clearFilters { flex: 0 0 auto; padding: 8px 10px; } /* En pantallas pequeñas, apilar y mantener lecturabilidad */ @media (max-width:720px) { .filter-bar { flex-direction: column; gap: 8px; align-items: stretch; } .filter-bar > #searchBox, .filter-bar > select#categorySelect, .filter-bar > select#subSelect, .filter-bar > button#clearFilters { flex: 1 1 auto; width: 100%; } }
-/* Ajustes para la barra de filtros en Reviews: más espacio a selects (categoria/sub) */
+/* styles.css — Versión final solicitada
+   Modo oscuro, tipografía, jerarquía, botones enriquecidos,
+   selects oscuros, header #2b330f, social links #b4da25,
+   botones libros/reviews #CEE773, select highlight #686868
+*/
+
+/* ---------- Tipografía y variables ---------- */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap");
+
+:root{
+  --fz-base: 1rem; /* 16px */
+  --fz-sm: 0.875rem; /* 14px */
+  --fz-lg: 1.125rem; /* 18px */
+  --fz-xl: 1.25rem; /* 20px */
+  --fz-2xl: 1.5rem; /* 24px */
+
+  --leading-base: 1.6;
+  --leading-tight: 1.28;
+
+  --fw-regular: 400;
+  --fw-medium: 600;
+  --fw-bold: 700;
+  --fw-heavy: 800;
+
+  /* colores principales (tal como pediste) */
+  --bg: #0d0d0d;
+  --card-bg: #262626;
+  --card-border: rgba(102,102,102,0.35);
+  --search-wrap: #1a1a1a;
+  --thumb-fill: #1a1a1a;
+  --modal-bg: #262626;
+
+  /* header y enlaces sociales */
+  --header-bg: #2b330f;
+  --header-text: #BDE151;
+  --social-link: #b4da25;
+
+  /* textos */
+  --text-primary: #f2f2f2;
+  --text-secondary: #b3b3b3;
+
+  /* highlights/accent */
+  --accent: #CEE773;
+  --accent-muted: rgba(206,231,115,0.12);
+
+  /* selects highlight pedido */
+  --option-highlight: #686868;
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow-strong: 0 18px 50px rgba(0,0,0,0.6);
+  --shadow-soft: 0 6px 20px rgba(0,0,0,0.45);
+  --max-width: 1200px;
+
+  --transition: 180ms cubic-bezier(.2,.9,.2,1);
+  --transition-slow: 260ms cubic-bezier(.2,.9,.2,1);
+}
+
+/* ---------- Reset / Base ---------- */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{
+  height:100%;
+  background:var(--bg);
+  color:var(--text-primary);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  line-height:var(--leading-base);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+a{color:inherit;text-decoration:none}
+.container{max-width:var(--max-width);margin:24px auto;padding:18px}
+
+/* ---------- Header / Nav ---------- */
+.nav{
+  background:var(--header-bg);
+  color:var(--header-text);
+  position:sticky; top:0; z-index:300;
+  border-bottom: 1px solid rgba(0,0,0,0.25);
+  backdrop-filter: blur(6px);
+}
+.nav .wrap{
+  max-width:var(--max-width);
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 18px;
+  gap:12px;
+}
+.nav .brand a{
+  color:var(--header-text);
+  font-weight:800;
+  font-size:1.05rem;
+}
+.nav nav a{
+  color:var(--header-text);
+  margin-left:14px;
+  font-weight:700;
+  padding:6px 8px;
+  border-radius:8px;
+}
+.nav nav a:hover{ background: rgba(189,225,81,0.06); transform: translateY(-2px) }
+
+/* ---------- Page title ---------- */
+.page-title{
+  font-size:var(--fz-2xl);
+  color:var(--text-primary);
+  font-weight:var(--fw-heavy);
+  margin-bottom:12px;
+}
+
+/* ---------- About / Index (un solo bloque) ---------- */
+.about-card{ max-width:var(--max-width); margin:18px auto; width:100% }
+.about-inner{
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius:calc(var(--radius)+2px);
+  padding:18px;
+  display:flex;
+  gap:18px;
+  align-items:flex-start;
+  border:1px solid var(--card-border);
+  box-shadow:var(--shadow-soft);
+  width:100%;
+  color:var(--text-secondary);
+}
+.avatar-wrap{
+  width:180px;height:180px;flex-shrink:0;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.03);background:var(--thumb-fill);display:block;
+}
+.avatar-wrap img{ width:100%;height:100%;object-fit:cover;object-position:center;display:block; }
+
+/* about content */
+.about-right{ flex:1; display:flex; flex-direction:column; gap:8px }
+.about-name{ font-size:var(--fz-xl); font-weight:var(--fw-heavy); color:var(--text-primary); line-height:var(--leading-tight) }
+.about-sub{ color:var(--text-secondary); font-weight:var(--fw-medium) }
+
+/* social links color requested */
+.about-links, .links-row, .small-link { display:flex; gap:8px; flex-wrap:wrap; }
+.about-links a, .links-row a, .small-link { color: var(--social-link); font-weight:700; }
+.about-links a:hover, .links-row a:hover, .small-link:hover { text-decoration:underline }
+
+/* remove "Conexiones" display: hide if present (user asked) */
+.about-connections { display:none !important; }
+
+/* separators / info grid */
+.sep{ height:1px;background:var(--card-border);border-radius:2px;margin:8px 0 }
+.info-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px }
+.info-block{ background:transparent; padding:8px; border-radius:8px; color:var(--text-secondary) }
+
+/* ---------- Card generic ---------- */
+.card{ background:transparent; padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.02); box-shadow:none }
+
+/* ---------- Search / Filter cajón (ancho) ---------- */
+.filter-bar, .search-card{
+  background:var(--search-wrap);
+  border-radius:14px;
+  padding:12px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  border:1px solid rgba(255,255,255,0.03);
+  margin-bottom:12px;
+}
+.filter-bar input[type="text"],
+.filter-bar input[type="date"],
+.filter-bar select,
+.search-card input[type="text"],
+.search-card input[type="date"],
+.search-card select{
+  padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--text-primary);flex:1;min-width:0;font-weight:600
+}
+.filter-bar input::placeholder, .search-card input::placeholder{ color: rgba(255,255,255,0.5) }
+.filter-bar .btn, .search-card .btn{ background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--text-primary);padding:9px 12px;border-radius:10px;cursor:pointer }
+
+/* make search input wider in lists (user requested full width) */
+.search-card input[type="text"]{ flex-basis: 65%; }
+
+/* responsive small */
+@media(max-width:720px){
+  .filter-bar, .search-card{ flex-direction:column; align-items:stretch }
+  .search-card input[type="text"]{ flex-basis:auto; width:100% }
+}
+
+/* ---------- Select / dropdown: dark + highlight ---------- */
+.filter-bar select, .search-card select{
+  -webkit-appearance:none; -moz-appearance:none; appearance:none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-primary) 50%),
+    linear-gradient(135deg, var(--text-primary) 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(50% - 6px), calc(100% - 13px) calc(50% - 6px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right:36px; cursor:pointer; color:var(--text-primary);
+  border-radius:10px;
+}
+/* options dark */
+.filter-bar select option, .search-card select option{
+  background: var(--card-bg);
+  color: var(--text-primary);
+  padding:6px 10px;
+}
+/* hovered / checked highlight color solicitado */
+.filter-bar select option:hover,
+.search-card select option:hover,
+.filter-bar select option:checked,
+.search-card select option:checked{
+  background: var(--option-highlight); /* #686868 */
+  color: var(--text-primary);
+}
+/* focus */
+.filter-bar select:focus, .search-card select:focus{ outline:2px solid rgba(189,225,81,0.08); outline-offset:2px }
+
+/* ---------- Grid libros / reviews (tarjetas rectangulares horizontales) ---------- */
+.books-grid, .reviews-grid, #booksGrid, #reviewsList{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(480px,1fr));
+  gap:16px;
+  margin-top:14px;
+}
+
+/* tarjeta horizontal */
+.book-card, .review-card{
+  background:var(--card-bg);
+  border-radius:12px;
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  padding:12px;
+  border:1px solid var(--card-border);
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  min-height:140px;
+  color:var(--text-primary);
+  overflow:hidden;
+}
+.book-card:hover, .review-card:hover{ transform:translateY(-6px); box-shadow: var(--shadow-strong); border-color: rgba(189,225,81,0.06) }
+
+/* thumb: keep aspect ratio, dark fill behind images */
+.book-thumb, .review-thumb{
+  width:40%;
+  min-width:180px;
+  aspect-ratio:16/9;
+  overflow:hidden;
+  border-radius:8px;
+  background:var(--thumb-fill);
+  position:relative;
+  border:1px solid rgba(255,255,255,0.03);
+}
+.book-thumb img, .review-thumb img{
+  width:100%; height:100%; object-fit:cover; object-position:center; display:block;
+}
+/* overlay subtle */
+.book-thumb::after, .review-thumb::after{ content:""; position:absolute; inset:0; background:linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.02)); pointer-events:none }
+
+/* body contenido */
+.card-body{ width:60%; display:flex; flex-direction:column; gap:8px; color:var(--text-secondary) }
+.card-meta{ font-size:13px; color:var(--text-secondary) }
+.card-title{ font-size:18px; font-weight:800; color:var(--text-primary); margin:0 }
+.card-desc{ font-size:var(--fz-base); color:var(--text-secondary); line-height:1.45 }
+
+/* fila inferior: estrellas, precio y botón */
+.row-bottom{ display:flex; gap:12px; align-items:center; justify-content:space-between; margin-top:auto }
+.price{ font-weight:800; color:var(--text-primary) }
+.stars{ display:inline-flex; gap:6px; align-items:center }
+/* estrella completa / vacía y media (JS produce markup con span.star.half) */
+.star.full{ color:#f5b301 }
+.star.empty{ color:#4b4b4b }
+.star.half{
+  /* gradient fill for half-star (works with text '★') */
+  background: linear-gradient(90deg, #f5b301 50%, #4b4b4b 50%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display:inline-block;
+}
+
+/* botón ver / ir al producto dentro de la tarjeta (lado derecho) */
+.product-link-btn{
+  padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  color:var(--text-primary); font-weight:700; text-align:center;
+  white-space:nowrap;
+}
+
+/* ---------- Botones especiales: libros / reviews ---------- */
+.btn-review, .btn-books{
+  background: var(--accent);
+  color: #0b0b0b;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  padding:10px 14px; border-radius:10px; font-weight:700; text-decoration:none;
+}
+.btn-review:hover, .btn-books:hover{ transform:translateY(-3px); box-shadow:0 20px 48px rgba(0,0,0,0.32); filter:brightness(1.03) }
+
+/* ---------- Modal (detalle) ---------- */
+.modal{ display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; padding:18px; z-index:1000 }
+.modal.open{ display:flex }
+.modal-card{
+  background:var(--modal-bg); border-radius:12px; padding:18px; max-width:1000px; width:100%; max-height:88vh; overflow:auto;
+  border:1px solid var(--card-border); box-shadow:0 28px 80px rgba(0,0,0,0.6); position:relative;
+}
+/* close button with high z-index to avoid overlapping thumbs */
+.modal-close{
+  position:absolute; right:12px; top:12px; border:none; background:rgba(255,255,255,0.03); color:var(--text-primary);
+  padding:8px; border-radius:8px; cursor:pointer; z-index:1400; width:36px; height:36px; display:flex; align-items:center; justify-content:center;
+}
+.modal-close:hover{ background:rgba(255,255,255,0.06); transform:rotate(90deg) }
+
+/* modal inner layout: main image left + thumbs right */
+.modal-layout{ display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap; margin-bottom:12px }
+.modal-main{ flex:1; min-width:300px; aspect-ratio:16/9; border-radius:8px; overflow:hidden; background:var(--thumb-fill); display:flex; align-items:center; justify-content:center }
+.modal-main img{ width:100%; height:100%; object-fit:contain; display:block; background:var(--thumb-fill) }
+.modal-thumbs{ width:120px; display:flex; flex-direction:column; gap:8px }
+.modal-thumbs img{ width:100%; height:72px; object-fit:cover; border-radius:6px; cursor:pointer; border:1px solid var(--card-border) }
+
+/* textual modal */
+.modal-meta{ font-size:13px; color:var(--text-secondary); margin-top:8px }
+.modal-title{ font-size:var(--fz-xl); color:var(--text-primary); margin:8px 0 }
+.modal-desc{ color:var(--text-secondary); line-height:1.5 }
+
+/* ---------- Shadows / card helpers ---------- */
+.sh{ min-width:100px; flex:1; padding:20px; border-radius:20px }
+.combined{ box-shadow: 0px 4px 4px rgba(0,0,0,0.18), 0px 12px 12px rgba(0,0,0,0.08) }
+.dark{ box-shadow: 0px 4px 4px rgba(0,0,0,0.18) }
+.light{ box-shadow: 0px 12px 12px rgba(0,0,0,0.08) }
+
+/* ---------- Footer ---------- */
+.footer{ text-align:center; color:var(--text-secondary); margin-top:20px; padding:12px 0; font-size:13px }
+
+/* ---------- Responsive ---------- */
+@media(max-width:980px){
+  .books-grid,.reviews-grid{ grid-template-columns:repeat(auto-fill,minmax(320px,1fr)) }
+  .book-thumb,.review-thumb{ width:45% }
+  .card-body{ width:55% }
+  .modal-thumbs{ width:100%; flex-direction:row; overflow:auto }
+}
+@media(max-width:720px){
+  .about-inner{ flex-direction:column; align-items:center; text-align:center }
+  .avatar-wrap{ width:140px;height:140px; margin-bottom:8px }
+  .filter-bar, .search-card{ flex-direction:column; align-items:stretch }
+  .filter-bar input, .filter-bar select, .search-card input, .search-card select{ width:100% }
+  .modal-layout{ flex-direction:column }
+  .modal-main{ aspect-ratio:4/3; min-width:60% }
+  .modal-thumbs{ width:100%; flex-direction:row; gap:8px; overflow:auto }
+  .book-thumb, .review-thumb{ width:40% }
+  .books-grid, .reviews-grid{ grid-template-columns:1fr }
+}
+
+/* focus styles (accessibility) */
+a:focus, button:focus, .product-link-btn:focus, input:focus, select:focus{ outline:3px solid rgba(206,231,115,0.10); outline-offset:2px; border-radius:8px }
+
+/* custom scrollbar */
+::-webkit-scrollbar{ width:10px }
+::-webkit-scrollbar-track{ background: rgba(255,255,255,0.02) }
+::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.08); border-radius:6px }
+::-webkit-scrollbar-thumb:hover{ background: rgba(255,255,255,0.12) }
+
+/* small animation for cards load */
+@keyframes fadeIn { from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none} }
+.book-card, .review-card { animation: fadeIn .36s ease-out }
+
+/* ensure images with .webp or tall/portrait are handled: use object-fit + background fill to avoid zoomed center */
+img { max-width:100%; height:auto; display:block; }
+
+/* ======================================================================
+   IMAGE / THUMBS / MODAL FIXES (fondo oscuro y evitar recorte en modal)
+   ====================================================================== */
+
+/* Forzar fondo oscuro detrás de thumbs y modal main */
+.book-thumb,
+.review-thumb,
+.modal-main {
+  background-color: #1a1a1a !important;
+  background-image: none !important;
+}
+
+/* Thumbs: cover para rellenar la caja por defecto */
+.book-thumb img,
+.review-thumb img,
+.modal-thumbs img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  background: transparent !important;
+  display: block !important;
+}
+
+/* Miniaturas del modal: altura consistente */
+.modal-thumbs img {
+  height: 72px !important;
+  min-height: 72px !important;
+  max-height: 72px !important;
+}
+
+/* Imagen principal del modal: mostrar entera sin recortes */
+.modal-main img, #mainImg {
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 80vh !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  background: transparent !important;
+  display: block !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* Anular pseudo-elementos que pinten blanco */
+.book-thumb::before,
+.review-thumb::before,
+.modal-main::before,
+.modal-main::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #1a1a1a !important;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 0;
+}
+
+/* Modal: overlay y card con contraste */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 1200;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.modal.open { display: flex; }
+
+.modal-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 1000px;
+  width: 100%;
+  max-height: 88vh;
+  overflow: auto;
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 32px 90px rgba(0,0,0,0.65);
+  position: relative;
+  color: var(--text-primary);
+  transform: translateZ(0);
+}
+
+/* Main image area: ensure not cropped */
+.modal-main {
+  flex: 1;
+  min-width: 320px;
+  aspect-ratio: auto !important; /* allow image to define shape */
+  border-radius: 8px;
+  overflow: visible !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #1a1a1a 0%, #262626 100%);
+  border: 1px solid rgba(255,255,255,0.03);
+  position: relative;
+  padding: 8px;
+}
+
+/* Main image: always contain and respect viewport */
+.modal-main img {
+  width: auto !important;
+  height: auto !important;
+  max-width: calc(100% - 16px) !important;
+  max-height: calc(80vh - 32px) !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  background-color: #1a1a1a !important;
+  box-sizing: border-box !important;
+  padding: 0 !important;
+  display: block !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* modal thumbs remain cover */
+.modal-thumbs img {
+  width: 100% !important;
+  height: 72px !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  background-color: #1a1a1a !important;
+}
+
+/* prevent white pseudo-elements */
+.modal-main::before, .modal-main::after, .book-thumb::before, .review-thumb::before { content: "" !important; display: none !important; }
+
+/* ======================================================================
+   REGLAS GENERALES Y OVERRIDES (para evitar recortes y que la UI sea legible)
+   ====================================================================== */
+
+/* Make thumbs containers center their content */
+.book-thumb, .review-thumb {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: #1a1a1a !important;
+  overflow: hidden !important;
+}
+
+/* By default prefer contain for list thumbs to avoid cropping important product shots */
+.book-thumb img,
+.review-thumb img,
+.review-card img,
+.book-card img,
+.article-thumb img {
+  display: block !important;
+  width: auto !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  background-color: #1a1a1a !important;
+  padding: 0 !important;
+}
+
+/* Modal thumbs still cover */
+.modal-thumbs img {
+  width: 100% !important;
+  height: 72px !important;
+  min-height: 72px !important;
+  max-height: 72px !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  background-color: #1a1a1a !important;
+}
+
+/* Ensure main modal image shows whole image */
+.modal-main img, #mainImg {
+  display: block !important;
+  margin: 0 auto !important;
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 80vh !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  background-color: #1a1a1a !important;
+  padding: 0 !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+/* ======================================================================
+   Scoped adjustments para la página de reseñas (layout de filtros y meta)
+   ====================================================================== */
+
+/* Add a class .reviews-page to the body of the reviews page to scope these */
+.reviews-page .search-card { display: flex; gap: 10px; align-items: center; flex-wrap: nowrap; }
+
+/* Reduce search input width on reviews so selects/date can be wider */
+.reviews-page .search-card #searchBox {
+  flex: 0 1 45%;
+  max-width: 45%;
+  min-width: 150px;
+}
+
+/* selects and date get explicit widths so date/cat/sub are readable */
+.reviews-page .search-card #categorySelect,
+.reviews-page .search-card #subSelect {
+  flex: 0 0 14%;
+  min-width: 120px;
+  max-width: 16%;
+}
+.reviews-page .search-card #dateFilter {
+  flex: 0 0 12%;
+  min-width: 110px;
+  max-width: 14%;
+}
+.reviews-page .search-card #clearFilters {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* Card meta split into date and category/sub to allow CSS sizing and truncation */
+.reviews-page .card-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  overflow: hidden;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+.reviews-page .card-meta .meta-date {
+  min-width: 120px;
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.reviews-page .card-meta .meta-cat {
+  min-width: 180px;
+  max-width: 360px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* responsive: stack filters on small screens and allow meta fields to shrink */
+@media (max-width: 720px) {
+  .reviews-page .search-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .reviews-page .search-card #searchBox { flex-basis: 100%; max-width: 100%; }
+  .reviews-page .search-card #categorySelect,
+  .reviews-page .search-card #subSelect,
+  .reviews-page .search-card #dateFilter { flex-basis: 100%; max-width: 100%; min-width: 0; }
+  .reviews-page .card-meta .meta-date,
+  .reviews-page .card-meta .meta-cat { min-width: 0; max-width: 45vw; }
+}
+
+/* ======================================================================
+   Filter-bar general tweaks: make selects a bit larger and search smaller
+   ====================================================================== */
 .filter-bar {
   display: flex;
   gap: 10px;
   align-items: center;
   flex-wrap: nowrap;
 }
-
-/* Por defecto: búsqueda más compacta, selects más anchos */
 .filter-bar > #searchBox {
-  flex: 0 0 32%;        /* caja de búsqueda más pequeña */
+  flex: 0 0 32%;
   min-width: 160px;
 }
-
 .filter-bar > select#categorySelect,
 .filter-bar > select#subSelect {
-  flex: 0 0 28%;        /* selects más anchos para leer contenido */
+  flex: 0 0 28%;
   min-width: 160px;
   max-width: 42%;
   padding: 10px 12px;
 }
-
-/* Botón limpiar pequeño y estable */
 .filter-bar > button#clearFilters {
   flex: 0 0 auto;
   padding: 8px 10px;
 }
-
-/* En pantallas pequeñas, apilar y mantener lecturabilidad */
 @media (max-width:720px) {
-  .filter-bar {
-    flex-direction: column;
-    gap: 8px;
-    align-items: stretch;
-  }
+  .filter-bar { flex-direction: column; gap: 8px; align-items: stretch; }
   .filter-bar > #searchBox,
   .filter-bar > select#categorySelect,
   .filter-bar > select#subSelect,
-  .filter-bar > button#clearFilters {
-    flex: 1 1 auto;
-    width: 100%;
-  }
+  .filter-bar > button#clearFilters { flex: 1 1 auto; width: 100%; }
 }
+
+/* end of file */
