@@ -738,5 +738,70 @@ img { max-width:100%; height:auto; display:block; }
 /* Si en algún sitio existieran botones con fondo sólido que quieras cambiar,
    puedes añadir más selectores aquí para normalizar. */
 
+/* Botón "Producto" para reseñas: texto en #BDE151 y contorno visible.
+   Aplica tanto a los elementos nuevos (.product-btn) como a la clase legacy (.product-link-btn)
+   y asegura que dentro del modal también se mantenga el mismo look.
+*/
+.product-btn,
+.product-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--header-text) !important;           /* #BDE151 (texto) */
+  border: 1px solid rgba(189,225,81,0.18);         /* sutil contorno */
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
+}
+
+/* Hover / active */
+.product-btn:hover,
+.product-link-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  background: rgba(189,225,81,0.04); /* leve fondo en hover */
+}
+
+/* Asegura que botones dentro del modal also use same style */
+.modal .product-btn,
+.modal .product-link-btn,
+.modal a.btn.btn-primary {
+  color: var(--header-text) !important;
+  border: 1px solid rgba(189,225,81,0.18) !important;
+  background: transparent !important;
+  font-weight: 700 !important;
+}
+
+/* Si tienes botones con clase .btn que salgan en reviews, forzamos el texto del color pedido */
+.reviews-page .btn,
+.reviews-page .product-btn,
+.reviews-page .product-link-btn {
+  color: var(--header-text) !important;
+}
+
+/* Asegura contraste en footer/modal close si fuese necesario */
+.modal .product-btn { margin-top: 8px; }
+
+/* Si usas botones <button> en vez de <a>, cubrimos ambos */
+button.product-btn { border: 1px solid rgba(189,225,81,0.18); background: transparent; color: var(--header-text); }
+
+/* Mantener accesibilidad: focus visible */
+.product-btn:focus, .product-link-btn:focus {
+  outline: 3px solid rgba(189,225,81,0.14);
+  outline-offset: 2px;
+}
+
+/* Si por algún motivo el botón se queda con ancho demasiado pequeño, evitar que se rompa */
+.product-btn { min-width: 84px; text-align:center; }
+
+/* Small screens: que no se desborde en tarjetas */
+@media (max-width: 720px) {
+  .product-btn, .product-link-btn { padding: 8px 10px; min-width: 72px; font-size: 0.95rem; }
+}
 
 /* end of file */
