@@ -656,4 +656,87 @@ img { max-width:100%; height:auto; display:block; }
   .filter-bar > button#clearFilters { flex: 1 1 auto; width: 100%; }
 }
 
+/* ---------- Botones "Producto" y estilo para botones en reviews + modal ---------- */
+
+/* Estilo base para el botón de producto (tarjeta y modal).
+   Usa el color de variable --header-text (#BDE151) en letr a y borde.
+*/
+.reviews-page .product-btn,
+.reviews-page .product-link-btn,
+.modal-card .product-btn,
+.modal-card a.product-btn {
+  color: var(--header-text) !important;         /* #BDE151 */
+  background: transparent !important;
+  border: 1px solid rgba(189,225,81,0.16) !important; /* borde sutil */
+  padding: 8px 12px !important;
+  border-radius: 10px !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  white-space: nowrap !important;               /* no se corta la palabra "Producto" */
+  line-height: 1;
+}
+
+/* Hover / focus */
+.reviews-page .product-btn:hover,
+.reviews-page .product-link-btn:hover,
+.modal-card .product-btn:hover,
+.modal-card a.product-btn:hover {
+  background: rgba(189,225,81,0.06) !important;
+  transform: translateY(-2px);
+}
+
+/* Asegurar que cualquier botón (a.btn, .btn) dentro de la página de reseñas o modal
+   herede el color de letra solicitado. Esto aplica a botones generados posteriormente. */
+.reviews-page .btn,
+.reviews-page a.btn,
+.reviews-page button,
+.reviews-page .product-btn,
+.modal-card .btn,
+.modal-card a.btn,
+.modal-card button,
+.modal-card .product-btn {
+  color: var(--header-text) !important;
+  background: transparent !important;
+  border: 1px solid rgba(189,225,81,0.12) !important;
+}
+
+/* Si quieres que los botones dentro de modal aparezcan con un poco más de contraste */
+.modal-card .product-btn,
+.modal-card .btn {
+  border-color: rgba(189,225,81,0.18) !important;
+}
+
+/* Asegurar que el botón en la tarjeta no se ajuste al recuadro y tenga margen si hace falta */
+.review-card .product-btn {
+  margin-left: 6px;
+  margin-right: 2px;
+}
+
+/* En caso de que aún exista .product-link-btn previa, armonizamos su estilo */
+.product-link-btn {
+  color: var(--header-text) !important;
+  background: transparent !important;
+  border: 1px solid rgba(189,225,81,0.12) !important;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Accessibility: focus visible */
+.reviews-page .product-btn:focus,
+.reviews-page .product-link-btn:focus,
+.modal-card .product-btn:focus,
+.modal-card a.product-btn:focus {
+  outline: 3px solid rgba(189,225,81,0.12);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Si en algún sitio existieran botones con fondo sólido que quieras cambiar,
+   puedes añadir más selectores aquí para normalizar. */
+
+
 /* end of file */
