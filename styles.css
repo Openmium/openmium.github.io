@@ -1067,3 +1067,47 @@ img {
   .reviews-page .card-meta .meta-date,
   .reviews-page .card-meta .meta-cat { min-width: 0; max-width: 45vw; }
 }
+
+/* Ajustes para la barra de filtros en Reviews: más espacio a selects (categoria/sub) */
+.filter-bar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+/* Por defecto: búsqueda más compacta, selects más anchos */
+.filter-bar > #searchBox {
+  flex: 0 0 32%;        /* caja de búsqueda más pequeña */
+  min-width: 160px;
+}
+
+.filter-bar > select#categorySelect,
+.filter-bar > select#subSelect {
+  flex: 0 0 28%;        /* selects más anchos para leer contenido */
+  min-width: 160px;
+  max-width: 42%;
+  padding: 10px 12px;
+}
+
+/* Botón limpiar pequeño y estable */
+.filter-bar > button#clearFilters {
+  flex: 0 0 auto;
+  padding: 8px 10px;
+}
+
+/* En pantallas pequeñas, apilar y mantener lecturabilidad */
+@media (max-width:720px) {
+  .filter-bar {
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .filter-bar > #searchBox,
+  .filter-bar > select#categorySelect,
+  .filter-bar > select#subSelect,
+  .filter-bar > button#clearFilters {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+}
